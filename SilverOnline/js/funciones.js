@@ -11,10 +11,10 @@ $.ajax({
 
       if(result==1){
 
-        echo("Se registro el usuario de forma correcta...");
+        alertify("Se registro el usuario de forma correcta...");
       }
       else{
-        echo("Error...");
+        alertify("Error...");
       }
 
     }

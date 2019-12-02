@@ -21,7 +21,12 @@
   <!-- Responsive CSS -->
   <link href="css/responsive.css" rel="stylesheet">
 
+
+  <link href="librerias/alertify/css/alertify.css" rel="stylesheet" type="text/css">
+<link href="librerias/alertify/css/theme/default.css" rel="stylesheet" type="text/css">
+
   <script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- <script src="librerias/alertify/jquery-2.2.4.min.js"></script> -->
   <script src="js/funciones.js"></script>
 
 </head>
