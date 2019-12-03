@@ -14,6 +14,7 @@ function agregarUsuarios(email, pass){
         alert("Se registro el usuario de forma correcta...");
         $('#txtEmail').val('');
         $('#txtPass').val('');
+        $('#ModalRegistroUsuarios').hide();
       }
       else{
         alert("Error...");

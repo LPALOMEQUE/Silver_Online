@@ -30,12 +30,12 @@
   <script src="js/jquery/jquery-2.2.4.min.js"></script>
   <script src="js/funciones.js"></script>
   <script src="librerias/alertify/alertify.js"></script>
-
   <!-- end -->
 
 </head>
 
 <body>
+
   <div class="catagories-side-menu">
     <!-- Close Icon -->
     <div id="sideMenuClose">
@@ -44,60 +44,44 @@
     <!--  Side Nav  -->
     <div class="nav-side-menu">
       <div class="menu-list">
-        <h6>Categories</h6>
+        <h6>Categorías</h6>
         <ul id="menu-content" class="menu-content collapse out">
+
           <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#women" class="collapsed active">
-            <a href="#">Woman wear <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="women">
-              <li><a href="#">Midi Dresses</a></li>
-              <li><a href="#">Maxi Dresses</a></li>
-              <li><a href="#">Prom Dresses</a></li>
-              <li><a href="#">Little Black Dresses</a></li>
-              <li><a href="#">Mini Dresses</a></li>
+          <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
+            <a href="#">Joyas<span class="arrow"></span></a>
+            <ul class="sub-menu collapse" id="joyas">
+              <li><a href="joyas-h.php">Hombre</a></li>
+              <li><a href="#">Mujer</a></li>
             </ul>
           </li>
+
           <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#man" class="collapsed">
-            <a href="#">Man Wear <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="man">
-              <li><a href="#">Man Dresses</a></li>
-              <li><a href="#">Man Black Dresses</a></li>
-              <li><a href="#">Man Mini Dresses</a></li>
+          <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
+            <a href="#">Bolsas<span class="arrow"></span></a>
+            <ul class="sub-menu collapse" id="bolsas">
+              <li><a href="#">Hombre</a></li>
+              <li><a href="#">Mujer</a></li>
             </ul>
           </li>
+
           <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#kids" class="collapsed">
-            <a href="#">Children <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="kids">
-              <li><a href="#">Children Dresses</a></li>
-              <li><a href="#">Mini Dresses</a></li>
+          <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
+            <a href="#">Perfumes<span class="arrow"></span></a>
+            <ul class="sub-menu collapse" id="perfumes">
+              <li><a href="#">Hombre</a></li>
+              <li><a href="#">Mujer</a></li>
             </ul>
           </li>
+
           <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#bags" class="collapsed">
-            <a href="#">Bags &amp; Purses <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="bags">
-              <li><a href="#">Bags</a></li>
-              <li><a href="#">Purses</a></li>
-            </ul>
-          </li>
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#eyewear" class="collapsed">
-            <a href="#">Eyewear <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="eyewear">
-              <li><a href="#">Eyewear Style 1</a></li>
-              <li><a href="#">Eyewear Style 2</a></li>
-              <li><a href="#">Eyewear Style 3</a></li>
-            </ul>
-          </li>
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#footwear" class="collapsed">
-            <a href="#">Footwear <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="footwear">
-              <li><a href="#">Footwear 1</a></li>
-              <li><a href="#">Footwear 2</a></li>
-              <li><a href="#">Footwear 3</a></li>
+          <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
+            <a href="#">Ropa<span class="arrow"></span></a>
+            <ul class="sub-menu collapse" id="ropa">
+              <li><a href="#">Hombre</a></li>
+              <li><a href="#">Mujer</a></li>
+              <li><a href="#">Niño</a></li>
+              <li><a href="#">Niña</a></li>
             </ul>
           </li>
         </ul>
@@ -181,20 +165,20 @@
 
                   <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
                     <ul class="navbar-nav animated" id="nav">
-                      <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                      <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
                       <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                        <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
                         <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                          <a class="dropdown-item" href="index.html">Home</a>
-                          <a class="dropdown-item" href="shop.html">Shop</a>
-                          <a class="dropdown-item" href="product-details.html">Product Details</a>
-                          <a class="dropdown-item" href="cart.html">Cart</a>
-                          <a class="dropdown-item" href="checkout.html">Checkout</a>
+                          <a class="dropdown-item" href="index.php">Inicio</a>
+                          <a class="dropdown-item" href="shop.html">Compras</a>
+                          <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
+                          <a class="dropdown-item" href="cart.html">Carrito</a>
+                          <a class="dropdown-item" href="checkout.html">Resiva</a>
                         </div>
                       </li>
-                      <li class="nav-item"><a class="nav-link" href="#">Dresses</a></li>
-                      <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span> Shoes</a></li>
-                      <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span>Dresses</a></li>
+                      <!-- <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span> Shoes</a></li> -->
+                      <!-- <li class="nav-item"><a class="nav-link" href="#">Contact</a></li> -->
                       <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
                     </ul>
                   </div>
@@ -226,19 +210,17 @@
                         </div>
                       </div>
 
-
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                       <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
                     </div>
-
                   </div>
                 </div>
               </div>
               <!-- Help Line -->
               <div class="help-line">
-                <a href="tel:+346573556778"><i class="ti-headphone-alt"></i> 921 119 77 85</a>
+                <a href="tel:921 119 77 85"><i class="ti-headphone-alt"></i> 921 119 77 85</a>
               </div>
             </div>
           </div>
@@ -251,8 +233,8 @@
     <section class="top-discount-area d-md-flex align-items-center">
       <!-- Single Discount Area -->
       <div class="single-discount-area">
-        <h5>Free Shipping &amp; Returns</h5>
-        <h6><a href="#">BUY NOW</a></h6>
+        <h5>Envio Gratis &amp; Apresurate</h5>
+        <h6><a href="#">COMPRA YA</a></h6>
       </div>
       <!-- Single Discount Area -->
       <div class="single-discount-area">
@@ -728,8 +710,8 @@
   <script type="text/javascript">
 
   $(document).ready(function(){
-debugger;
     $('#btnGuardar').click(function(){
+
       email= $('#txtEmail').val();
       pass= $('#txtPass').val();
 
@@ -737,7 +719,7 @@ debugger;
 
         alert("Debe ingresar un E-mail...");
       }
-       if($('#txtPass').val() == ""){
+      if($('#txtPass').val() == ""){
 
         alert("Debe ingresar una contraseña...");
       }
