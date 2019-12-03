@@ -428,29 +428,41 @@
               </div>
             </div>
           </div>
+          <?php
 
+          require_once "php/Conexion.php";
+          $con = conexion();
+
+          ?>
           <div class="col-12 col-md-8 col-lg-9">
             <div class="shop_grid_product_area">
               <div class="row">
 
-                <!-- Single gallery Item -->
-                <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
-                  <!-- Product Image -->
-                  <div class="product-img">
-                    <img src="img/product-img/product-1.jpg" alt="">
-                    <div class="product-quicview">
-                      <a href="#" data-toggle="modal" data-target="#quickview"><i class="ti-plus"></i></a>
+
+                <?php
+                $sql = "SELECT NAME_ART,PRICE,URL_IMAGE FROM articles WHERE STATUS=1";
+
+                $result = mysqli_query($con,$sql);
+                while($category = mysqli_fetch_row($result)){
+                  ?>
+                  <!-- Single gallery Item -->
+                  <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
+                    <!-- Product Image -->
+                    <div class="product-img">
+                      <img src="<?php echo $category[2] ?>" alt="">
+                      <div class="product-quicview">
+                        <a href="#" data-toggle="modal" data-target="#quickview"><i class="ti-plus"></i></a>
+                      </div>
+                    </div>
+                    <!-- Product Description -->
+                    <div class="product-description">
+                      <h4 class="product-price"><?php echo $category[1] ; ?></h4>
+                      <p><?php echo $category[0] ?></p>
+                      <!-- Add to Cart -->
+                      <a href="#" class="add-to-cart-btn">ADD TO CART</a>
                     </div>
                   </div>
-                  <!-- Product Description -->
-                  <div class="product-description">
-                    <h4 class="product-price">$39.90</h4>
-                    <p>Jeans midi cocktail dress</p>
-                    <!-- Add to Cart -->
-                    <a href="#" class="add-to-cart-btn">ADD TO CART</a>
-                  </div>
-                </div>
-
+                <?php } ?>
               </div>
             </div>
 
