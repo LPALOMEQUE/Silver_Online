@@ -8,10 +8,10 @@ function conexion(){
 
 }
 
- if(conexion())
- {
-  echo "Conectado...";
- }else{
-   echo "No conectado!!";
- }
+ // if(conexion())
+ // {
+ //  echo "Conectado...";
+ // }else{
+ //   echo "No conectado!!";
+ // }
 ?>

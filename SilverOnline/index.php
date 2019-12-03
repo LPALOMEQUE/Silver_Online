@@ -21,13 +21,17 @@
   <!-- Responsive CSS -->
   <link href="css/responsive.css" rel="stylesheet">
 
+  <!-- css LFPO -->
+  <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
+  <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
+  <!-- end -->
 
-  <link href="librerias/alertify/css/alertify.css" rel="stylesheet" type="text/css">
-<link href="librerias/alertify/css/theme/default.css" rel="stylesheet" type="text/css">
-
+  <!-- scripts LFPO -->
   <script src="js/jquery/jquery-2.2.4.min.js"></script>
-<!-- <script src="librerias/alertify/jquery-2.2.4.min.js"></script> -->
   <script src="js/funciones.js"></script>
+  <script src="librerias/alertify/alertify.js"></script>
+
+  <!-- end -->
 
 </head>
 
@@ -191,19 +195,18 @@
                       <li class="nav-item"><a class="nav-link" href="#">Dresses</a></li>
                       <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span> Shoes</a></li>
                       <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                      <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistreUser">Sign In</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
                     </ul>
                   </div>
                 </nav>
               </div>
 
-
               <!-- Modal para registro de Usuarios -->
-              <div class="modal fade" id="ModalRegistreUser" tabindex="-1" role="dialog" aria-labelledby="ModalRegistreUser" aria-hidden="true">
+              <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="ModalRegistreUser">Registro de Usuario</h5>
+                      <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -213,7 +216,7 @@
                       <div class="row">
                         <div class="col-md-12 mb-3">
                           <label for="txtEmail">E-MaiL</label>
-                          <input type="text" class="form-control" id="txtEmail" value="" required>
+                          <input type="email" class="form-control" id="txtEmail" value="" required>
                         </div>
                       </div>
                       <div class="row">
@@ -235,7 +238,7 @@
               </div>
               <!-- Help Line -->
               <div class="help-line">
-                <a href="tel:+346573556778"><i class="ti-headphone-alt"></i> +34 657 3556 778</a>
+                <a href="tel:+346573556778"><i class="ti-headphone-alt"></i> 921 119 77 85</a>
               </div>
             </div>
           </div>
@@ -725,12 +728,22 @@
   <script type="text/javascript">
 
   $(document).ready(function(){
-
+debugger;
     $('#btnGuardar').click(function(){
       email= $('#txtEmail').val();
       pass= $('#txtPass').val();
 
-      agregarUsuarios(email, pass);
+      if($('#txtEmail').val() == ""){
+
+        alert("Debe ingresar un E-mail...");
+      }
+       if($('#txtPass').val() == ""){
+
+        alert("Debe ingresar una contraseña...");
+      }
+      if($('#txtEmail').val() != "" && $('#txtPass').val() != ""){
+        agregarUsuarios(email, pass);
+      }
     });
 
   });

@@ -1,9 +1,9 @@
 
 function agregarUsuarios(email, pass){
 
-cadena = "EMAIL=" + email + "&PASS=" + pass;
+  cadena = "EMAIL=" + email + "&PASS=" + pass;
 
-$.ajax({
+  $.ajax({
     type:"POST",
     url: "php/agregarUsuarios.php",
     data:cadena,
@@ -11,10 +11,12 @@ $.ajax({
 
       if(result==1){
 
-        alertify("Se registro el usuario de forma correcta...");
+        alert("Se registro el usuario de forma correcta...");
+        $('#txtEmail').val('');
+        $('#txtPass').val('');
       }
       else{
-        alertify("Error...");
+        alert("Error...");
       }
 
     }
