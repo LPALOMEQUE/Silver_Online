@@ -9,7 +9,7 @@
   <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
   <!-- Title  -->
-  <title>Karl - Fashion Ecommerce Template | Cart</title>
+  <title>Siler - Evolution | Carrito</title>
 
   <!-- Favicon  -->
   <link rel="icon" href="img/core-img/favicon.ico">
@@ -273,28 +273,59 @@
               <table class="table table-responsive">
                 <thead>
                   <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
                     <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="cart_product_img d-flex align-items-center">
-                      <a href="#"><img src="img/product-img/product-9.jpg" alt="Product"></a>
-                      <h6>Yellow Cocktail Dress</h6>
-                    </td>
-                    <td class="price"><span>$49.88</span></td>
-                    <td class="qty">
-                      <div class="quantity">
-                        <span class="qty-minus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                        <input type="number" class="qty-text" id="qty" step="1" min="1" max="99" name="quantity" value="1">
-                        <span class="qty-plus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                      </div>
-                    </td>
-                    <td class="total_price"><span>$49.88</span></td>
-                  </tr>
+                  <?php
+
+                  require_once "php/Conexion.php";
+
+                  $con = conexion();
+$precio=0;
+                  ?>
+
+                  <?php
+
+                  $sql = "SELECT " .
+                  "art.ID_ARTICLES, ".
+                  "art.NAME_ART, " .
+                  "art.PRICE, " .
+                  "art.URL_IMAGE " .
+                  "FROM articles art " .
+                  "where art.STATUS = 1";
+
+                  $result = mysqli_query($con,$sql);
+
+                  while ($venta = mysqli_fetch_row($result)) {
+                    // code...
+                    ?>
+                    <tr>
+                      <td class="cart_product_img d-flex align-items-center">
+                        <a href="#"><img src="<?php echo $venta[3] ?>" alt="Product"></a>
+                        <h6><?php echo $venta[1] ?></h6>
+                      </td>
+                      <td class="price"><span>$<?php echo $venta[2] ?></span></td>
+                      <td class="qty">
+                        <div class="quantity">
+                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $venta[0] ?>'); var qty<?php echo $venta[0] ?> = effect.value; if( !isNaN( qty<?php echo $venta[0] ?> ) &amp;&amp; qty<?php echo $venta[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                          <input type="number" class="qty-text" id="qty<?php echo $venta[0] ?>" step="1" min="1" max="99" name="quantity" value="1">
+                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $venta[0] ?>'); var qty<?php echo $venta[0] ?> = effect.value; if( !isNaN( qty<?php echo $venta[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>
+                      </td>
+
+
+                          <?php   $precio = $venta[2] ;?>
+
+
+
+
+                      <td class="total_price"><span> <?php echo $precio ?></span></td>
+                    </tr>
+                  <?php } ?>
                 </tbody>
               </table>
             </div>
