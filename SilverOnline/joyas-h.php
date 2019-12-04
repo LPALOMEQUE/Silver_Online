@@ -1,3 +1,50 @@
+<?php
+
+$aCarrito = array();
+$sHTML = '';
+$fPrecioTotal = 0;
+
+//Vaciamos el carrito
+
+if(isset($_GET['vaciar'])) {
+  unset($_COOKIE['carrito']);
+}
+
+//Obtenemos los productos anteriores
+
+if(isset($_COOKIE['carrito'])) {
+  $aCarrito = unserialize($_COOKIE['carrito']);
+}
+
+//Anyado un nuevo articulo al carrito
+
+if(isset($_GET['nombre']) && isset($_GET['precio'])) {
+  $iUltimaPos = count($aCarrito);
+  $aCarrito[$iUltimaPos]['nombre'] = $_GET['nombre'];
+  $aCarrito[$iUltimaPos]['precio'] = $_GET['precio'];
+  $aCarrito[$iUltimaPos]['url'] = $_GET['url'];
+}
+
+//Creamos la cookie (serializamos)
+
+$iTemCad = time() + (60 * 60);
+setcookie('carrito', serialize($aCarrito), $iTemCad);
+
+
+
+//Imprimimos el contenido del array
+
+foreach ($aCarrito as $key => $value) {
+  $sHTML .= '-> ' . $value['nombre'] . ' ' . $value['precio'] . ' '. $value['url'].  ' <br>';
+  $fPrecioTotal += $value['precio'];
+}
+
+//Imprimimos el precio total
+
+$sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +82,8 @@
 </head>
 
 <body>
+
+
   <div class="catagories-side-menu">
     <!-- Close Icon -->
     <div id="sideMenuClose">
@@ -108,24 +157,30 @@
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity">2</span> <i class="ti-bag"></i> Tu carrito $20</a>
+                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity">2</span> <i class="ti-bag"></i> Tu carrito $<?php echo $fPrecioTotal ?> </a>
                     <!-- Cart List Area Start -->
                     <ul class="cart-list">
 
+                      <?php foreach ($aCarrito as $key => $value) {
 
-                      <li>
-                        <a href="#" class="image"><img src="img/product-img/product-10.jpg" class="cart-thumb" alt=""></a>
-                        <div class="cart-item-desc">
-                          <h6><a href="#">Women's Fashion</a></h6>
-                          <p>1x - <span class="price">$10</span></p>
-                        </div>
-                        <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                      </li>
 
+                        ?>
+                        <li>
+                          <a href="#" class="image"><img src="<?php echo $value['url'] ?>" class="cart-thumb" alt=""></a>
+                          <div class="cart-item-desc">
+                            <h6><a href="#"><?php echo $value['nombre'] ?></a></h6>
+                            <p>1x - <span class="price">$ <?php echo $value['precio'] ?></span></p>
+                          </div>
+                          <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
+                        </li>
+                      <?php } ?>
 
 
                       <li class="total">
-                        <span class="pull-right">Total: $20.00</span>
+                        <span class="pull-right">Total: $ <?php echo $fPrecioTotal ?></span>
+</br>
+                        <a class="pull-right" href="joyas-h.php?vaciar=1">Vaciar carrito</a>
+
                         <a href="cart.html" class="btn btn-sm btn-cart">Cart</a>
                         <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
                       </li>
@@ -169,7 +224,7 @@
                           <a class="dropdown-item" href="index.php">Inicio</a>
                           <a class="dropdown-item" href="shop.html">Compras</a>
                           <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
-                          <a class="dropdown-item" href="cart.html">Carrito</a>
+                          <a class="dropdown-item" href="cart.php">Carrito</a>
                           <a class="dropdown-item" href="checkout.html">Resiva</a>
                         </div>
                       </li>
@@ -217,7 +272,7 @@
               </div>
               <!-- Help Line -->
               <div class="help-line">
-                <a href="tel:+346573556778"><i class="ti-headphone-alt"></i> +34 657 3556 778</a>
+                <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
               </div>
             </div>
           </div>
@@ -308,10 +363,7 @@
 
                           <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
-                        <!-- <button type="submit" name="addtocart" value="5" class="cart-submit">Add to cart</button> -->
-                        <button type="button" class="cart-submit" href="joyas.php.php?nombre=zapato&precio=32" id="btnAgregarCarrito">Agregar</button>
-
-
+                        <a href="joyas-h.php?nombre=<?php echo $category[1] ?>&precio=<?php echo $category[2] ?>&url= <?php echo $category[3] ?> " class="btn cart-submit" >Agregar</a>
 
                       </form>
 
@@ -320,9 +372,7 @@
                         <input type="text" class="form-control" id="txtName_art" value="<?php echo $category[1] ?>" required>
                         <input type="text" class="form-control" id="txtPrice_art" value="<?php echo $category[2] ?>" required>
                         <input type="text" class="form-control" id="txtUrl_art" value="<?php echo $category[3] ?>" required>
-
                       </div>
-
                       <div class="share_wf mt-30">
                         <p>Comparte con tus amigos</p>
                         <div class="_icon">
@@ -492,7 +542,8 @@
                     </div>
                   </div>
                 <?php } ?>
-
+                <div>
+                </div>
               </div>
             </div>
             <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">

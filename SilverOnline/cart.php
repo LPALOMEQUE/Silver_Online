@@ -283,9 +283,8 @@
                   <?php
 
                   require_once "php/Conexion.php";
-
                   $con = conexion();
-$precio=0;
+
                   ?>
 
                   <?php
@@ -316,12 +315,7 @@ $precio=0;
                           <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $venta[0] ?>'); var qty<?php echo $venta[0] ?> = effect.value; if( !isNaN( qty<?php echo $venta[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                       </td>
-
-
-                          <?php   $precio = $venta[2] ;?>
-
-
-
+                      <?php   $precio = $venta[2] ;?>
 
                       <td class="total_price"><span> <?php echo $precio ?></span></td>
                     </tr>
