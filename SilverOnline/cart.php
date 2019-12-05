@@ -3,7 +3,7 @@
 $aCarrito = array();
 $sHTML = '';
 $fPrecioTotal = 0;
-$ID = $_POST['ID'];
+// $ID = $_POST['ID'];
 $NOMBRE = $_POST['NOMBRE'];
 //Vaciamos el carrito
 
@@ -19,12 +19,12 @@ if(isset($_COOKIE['carrito'])) {
 
 //Anyado un nuevo articulo al carrito
 
-if(isset($_GET['nombre']) && isset($_GET['precio'])) {
+if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL'])) {
   $iUltimaPos = count($aCarrito);
-  $aCarrito[$iUltimaPos]['nombre'] = $_GET['nombre'];
-  $aCarrito[$iUltimaPos]['precio'] = $_GET['precio'];
-  $aCarrito[$iUltimaPos]['url'] = $_GET['url'];
-$aCarrito[$iUltimaPos]['id'] = $_GET['id'];
+  $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
+  $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+  $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
 }
 
 //Creamos la cookie (serializamos)
@@ -37,8 +37,8 @@ setcookie('carrito', serialize($aCarrito), $iTemCad);
 //Imprimimos el contenido del array
 
 foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['nombre'] . ' ' . $value['precio'] . ' '. $value['url']. ' '. $value['id']. ' <br>';
-  $fPrecioTotal += $value['precio'];
+  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] .  ' <br>';
+  // $fPrecioTotal += $value['precio'];
 }
 
 //Imprimimos el precio total
@@ -164,10 +164,10 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
                         ?>
                         <li>
-                          <a href="#" class="image"><img src="<?php echo $value['url'] ?>" class="cart-thumb" alt=""></a>
+                          <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
                           <div class="cart-item-desc">
-                            <h6><a href="#"><?php echo $value['nombre'] ?></a></h6>
-                            <p>1x - <span class="price">$ <?php echo $value['precio'] ?></span></p>
+                            <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
+                            <p>1x - <span class="price">$ <?php echo $value['PRECIO'] ?></span></p>
                           </div>
                           <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
                         </li>
@@ -321,18 +321,18 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                     ?>
                     <tr>
                       <td class="cart_product_img d-flex align-items-center">
-                        <a href="#"><img src="<?php echo $value['url'] ?>" alt="Product"></a>
-                        <h6><?php echo $value['nombre'] ?></h6>
+                        <a href="#"><img src="<?php echo $value['URL'] ?>" alt="Product"></a>
+                        <h6><?php echo $value['NOMBRE'] ?></h6>
                       </td>
-                      <td class="price"><?php echo $value['precio'] ?></span></td>
+                      <td class="price"><?php echo $value['PRECIO'] ?></span></td>
                       <td class="qty">
                         <div class="quantity">
-                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $value['id'] ?>'); var qty<?php echo $value['id'] ?> = effect.value; if( !isNaN( qty<?php echo $value['id'] ?> ) &amp;&amp; qty<?php echo $value['id'] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                          <input type="number" class="qty-text" id="qty<?php echo $value['id'] ?>" step="1" min="1" max="99" name="quantity" value="1">
-                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $value['id'] ?>'); var qty<?php echo $value['id'] ?> = effect.value; if( !isNaN( qty<?php echo $value['id'] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> ) &amp;&amp; qty<?php echo $value['ID'] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" step="1" min="1" max="99" name="quantity" value="1">
+                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                       </td>
-                      <td class="total_price"><span> <?php echo $value['precio'] ?></span></td>
+                      <td class="total_price"><span> <?php echo $value['PRECIO'] ?></span></td>
                     </tr>
                   <?php } ?>
                 </tbody>

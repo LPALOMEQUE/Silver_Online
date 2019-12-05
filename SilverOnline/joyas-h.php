@@ -6,7 +6,7 @@ $fPrecioTotal = 0;
 
 //Vaciamos el carrito
 
-if(isset($_GET['vaciar'])) {
+if(isset($_POST['vaciar'])) {
   unset($_COOKIE['carrito']);
 }
 
@@ -18,11 +18,11 @@ if(isset($_COOKIE['carrito'])) {
 
 //Anyado un nuevo articulo al carrito
 
-if(isset($_GET['nombre']) && isset($_GET['precio'])) {
+if(isset($_POST['nombre']) && isset($_POST['precio'])) {
   $iUltimaPos = count($aCarrito);
-  $aCarrito[$iUltimaPos]['nombre'] = $_GET['nombre'];
-  $aCarrito[$iUltimaPos]['precio'] = $_GET['precio'];
-  $aCarrito[$iUltimaPos]['url'] = $_GET['url'];
+  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NNOMBRE'];
+  $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+  $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
 }
 
 //Creamos la cookie (serializamos)
@@ -35,8 +35,8 @@ setcookie('carrito', serialize($aCarrito), $iTemCad);
 //Imprimimos el contenido del array
 
 foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['nombre'] . ' ' . $value['precio'] . ' '. $value['url'].  ' <br>';
-  $fPrecioTotal += $value['precio'];
+  $sHTML .= '-> ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' '. $value['URL'].  ' <br>';
+  $fPrecioTotal += $value['PRECIO'];
 }
 
 //Imprimimos el precio total
@@ -363,18 +363,20 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
                         <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                       </div>
-                      <a href="cart.php?nombre=<?php echo $category[1] ?>&precio=<?php echo $category[2] ?>&url= <?php echo $category[3] ?>&id= <?php echo $category[0] ?> " class="btn cart-submit" >Agregar</a>
+                      <!-- <a href="cart.php?nombre=<?php echo $category[1] ?>&precio=<?php echo $category[2] ?>&url= <?php echo $category[3] ?>&id= <?php echo $category[0] ?> " class="btn cart-submit" >Agregar</a> -->
 
                     </form>
-
+                    <!-- ENVIO DE DATOS POR URL ESCONDIDA -->
                     <div class="row">
                       <form action="cart.php" method="post">
-                        <input type="text" name="ID" id="txtId" value="<?php echo $category[0] ?>">
-                        <input type="text" name="NOMBRE" id="txtnombre" value="<?php echo $category[1] ?>">
-
-<input type="submit" value="Buscar" />
+                        <input type="text" name="ID" id="txtId<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
+                        <input type="text" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
+                        <input type="text" name="PRECIO" id="txtprecio<?php echo $category[0] ?>" value="<?php echo $category[2] ?>">
+                        <input type="text" name="URL" id="txturl<?php echo $category[0] ?>" value="<?php echo $category[3] ?>">
+                        <input type="submit" class="btn cart-submit" value="Buscar" />
                       </form>
                     </div>
+                    <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
                     <div class="share_wf mt-30">
                       <p>Comparte con tus amigos</p>
                       <div class="_icon">
