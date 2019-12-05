@@ -1,3 +1,53 @@
+<?php
+
+$aCarrito = array();
+$sHTML = '';
+$fPrecioTotal = 0;
+$ID = $_POST['ID'];
+$NOMBRE = $_POST['NOMBRE'];
+//Vaciamos el carrito
+
+if(isset($_GET['vaciar'])) {
+  unset($_COOKIE['carrito']);
+}
+
+//Obtenemos los productos anteriores
+
+if(isset($_COOKIE['carrito'])) {
+  $aCarrito = unserialize($_COOKIE['carrito']);
+}
+
+//Anyado un nuevo articulo al carrito
+
+if(isset($_GET['nombre']) && isset($_GET['precio'])) {
+  $iUltimaPos = count($aCarrito);
+  $aCarrito[$iUltimaPos]['nombre'] = $_GET['nombre'];
+  $aCarrito[$iUltimaPos]['precio'] = $_GET['precio'];
+  $aCarrito[$iUltimaPos]['url'] = $_GET['url'];
+$aCarrito[$iUltimaPos]['id'] = $_GET['id'];
+}
+
+//Creamos la cookie (serializamos)
+
+$iTemCad = time() + (60 * 60);
+setcookie('carrito', serialize($aCarrito), $iTemCad);
+
+
+
+//Imprimimos el contenido del array
+
+foreach ($aCarrito as $key => $value) {
+  $sHTML .= '-> ' . $value['nombre'] . ' ' . $value['precio'] . ' '. $value['url']. ' '. $value['id']. ' <br>';
+  $fPrecioTotal += $value['precio'];
+}
+
+//Imprimimos el precio total
+
+$sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,57 +96,40 @@
         <h6>Categories</h6>
         <ul id="menu-content" class="menu-content collapse out">
           <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#women" class="collapsed active">
-            <a href="#">Woman wear <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="women">
-              <li><a href="#">Midi Dresses</a></li>
-              <li><a href="#">Maxi Dresses</a></li>
-              <li><a href="#">Prom Dresses</a></li>
-              <li><a href="#">Little Black Dresses</a></li>
-              <li><a href="#">Mini Dresses</a></li>
+          <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
+            <a href="#">Joyas<span class="arrow"></span></a>
+            <ul class="sub-menu collapse" id="joyas">
+              <li><a href="joyas-h.php">Hombre</a></li>
+              <li><a href="#">Mujer</a></li>
             </ul>
           </li>
+
           <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#man" class="collapsed">
-            <a href="#">Man Wear <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="man">
-              <li><a href="#">Man Dresses</a></li>
-              <li><a href="#">Man Black Dresses</a></li>
-              <li><a href="#">Man Mini Dresses</a></li>
+          <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
+            <a href="#">Bolsas<span class="arrow"></span></a>
+            <ul class="sub-menu collapse" id="bolsas">
+              <li><a href="#">Hombre</a></li>
+              <li><a href="#">Mujer</a></li>
             </ul>
           </li>
+
           <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#kids" class="collapsed">
-            <a href="#">Children <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="kids">
-              <li><a href="#">Children Dresses</a></li>
-              <li><a href="#">Mini Dresses</a></li>
+          <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
+            <a href="#">Perfumes<span class="arrow"></span></a>
+            <ul class="sub-menu collapse" id="perfumes">
+              <li><a href="#">Hombre</a></li>
+              <li><a href="#">Mujer</a></li>
             </ul>
           </li>
+
           <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#bags" class="collapsed">
-            <a href="#">Bags &amp; Purses <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="bags">
-              <li><a href="#">Bags</a></li>
-              <li><a href="#">Purses</a></li>
-            </ul>
-          </li>
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#eyewear" class="collapsed">
-            <a href="#">Eyewear <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="eyewear">
-              <li><a href="#">Eyewear Style 1</a></li>
-              <li><a href="#">Eyewear Style 2</a></li>
-              <li><a href="#">Eyewear Style 3</a></li>
-            </ul>
-          </li>
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#footwear" class="collapsed">
-            <a href="#">Footwear <span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="footwear">
-              <li><a href="#">Footwear 1</a></li>
-              <li><a href="#">Footwear 2</a></li>
-              <li><a href="#">Footwear 3</a></li>
+          <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
+            <a href="#">Ropa<span class="arrow"></span></a>
+            <ul class="sub-menu collapse" id="ropa">
+              <li><a href="#">Hombre</a></li>
+              <li><a href="#">Mujer</a></li>
+              <li><a href="#">Niño</a></li>
+              <li><a href="#">Niña</a></li>
             </ul>
           </li>
         </ul>
@@ -123,28 +156,30 @@
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity">2</span> <i class="ti-bag"></i> Your Bag $20</a>
+                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity">2</span> <i class="ti-bag"></i> Tu bolsa $ <?php echo $fPrecioTotal ?></a>
                     <!-- Cart List Area Start -->
                     <ul class="cart-list">
-                      <li>
-                        <a href="#" class="image"><img src="img/product-img/product-10.jpg" class="cart-thumb" alt=""></a>
-                        <div class="cart-item-desc">
-                          <h6><a href="#">Women's Fashion</a></h6>
-                          <p>1x - <span class="price">$10</span></p>
-                        </div>
-                        <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                      </li>
-                      <li>
-                        <a href="#" class="image"><img src="img/product-img/product-11.jpg" class="cart-thumb" alt=""></a>
-                        <div class="cart-item-desc">
-                          <h6><a href="#">Women's Fashion</a></h6>
-                          <p>1x - <span class="price">$10</span></p>
-                        </div>
-                        <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                      </li>
+                      <?php foreach ($aCarrito as $key => $value) {
+
+
+                        ?>
+                        <li>
+                          <a href="#" class="image"><img src="<?php echo $value['url'] ?>" class="cart-thumb" alt=""></a>
+                          <div class="cart-item-desc">
+                            <h6><a href="#"><?php echo $value['nombre'] ?></a></h6>
+                            <p>1x - <span class="price">$ <?php echo $value['precio'] ?></span></p>
+                          </div>
+                          <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
+                        </li>
+                      <?php }
+
+?>
+
+
+
                       <li class="total">
-                        <span class="pull-right">Total: $20.00</span>
-                        <a href="cart.html" class="btn btn-sm btn-cart">Cart</a>
+                        <span class="pull-right">Total: $ <?php echo $fPrecioTotal ?></span>
+                        <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
                         <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
                       </li>
                     </ul>
@@ -187,7 +222,7 @@
                           <a class="dropdown-item" href="index.php">Home</a>
                           <a class="dropdown-item" href="shop.html">Shop</a>
                           <a class="dropdown-item" href="product-details.html">Product Details</a>
-                          <a class="dropdown-item" href="cart.html">Cart</a>
+                          <a class="dropdown-item" href="cart.php">Carrito</a>
                           <a class="dropdown-item" href="checkout.html">Checkout</a>
                         </div>
                       </li>
@@ -280,44 +315,24 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php
+                  <?php foreach ($aCarrito as $key => $value) {
 
-                  require_once "php/Conexion.php";
-                  $con = conexion();
 
-                  ?>
-
-                  <?php
-
-                  $sql = "SELECT " .
-                  "art.ID_ARTICLES, ".
-                  "art.NAME_ART, " .
-                  "art.PRICE, " .
-                  "art.URL_IMAGE " .
-                  "FROM articles art " .
-                  "where art.STATUS = 1";
-
-                  $result = mysqli_query($con,$sql);
-
-                  while ($venta = mysqli_fetch_row($result)) {
-                    // code...
                     ?>
                     <tr>
                       <td class="cart_product_img d-flex align-items-center">
-                        <a href="#"><img src="<?php echo $venta[3] ?>" alt="Product"></a>
-                        <h6><?php echo $venta[1] ?></h6>
+                        <a href="#"><img src="<?php echo $value['url'] ?>" alt="Product"></a>
+                        <h6><?php echo $value['nombre'] ?></h6>
                       </td>
-                      <td class="price"><span>$<?php echo $venta[2] ?></span></td>
+                      <td class="price"><?php echo $value['precio'] ?></span></td>
                       <td class="qty">
                         <div class="quantity">
-                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $venta[0] ?>'); var qty<?php echo $venta[0] ?> = effect.value; if( !isNaN( qty<?php echo $venta[0] ?> ) &amp;&amp; qty<?php echo $venta[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                          <input type="number" class="qty-text" id="qty<?php echo $venta[0] ?>" step="1" min="1" max="99" name="quantity" value="1">
-                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $venta[0] ?>'); var qty<?php echo $venta[0] ?> = effect.value; if( !isNaN( qty<?php echo $venta[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $value['id'] ?>'); var qty<?php echo $value['id'] ?> = effect.value; if( !isNaN( qty<?php echo $value['id'] ?> ) &amp;&amp; qty<?php echo $value['id'] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                          <input type="number" class="qty-text" id="qty<?php echo $value['id'] ?>" step="1" min="1" max="99" name="quantity" value="1">
+                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $value['id'] ?>'); var qty<?php echo $value['id'] ?> = effect.value; if( !isNaN( qty<?php echo $value['id'] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                       </td>
-                      <?php   $precio = $venta[2] ;?>
-
-                      <td class="total_price"><span> <?php echo $precio ?></span></td>
+                      <td class="total_price"><span> <?php echo $value['precio'] ?></span></td>
                     </tr>
                   <?php } ?>
                 </tbody>
@@ -326,10 +341,10 @@
 
             <div class="cart-footer d-flex mt-30">
               <div class="back-to-shop w-50">
-                <a href="shop-grid-left-sidebar.html">Continue shooping</a>
+                <a href="shop.html">Continue shooping</a>
               </div>
               <div class="update-checkout w-50 text-right">
-                <a href="#">clear cart</a>
+                <a href="cart.php?vaciar=1">Vaciar carrito</a>
                 <a href="#">Update cart</a>
               </div>
             </div>
@@ -381,9 +396,9 @@
               </div>
 
               <ul class="cart-total-chart">
-                <li><span>Subtotal</span> <span>$59.90</span></li>
-                <li><span>Shipping</span> <span>Free</span></li>
-                <li><span><strong>Total</strong></span> <span><strong>$59.90</strong></span></li>
+                <li><span>Subtotal</span> <span>$<?php echo $fPrecioTotal ?></span></li>
+                <li><span>Shipping</span> <span><?php echo $NOMBRE ?> </span></li>
+                <li><span><strong>Total</strong></span> <span><strong>$<?php echo $fPrecioTotal ?></strong></span></li>
               </ul>
               <a href="checkout.html" class="btn karl-checkout-btn">Proceed to checkout</a>
             </div>
