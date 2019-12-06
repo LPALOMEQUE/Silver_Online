@@ -18,11 +18,14 @@ if(isset($_COOKIE['carrito'])) {
 
 //Anyado un nuevo articulo al carrito
 
-if(isset($_POST['nombre']) && isset($_POST['precio'])) {
+if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['PRECIO'])) {
   $iUltimaPos = count($aCarrito);
-  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NNOMBRE'];
+  $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
   $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
   $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
+  $aCarrito[$iUltimaPos]['quantity'] = $_POST['quantity'];
+
 }
 
 //Creamos la cookie (serializamos)
@@ -35,8 +38,9 @@ setcookie('carrito', serialize($aCarrito), $iTemCad);
 //Imprimimos el contenido del array
 
 foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' '. $value['URL'].  ' <br>';
+  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['quantity'] . ' <br>';
   $fPrecioTotal += $value['PRECIO'];
+
 }
 
 //Imprimimos el precio total
@@ -166,10 +170,10 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
                         ?>
                         <li>
-                          <a href="#" class="image"><img src="<?php echo $value['url'] ?>" class="cart-thumb" alt=""></a>
+                          <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
                           <div class="cart-item-desc">
-                            <h6><a href="#"><?php echo $value['nombre'] ?></a></h6>
-                            <p>1x - <span class="price">$ <?php echo $value['precio'] ?></span></p>
+                            <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
+                            <p>1x - <span class="price">$ <?php echo $value['PRECIO'] ?></span></p>
                           </div>
                           <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
                         </li>
@@ -181,8 +185,8 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       </br>
                       <a class="pull-right" href="joyas-h.php?vaciar=1">Vaciar carrito</a>
 
-                      <a href="cart.php" class="btn btn-sm btn-cart">Carritot</a>
-                      <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
+                      <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
+                      <a href="checkout-1.html" class="btn btn-sm btn-checkout">Pagar</a>
                     </li>
                   </ul>
                 </div>
@@ -353,27 +357,27 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       <p>Marca: <?php echo $category[5] ?></p>
                       <p><?php echo $category[4] ?></p>
                     </div>
-
+                    <div class="row">
                     <!-- Add to Cart Form -->
                     <form class="cart" method="post">
                       <div class="quantity">
-                        <span class="qty-minus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty<?php echo $category[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                        <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> ) &amp;&amp; qty<?php echo $category[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
 
                         <input type="number" class="qty-text" id="qty<?php echo $category[0] ?>" step="1" min="1" max="12" name="quantity" value="1">
 
                         <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                       </div>
-                      <!-- <a href="cart.php?nombre=<?php echo $category[1] ?>&precio=<?php echo $category[2] ?>&url= <?php echo $category[3] ?>&id= <?php echo $category[0] ?> " class="btn cart-submit" >Agregar</a> -->
+                      <input type="hidden" name="ID" id="txtId<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
+                      <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
+                      <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category[0] ?>" value="<?php echo $category[2] ?>">
+                      <input type="hidden" name="URL" id="txturl<?php echo $category[0] ?>" value="<?php echo $category[3] ?>">
 
+                      <input type="submit" class="btn cart-submit" value="Agregar al carrito" />
                     </form>
                     <!-- ENVIO DE DATOS POR URL ESCONDIDA -->
-                    <div class="row">
+
                       <form action="cart.php" method="post">
-                        <input type="text" name="ID" id="txtId<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
-                        <input type="text" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
-                        <input type="text" name="PRECIO" id="txtprecio<?php echo $category[0] ?>" value="<?php echo $category[2] ?>">
-                        <input type="text" name="URL" id="txturl<?php echo $category[0] ?>" value="<?php echo $category[3] ?>">
-                        <input type="submit" class="btn cart-submit" value="Buscar" />
+
                       </form>
                     </div>
                     <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
