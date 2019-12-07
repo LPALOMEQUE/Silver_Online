@@ -18,13 +18,13 @@ if(isset($_COOKIE['carrito'])) {
 
 //Anyado un nuevo articulo al carrito
 
-if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['PRECIO'])) {
+if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
   $iUltimaPos = count($aCarrito);
   $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
   $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
   $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
   $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-  $aCarrito[$iUltimaPos]['quantity'] = $_POST['quantity'];
+  $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
 
 }
 
@@ -38,7 +38,7 @@ setcookie('carrito', serialize($aCarrito), $iTemCad);
 //Imprimimos el contenido del array
 
 foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['quantity'] . ' <br>';
+  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
   $fPrecioTotal += $value['PRECIO'];
 
 }
@@ -169,13 +169,13 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                           <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
                           <div class="cart-item-desc">
                             <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-                            <p>1x - <span class="price">$ <?php echo $value['PRECIO'] ?></span></p>
+                            <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$ <?php echo $value['PRECIO'] ?></span></p>
                           </div>
                           <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
                         </li>
                       <?php }
 
-?>
+                      ?>
 
 
 
@@ -317,9 +317,8 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($aCarrito as $key => $value) {
-
-
+                  <?php
+                  foreach ($aCarrito as $key => $value) {
                     ?>
                     <tr>
                       <td class="cart_product_img d-flex align-items-center">
@@ -330,13 +329,17 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       <td class="qty">
                         <div class="quantity">
                           <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> ) &amp;&amp; qty<?php echo $value['ID'] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" step="1" min="1" max="99" name="quantity" value=" <?php echo $value['quantity'] ?> ">
+
+                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD" value=" <?php echo $value['CANTIDAD'] ?> ">
+
                           <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                       </td>
                       <td class="total_price"><span> <?php echo $value['PRECIO'] ?></span></td>
                     </tr>
-                  <?php } ?>
+                    <?php
+                  }
+                  ?>
                 </tbody>
               </table>
             </div>
@@ -522,6 +525,12 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
       }
     });
 
+    <?php
+    foreach ($aCarrito as $key => $value) {
+      ?>
+$('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>); // Es aqui donde se deberia de guardar el id del pais
+
+<?php } ?>
   });
 
 </script>
