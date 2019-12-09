@@ -3,7 +3,7 @@
 $aCarrito = array();
 $sHTML = '';
 $fPrecioTotal = 0;
-
+$bagNumber = 0;
 //Vaciamos el carrito
 
 if(isset($_POST['vaciar'])) {
@@ -40,7 +40,7 @@ setcookie('carrito', serialize($aCarrito), $iTemCad);
 foreach ($aCarrito as $key => $value) {
   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
   $fPrecioTotal += $value['PRECIO'];
-
+  $bagNumber = count($aCarrito);
 }
 
 //Imprimimos el precio total
@@ -86,8 +86,6 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 </head>
 
 <body>
-
-
   <div class="catagories-side-menu">
     <!-- Close Icon -->
     <div id="sideMenuClose">
@@ -96,14 +94,14 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
     <!--  Side Nav  -->
     <div class="nav-side-menu">
       <div class="menu-list">
-        <h6>Categories</h6>
+        <h6>Categorías</h6>
         <ul id="menu-content" class="menu-content collapse out">
 
           <!-- Single Item -->
           <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
             <a href="#">Joyas<span class="arrow"></span></a>
             <ul class="sub-menu collapse" id="joyas">
-              <li><a href="#">Hombre</a></li>
+              <li><a href="joyas-h.php">Hombre</a></li>
               <li><a href="#">Mujer</a></li>
             </ul>
           </li>
@@ -136,7 +134,6 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
               <li><a href="#">Niña</a></li>
             </ul>
           </li>
-
         </ul>
       </div>
     </div>
@@ -161,7 +158,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity">2</span> <i class="ti-bag"></i> Tu carrito $<?php echo $fPrecioTotal ?> </a>
+                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu carrito $<?php echo $fPrecioTotal ?> </a>
                     <!-- Cart List Area Start -->
                     <ul class="cart-list">
 
@@ -358,23 +355,23 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       <p><?php echo $category[4] ?></p>
                     </div>
                     <div class="row">
-                    <!-- Add to Cart Form -->
-                    <form class="cart" method="post">
-                      <div class="quantity">
-                        <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> ) &amp;&amp; qty<?php echo $category[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                      <!-- Add to Cart Form -->
+                      <form class="cart" method="post">
+                        <div class="quantity">
+                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> ) &amp;&amp; qty<?php echo $category[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
 
-                        <input type="number" class="qty-text" id="qty<?php echo $category[0] ?>" name="CANTIDAD">
+                          <input type="number" class="qty-text" id="qty<?php echo $category[0] ?>" name="CANTIDAD">
 
-                        <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                      </div>
-                      <input type="hidden" name="ID" id="txtId<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
-                      <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
-                      <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category[0] ?>" value="<?php echo $category[2] ?>">
-                      <input type="hidden" name="URL" id="txturl<?php echo $category[0] ?>" value="<?php echo $category[3] ?>">
+                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>
+                        <input type="hidden" name="ID" id="txtId<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
+                        <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
+                        <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category[0] ?>" value="<?php echo $category[2] ?>">
+                        <input type="hidden" name="URL" id="txturl<?php echo $category[0] ?>" value="<?php echo $category[3] ?>">
 
-                      <input type="submit" class="btn cart-submit" value="Agregar al carrito" />
-                    </form>
-                    <!-- ENVIO DE DATOS POR URL ESCONDIDA -->
+                        <input type="submit" class="btn cart-submit" value="Agregar al carrito" />
+                      </form>
+                      <!-- ENVIO DE DATOS POR URL ESCONDIDA -->
 
                       <form action="cart.php" method="post">
 
@@ -679,9 +676,6 @@ $(document).ready(function(){
       agregarUsuarios(email, pass);
     }
   });
-
-  // ----------------------------------------------------------------
-
 
 });
 

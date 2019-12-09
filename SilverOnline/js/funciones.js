@@ -35,13 +35,11 @@ function AddCart(id, Name_art, Price_art, Url_art){
     url: "php/cart.php",
     data:cadena,
     success:function(result){
-
+      
       if(result==1){
 
         alert("proceso correct0...");
-        // $('#txtEmail').val('');
-        // $('#txtPass').val('');
-        // $('#ModalRegistroUsuarios').hide();
+
       }
       else{
         alert("Error...");

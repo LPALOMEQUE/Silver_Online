@@ -3,6 +3,8 @@
 $aCarrito = array();
 $sHTML = '';
 $fPrecioTotal = 0;
+$bagNumber = 0;
+$precioXart = 0;
 
 //Vaciamos el carrito
 
@@ -40,6 +42,7 @@ setcookie('carrito', serialize($aCarrito), $iTemCad);
 foreach ($aCarrito as $key => $value) {
   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
   $fPrecioTotal += $value['PRECIO'];
+  $bagNumber = count($aCarrito);
 
 }
 
@@ -95,8 +98,9 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
     <!--  Side Nav  -->
     <div class="nav-side-menu">
       <div class="menu-list">
-        <h6>Categories</h6>
+        <h6>Categorías</h6>
         <ul id="menu-content" class="menu-content collapse out">
+
           <!-- Single Item -->
           <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
             <a href="#">Joyas<span class="arrow"></span></a>
@@ -158,7 +162,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity">2</span> <i class="ti-bag"></i> Tu bolsa $ <?php echo $fPrecioTotal ?></a>
+                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu bolsa $ <?php echo $fPrecioTotal ?></a>
                     <!-- Cart List Area Start -->
                     <ul class="cart-list">
                       <?php foreach ($aCarrito as $key => $value) {
@@ -335,7 +339,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                           <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                       </td>
-                      <td class="total_price"><span> <?php echo $value['PRECIO'] ?></span></td>
+                      <td class="total_price"><span> <?php echo $precioXart ?></span></td>
                     </tr>
                     <?php
                   }
@@ -528,9 +532,9 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
     <?php
     foreach ($aCarrito as $key => $value) {
       ?>
-$('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>); // Es aqui donde se deberia de guardar el id del pais
+      $('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>);
 
-<?php } ?>
-  });
+      <?php } ?>
+    });
 
-</script>
+    </script>
