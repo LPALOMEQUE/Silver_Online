@@ -4,8 +4,7 @@ $aCarrito = array();
 $sHTML = '';
 $fPrecioTotal = 0;
 $bagNumber = 0;
-$precioXart = 0;
-
+$TotalxArtGlobal = 0;
 //Vaciamos el carrito
 
 if(isset($_GET['vaciar'])) {
@@ -43,6 +42,7 @@ foreach ($aCarrito as $key => $value) {
   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
   $fPrecioTotal += $value['PRECIO'];
   $bagNumber = count($aCarrito);
+  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
 
 }
 
@@ -162,18 +162,17 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu bolsa $ <?php echo $fPrecioTotal ?></a>
+                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu bolsa $ <?php echo $TotalxArtGlobal ?></a>
                     <!-- Cart List Area Start -->
                     <ul class="cart-list">
                       <?php foreach ($aCarrito as $key => $value) {
-
-
+                        $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
                         ?>
                         <li>
                           <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
                           <div class="cart-item-desc">
                             <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-                            <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$ <?php echo $value['PRECIO'] ?></span></p>
+                            <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo $TotalxArt ?></span></p>
                           </div>
                           <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
                         </li>
@@ -184,7 +183,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
 
                       <li class="total">
-                        <span class="pull-right">Total: $ <?php echo $fPrecioTotal ?></span>
+                        <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
                         <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
                         <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
                       </li>
@@ -323,6 +322,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                 <tbody>
                   <?php
                   foreach ($aCarrito as $key => $value) {
+                    $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
                     ?>
                     <tr>
                       <td class="cart_product_img d-flex align-items-center">
@@ -339,7 +339,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                           <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                       </td>
-                      <td class="total_price"><span> <?php echo $precioXart ?></span></td>
+                      <td class="total_price"><span> <?php echo $TotalxArt ?></span></td>
                     </tr>
                     <?php
                   }
@@ -405,9 +405,9 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
               </div>
 
               <ul class="cart-total-chart">
-                <li><span>Subtotal</span> <span>$<?php echo $fPrecioTotal ?></span></li>
+                <li><span>Subtotal</span> <span>$<?php echo $TotalxArtGlobal ?></span></li>
                 <li><span>Envío</span> <span>$0.00 </span></li>
-                <li><span><strong>Total</strong></span> <span><strong>$<?php echo $fPrecioTotal ?></strong></span></li>
+                <li><span><strong>Total</strong></span> <span><strong>$<?php echo $TotalxArtGlobal ?></strong></span></li>
               </ul>
               <a href="checkout.html" class="btn karl-checkout-btn">Proceed to checkout</a>
             </div>
