@@ -26,25 +26,18 @@ function agregarUsuarios(email, pass){
 
 }
 
-function AddCart(id, Name_art, Price_art, Url_art){
+function AddCart(id, nombre, precio, url, cantidad){
 
-  cadena = "ID=" + id + "&NAME_ART=" + Name_art + "&PRICE_ART=" + Price_art + "&URL_ART=" + Url_art ;
+  cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad;
 
   $.ajax({
     type:"POST",
-    url: "php/cart.php",
+    url: "joyas-h.php",
     data:cadena,
     success:function(result){
-      
-      if(result==1){
 
-        alert("proceso correct0...");
-
-      }
-      else{
-        alert("Error...");
-      }
-
+      $('#quickview' + id ).hide();
+      location.reload();
     }
 
   });

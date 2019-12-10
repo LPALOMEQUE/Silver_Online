@@ -18,7 +18,7 @@ if(isset($_COOKIE['carrito'])) {
 
 //Anyado un nuevo articulo al carrito
 
-if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
+if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
   $iUltimaPos = count($aCarrito);
   $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
   $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
@@ -39,14 +39,13 @@ setcookie('carrito', serialize($aCarrito), $iTemCad);
 
 foreach ($aCarrito as $key => $value) {
   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  $fPrecioTotal += $value['PRECIO'];
   $bagNumber = count($aCarrito);
   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
 }
 
 //Imprimimos el precio total
 
-$sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
+// $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
 ?>
 
@@ -79,6 +78,8 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
   <!-- end -->
 
   <!-- scripts LFPO -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
   <script src="js/jquery/jquery-2.2.4.min.js"></script>
   <script src="js/funciones.js"></script>
   <script src="librerias/alertify/alertify.js"></script>
@@ -357,26 +358,39 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       </div>
                       <div class="row">
                         <!-- Add to Cart Form -->
-                        <form class="cart" method="post">
-                          <div class="quantity">
-                            <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> ) &amp;&amp; qty<?php echo $category[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                        <!-- <form id="formEnvio" class="cart" method="post"> -->
+                        <div class="quantity">
+                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> ) &amp;&amp; qty<?php echo $category[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
 
-                            <input type="number" class="qty-text" id="qty<?php echo $category[0] ?>" name="CANTIDAD" value="1">
+                          <input type="number" class="qty-text" id="qty<?php echo $category[0] ?>" name="CANTIDAD" value="1">
 
-                            <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                          </div>
-                          <input type="hidden" name="ID" id="txtId<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
-                          <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
-                          <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category[0] ?>" value="<?php echo $category[2] ?>">
-                          <input type="hidden" name="URL" id="txturl<?php echo $category[0] ?>" value="<?php echo $category[3] ?>">
+                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>
+                        <input type="hidden" name="ID" id="txtid<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
+                        <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
+                        <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category[0] ?>" value="<?php echo $category[2] ?>">
+                        <input type="hidden" name="URL" id="txturl<?php echo $category[0] ?>" value="<?php echo $category[3] ?>">
+                        <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category[0] ?>"> + CARRITO</button>
+                        <script type="text/javascript">
+                          $(document).ready(function(){
+                        $('#btnSendPost<?php echo $category[0] ?>').click(function(){
 
-                          <input type="submit" class="btn cart-submit" value="Agregar al carrito" />
-                        </form>
-                        <!-- ENVIO DE DATOS POR URL ESCONDIDA -->
+                          id= $('#txtid<?php echo $category[0] ?>').val();
+                          nombre= $('#txtnombre<?php echo $category[0] ?>').val();
+                          precio= $('#txtprecio<?php echo $category[0] ?>').val();
+                          url= $('#txturl<?php echo $category[0] ?>').val();
+                          cantidad= $('#qty<?php echo $category[0] ?>').val();
 
-                        <form action="cart.php" method="post">
+                          AddCart(id,
+                            nombre,
+                            precio,
+                            url,
+                            cantidad);
 
-                        </form>
+                          });
+                        });
+                        </script>
+
                       </div>
                       <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
                       <div class="share_wf mt-30">
@@ -569,7 +583,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       <h4 class="product-price">$<?php echo $category[2] ; ?></h4>
                       <p><?php echo $category[1] ?></p>
                       <!-- Add to Cart -->
-                      <a href="#" class="add-to-cart-btn">ADD TO CART</a>
+                      <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
                     </div>
                   </div>
                 <?php } ?>
@@ -703,8 +717,6 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
       }
     });
 
-  });
+    });
 
-
-
-</script>
+    </script>

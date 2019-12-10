@@ -19,7 +19,7 @@ if(isset($_COOKIE['carrito'])) {
 
 //Anyado un nuevo articulo al carrito
 
-if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
+if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
   $iUltimaPos = count($aCarrito);
   $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
   $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
@@ -334,7 +334,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                         <div class="quantity">
                           <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> ) &amp;&amp; qty<?php echo $value['ID'] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
 
-                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD" value=" <?php echo $value['CANTIDAD'] ?> ">
+                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD" value="<?php echo $value['CANTIDAD'] ?>">
 
                           <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
