@@ -5,8 +5,14 @@ $sHTML = '';
 $fPrecioTotal = 0;
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
-//Vaciamos el carrito
 
+// // 0 significa que no ha actualizado
+// $envioSino = 0;
+// $totalNew = 0;
+// $_POST['CANTIDADNEW'] = 0;
+// $_POST['CANTIDADNEW'] = 0;
+
+//Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
   unset($_COOKIE['carrito']);
 }
@@ -176,12 +182,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                           </div>
                           <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
                         </li>
-                      <?php }
-
-                      ?>
-
-
-
+                      <?php } ?>
                       <li class="total">
                         <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
                         <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
@@ -275,7 +276,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
               </div>
               <!-- Help Line -->
               <div class="help-line">
-                <a href="tel:+346573556778"><i class="ti-headphone-alt"></i> +34 657 3556 778</a>
+                <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
               </div>
             </div>
           </div>
@@ -314,33 +315,58 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                 <thead>
                   <tr>
                     <th>Producto</th>
-                    <th>Precio</th>
+                    <th>Precio Unitario</th>
                     <th>Cantidad</th>
                     <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
+
                   foreach ($aCarrito as $key => $value) {
+
                     $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+
                     ?>
                     <tr>
                       <td class="cart_product_img d-flex align-items-center">
                         <a href="#"><img src="<?php echo $value['URL'] ?>" alt="Product"></a>
                         <h6><?php echo $value['NOMBRE'] ?></h6>
                       </td>
-                      <td class="price"><?php echo $value['PRECIO'] ?></span></td>
+                      <td class="price">$<?php echo $value['PRECIO'] ?></span></td>
                       <td class="qty">
                         <div class="quantity">
-                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> ) &amp;&amp; qty<?php echo $value['ID'] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                          <button type="button" class="qty-minus" id="btnMenos<?php echo $value['ID'] ?>">-</button>
+                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD">
+                          <button type="button" class="qty-minus" id="btnMas<?php echo $value['ID'] ?>">+</button>
 
-                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD" value="<?php echo $value['CANTIDAD'] ?>">
-
-                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $value['ID'] ?>'); var qty<?php echo $value['ID'] ?> = effect.value; if( !isNaN( qty<?php echo $value['ID'] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                       </td>
-                      <td class="total_price"><span> <?php echo $TotalxArt ?></span></td>
+                      <td id="tdTotal<?php echo $value['ID'] ?>" class="total_price"><span>$<?php echo $TotalxArt ?></span></td>
                     </tr>
+
+                    <script type="text/javascript">
+                    $(document).ready(function(){
+
+                      $('#btnMenos<?php echo $value['ID'] ?>').click(function(){
+                        debugger;
+                        valor = document.getElementById("qty<?php echo $value['ID'] ?>");
+                        valor.value --;
+
+                        cantidadNew=$('#qty<?php echo $value['ID'] ?>').val();
+                        envioSiNo = 1;
+                        precioUni = <?php echo $value['PRECIO'] ?>;
+                        totalNew = cantidadNew * precioUni;
+                        ModCart(totalNew, envioSiNo);
+
+                      });
+                      $('#btnMas<?php echo $value['ID'] ?>').click(function(){
+                        valor = document.getElementById("qty<?php echo $value['ID'] ?>");
+                        valor.value ++;
+
+                      });
+                    });
+                    </script>
                     <?php
                   }
                   ?>

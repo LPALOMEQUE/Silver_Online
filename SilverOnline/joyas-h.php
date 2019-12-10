@@ -4,6 +4,7 @@ $aCarrito = array();
 $sHTML = '';
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
+$cantidad = 0;
 //Vaciamos el carrito
 
 if(isset($_POST['vaciar'])) {
@@ -232,8 +233,6 @@ foreach ($aCarrito as $key => $value) {
                         </div>
                       </li>
                       <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span>Dresses</a></li>
-                      <!-- <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span> Shoes</a></li> -->
-                      <!-- <li class="nav-item"><a class="nav-link" href="#">Contact</a></li> -->
                       <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
                     </ul>
                   </div>
@@ -360,11 +359,10 @@ foreach ($aCarrito as $key => $value) {
                         <!-- Add to Cart Form -->
                         <!-- <form id="formEnvio" class="cart" method="post"> -->
                         <div class="quantity">
-                          <span class="qty-minus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> ) &amp;&amp; qty<?php echo $category[0] ?> &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-
+                          <button type="button" class="qty-minus" id="btnMenos<?php echo $category[0] ?>">-</button>
                           <input type="number" class="qty-text" id="qty<?php echo $category[0] ?>" name="CANTIDAD" value="1">
+                          <button type="button" class="qty-minus" id="btnMas<?php echo $category[0] ?>">+</button>
 
-                          <span class="qty-plus" onclick="var effect = document.getElementById('qty<?php echo $category[0] ?>'); var qty<?php echo $category[0] ?> = effect.value; if( !isNaN( qty<?php echo $category[0] ?> )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                         <input type="hidden" name="ID" id="txtid<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
                         <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
@@ -388,6 +386,16 @@ foreach ($aCarrito as $key => $value) {
                             cantidad);
 
                           });
+                          $('#btnMenos<?php echo $category[0] ?>').click(function(){
+                            valor = document.getElementById("qty<?php echo $category[0] ?>");
+                            valor.value --;
+
+                            });
+                          $('#btnMas<?php echo $category[0] ?>').click(function(){
+                            valor = document.getElementById("qty<?php echo $category[0] ?>");
+                            valor.value ++;
+
+                            });
                         });
                         </script>
 

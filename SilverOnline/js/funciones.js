@@ -43,3 +43,21 @@ function AddCart(id, nombre, precio, url, cantidad){
   });
 
 }
+
+function ModCart(totalNew, envioSiNo){
+
+  cadena = "totalNew=" + totalNew + "&envioSiNo=" + envioSiNo;
+
+  $.ajax({
+    type:"POST",
+    url: "cart.php",
+    data:cadena,
+    success:function(result){
+
+      // $('#quickview' + id ).hide();
+      // location.reload();
+    }
+
+  });
+
+}
