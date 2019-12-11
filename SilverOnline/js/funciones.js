@@ -55,7 +55,7 @@ function ModCart(totalNew, envioSiNo){
     success:function(result){
 
       // $('#quickview' + id ).hide();
-      // location.reload();
+      location.reload();
     }
 
   });
