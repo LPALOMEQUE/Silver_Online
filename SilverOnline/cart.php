@@ -331,7 +331,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                     <tr>
                       <td class="cart_product_img d-flex align-items-center">
                         <a href="#"><img src="<?php echo $value['URL'] ?>" alt="Product"></a>
-                        <h6><?php echo $value['NOMBRE'] ?></h6>
+                        <h6 id="h6Nombre<?php echo $value['ID'] ?>"><?php echo $value['NOMBRE'] ?></h6>
                       </td>
                       <td class="price">$<?php echo $value['PRECIO'] ?></span></td>
                       <td class="qty">
@@ -342,28 +342,34 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
                         </div>
                       </td>
-                      <td id="tdTotal<?php echo $value['ID'] ?>" class="total_price"><span>$<?php echo $TotalxArt ?></span></td>
+                      <td >
+                        <input type="text" class="sinborde" id="txtTotal<?php echo $value['ID'] ?>" name="CANTIDAD" value="$<?php echo $TotalxArt ?>">
+                      </td>
                     </tr>
 
                     <script type="text/javascript">
                     $(document).ready(function(){
 
                       $('#btnMenos<?php echo $value['ID'] ?>').click(function(){
-                        debugger;
                         valor = document.getElementById("qty<?php echo $value['ID'] ?>");
                         valor.value --;
 
                         cantidadNew=$('#qty<?php echo $value['ID'] ?>').val();
-                        envioSiNo = 1;
                         precioUni = <?php echo $value['PRECIO'] ?>;
                         totalNew = cantidadNew * precioUni;
-                        ModCart(totalNew, envioSiNo);
+
+                        $('#txtTotal<?php echo $value['ID'] ?> ').val(totalNew);
 
                       });
                       $('#btnMas<?php echo $value['ID'] ?>').click(function(){
                         valor = document.getElementById("qty<?php echo $value['ID'] ?>");
                         valor.value ++;
 
+                        cantidadNew=$('#qty<?php echo $value['ID'] ?>').val();
+                        precioUni = <?php echo $value['PRECIO'] ?>;
+                        totalNew = cantidadNew * precioUni;
+
+                        $('#txtTotal<?php echo $value['ID'] ?> ').val(totalNew);
                       });
                     });
                     </script>
@@ -426,8 +432,8 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
           <div class="col-12 col-lg-4">
             <div class="cart-total-area mt-70">
               <div class="cart-page-heading">
-                <h5>Cart total</h5>
-                <p>Final info</p>
+                <h5>Total del Carrito</h5>
+                <p>Info. Final</p>
               </div>
 
               <ul class="cart-total-chart">
