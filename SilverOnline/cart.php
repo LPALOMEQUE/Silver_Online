@@ -17,6 +17,20 @@ if(isset($_GET['vaciar'])) {
   unset($_COOKIE['carrito']);
 }
 
+if (isset($_POST['DelArt'])) {
+
+// foreach ($aCarrito as $key => $value) {
+//
+// $aCarrito = unserialize($_COOKIE['carrito']);
+
+// if ($value['ID'] == $_POST['ID']) {
+  // unset($aCarrito[$_POST['ID']-1]);
+  unset($_COOKIE[$_POST['ID']-1]);
+// }
+//
+   // }
+}
+
 //Obtenemos los productos anteriores
 
 if(isset($_COOKIE['carrito'])) {
@@ -124,7 +138,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
             <a href="#">Joyas<span class="arrow"></span></a>
             <ul class="sub-menu collapse" id="joyas">
               <li><a href="joyas-h.php">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
+              <li><a href="joyas-m.php">Mujer</a></li>
             </ul>
           </li>
 
@@ -329,6 +343,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                     <th>Producto</th>
                     <th>Precio Unitario</th>
                     <th>Cantidad</th>
+                    <th> </th>
                     <th>Total</th>
                   </tr>
                 </thead>
@@ -354,9 +369,13 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
                         </div>
                       </td>
+                      <td>
+                        <button type="button" class="btn btn-danger" id="btnDel<?php echo $value['ID'] ?>">X</button>
+
+                        <!-- <a href="cart.php?DelArt=1" class="btn btn-danger">as<i class="glyphicon glyphicon-trash"></i></a> -->
+                      </td>
                       <td >
                         <input type="text" class="sinborde" id="txtTotalxArt<?php echo $value['ID'] ?>" name="CANTIDAD" value="$<?php echo $TotalxArt ?>" readonly="readonly">
-
                       </td>
                     </tr>
 
@@ -393,6 +412,14 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                             precio,
                             url,
                             cantidad);
+
+                        });
+
+                        $('#btnDel<?php echo $value['ID'] ?>').click(function(){
+debugger;
+                          id = <?php echo $value['ID'] ?>;
+                          valida = 1;
+                          eliminarArticulo(id, valida);
 
                         });
                       });

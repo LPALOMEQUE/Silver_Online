@@ -60,3 +60,20 @@ function cartModPrice(id, nombre, precio, url, cantidad){
   });
 
 }
+
+function eliminarArticulo(id, valida){
+
+  cadena = "ID=" + id + "&DelArt=" + valida;
+
+  $.ajax({
+    type:"POST",
+    url: "cart.php",
+    data:cadena,
+    success:function(result){
+
+      location.reload();
+    }
+
+  });
+
+}

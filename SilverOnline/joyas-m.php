@@ -61,7 +61,7 @@ foreach ($aCarrito as $key => $value) {
   <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
   <!-- Title  -->
-  <title>Silver - Evolution | Joyas - Hombre</title>
+  <title>Silver - Evolution | Joyas - Mujer</title>
 
   <!-- Favicon  -->
   <link rel="icon" href="img/core-img/favicon.ico">
@@ -105,7 +105,7 @@ foreach ($aCarrito as $key => $value) {
             <a href="#">Joyas<span class="arrow"></span></a>
             <ul class="sub-menu collapse" id="joyas">
               <li><a href="joyas-h.php">Hombre</a></li>
-              <li><a href="joyas-m.ph">Mujer</a></li>
+              <li><a href="joyas-m.php">Mujer</a></li>
             </ul>
           </li>
 
@@ -316,7 +316,7 @@ foreach ($aCarrito as $key => $value) {
     "br.NAME_BRAND ".
     "FROM articles art " .
     "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-    "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1";
+    "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2";
 
     $result = mysqli_query($con,$sql);
     while($category = mysqli_fetch_row($result)){
@@ -440,7 +440,7 @@ foreach ($aCarrito as $key => $value) {
                       <li data-toggle="collapse" data-target="#women2">
                         <a href="#">Joyeria</a>
                         <ul class="sub-menu collapse show" id="women2">
-                          <li><a href="joyas-m.php">Mujer</a></li>
+                          <li><a href="joyas-h.php">Hombre</a></li>
                         </ul>
                       </li>
 
@@ -572,7 +572,7 @@ foreach ($aCarrito as $key => $value) {
                 "art.PRICE, " .
                 "art.URL_IMAGE " .
                 "FROM articles art " .
-                "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1";
+                "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2";
 
                 $result = mysqli_query($con,$sql);
                 while($category = mysqli_fetch_row($result)){
