@@ -26,13 +26,25 @@ if(isset($_COOKIE['carrito'])) {
 //Anyado un nuevo articulo al carrito
 
 if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
-  $iUltimaPos = count($aCarrito);
-  $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
-  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
-  $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
-  $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-  $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+  foreach ($aCarrito as $key => $value) {
 
+    if ($aCarrito[$_POST['ID']-1]['ID'] == $_POST['ID']) {
+      $aCarrito[$_POST['ID']-1]['ID'] = $_POST['ID'];
+      $aCarrito[$_POST['ID']-1]['NOMBRE'] = $_POST['NOMBRE'];
+      $aCarrito[$_POST['ID']-1]['PRECIO'] = $_POST['PRECIO'];
+      $aCarrito[$_POST['ID']-1]['URL'] = $_POST['URL'];
+      $aCarrito[$_POST['ID']-1]['CANTIDAD'] = $_POST['CANTIDAD'];
+    }
+    else {
+      $iUltimaPos = count($aCarrito);
+      $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+      $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
+      $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+      $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
+      $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+    }
+
+  }
 }
 
 //Creamos la cookie (serializamos)
@@ -343,7 +355,8 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                         </div>
                       </td>
                       <td >
-                        <input type="text" class="sinborde" id="txtTotal<?php echo $value['ID'] ?>" name="CANTIDAD" value="$<?php echo $TotalxArt ?>">
+                        <input type="text" class="sinborde" id="txtTotalxArt<?php echo $value['ID'] ?>" name="CANTIDAD" value="$<?php echo $TotalxArt ?>" readonly="readonly">
+
                       </td>
                     </tr>
 
@@ -353,220 +366,231 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       $('#btnMenos<?php echo $value['ID'] ?>').click(function(){
                         valor = document.getElementById("qty<?php echo $value['ID'] ?>");
                         valor.value --;
+                        id = <?php echo $value['ID'] ?>;
+                        nombre = '<?php echo $value['NOMBRE'] ?>';
+                        precio = <?php echo $value['PRECIO'] ?>;
+                        url = '<?php echo $value['URL'] ?>';
+                        cantidad=$('#qty<?php echo $value['ID'] ?>').val();
 
-                        cantidadNew=$('#qty<?php echo $value['ID'] ?>').val();
-                        precioUni = <?php echo $value['PRECIO'] ?>;
-                        totalNew = cantidadNew * precioUni;
+                        cartModPrice(id,
+                          nombre,
+                          precio,
+                          url,
+                          cantidad);
 
-                        $('#txtTotal<?php echo $value['ID'] ?> ').val(totalNew);
+                        });
+                        $('#btnMas<?php echo $value['ID'] ?>').click(function(){
+                          valor = document.getElementById("qty<?php echo $value['ID'] ?>");
+                          valor.value ++;
+                          id = <?php echo $value['ID'] ?>;
+                          nombre = '<?php echo $value['NOMBRE'] ?>';
+                          precio = <?php echo $value['PRECIO'] ?>;
+                          url = '<?php echo $value['URL'] ?>';
+                          cantidad=$('#qty<?php echo $value['ID'] ?>').val();
 
+                          cartModPrice(id,
+                            nombre,
+                            precio,
+                            url,
+                            cantidad);
+
+                        });
                       });
-                      $('#btnMas<?php echo $value['ID'] ?>').click(function(){
-                        valor = document.getElementById("qty<?php echo $value['ID'] ?>");
-                        valor.value ++;
-
-                        cantidadNew=$('#qty<?php echo $value['ID'] ?>').val();
-                        precioUni = <?php echo $value['PRECIO'] ?>;
-                        totalNew = cantidadNew * precioUni;
-
-                        $('#txtTotal<?php echo $value['ID'] ?> ').val(totalNew);
-                      });
-                    });
-                    </script>
-                    <?php
-                  }
-                  ?>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="cart-footer d-flex mt-30">
-              <div class="back-to-shop w-50">
-                <a href="shop.html">Continue shooping</a>
+                      </script>
+                      <?php
+                    }
+                    ?>
+                  </tbody>
+                </table>
               </div>
-              <div class="update-checkout w-50 text-right">
-                <a href="cart.php?vaciar=1">Vaciar carrito</a>
-                <a href="#">Update cart</a>
-              </div>
-            </div>
 
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="coupon-code-area mt-70">
-              <div class="cart-page-heading">
-                <h5>Cupon code</h5>
-                <p>Enter your cupone code</p>
+              <div class="cart-footer d-flex mt-30">
+                <div class="back-to-shop w-50">
+                  <a href="shop.html">Continue shooping</a>
+                </div>
+                <div class="update-checkout w-50 text-right">
+                  <a href="cart.php?vaciar=1">Vaciar carrito</a>
+                  <a href="#">Update cart</a>
+                </div>
               </div>
-              <form action="#">
-                <input type="search" name="search" placeholder="#569ab15">
-                <button type="submit">Apply</button>
-              </form>
+
             </div>
           </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="shipping-method-area mt-70">
-              <div class="cart-page-heading">
-                <h5>Shipping method</h5>
-                <p>Select the one you want</p>
-              </div>
 
-              <div class="custom-control custom-radio mb-30">
-                <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-                <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Next day delivery</span><span>$4.99</span></label>
-              </div>
-
-              <div class="custom-control custom-radio mb-30">
-                <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Standard delivery</span><span>$1.99</span></label>
-              </div>
-
-              <div class="custom-control custom-radio">
-                <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
-                <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio3"><span>Personal Pickup</span><span>Free</span></label>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="coupon-code-area mt-70">
+                <div class="cart-page-heading">
+                  <h5>Cupon code</h5>
+                  <p>Enter your cupone code</p>
+                </div>
+                <form action="#">
+                  <input type="search" name="search" placeholder="#569ab15">
+                  <button type="submit">Apply</button>
+                </form>
               </div>
             </div>
-          </div>
-          <div class="col-12 col-lg-4">
-            <div class="cart-total-area mt-70">
-              <div class="cart-page-heading">
-                <h5>Total del Carrito</h5>
-                <p>Info. Final</p>
-              </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="shipping-method-area mt-70">
+                <div class="cart-page-heading">
+                  <h5>Shipping method</h5>
+                  <p>Select the one you want</p>
+                </div>
 
-              <ul class="cart-total-chart">
-                <li><span>Subtotal</span> <span>$<?php echo $TotalxArtGlobal ?></span></li>
-                <li><span>Envío</span> <span>$0.00 </span></li>
-                <li><span><strong>Total</strong></span> <span><strong>$<?php echo $TotalxArtGlobal ?></strong></span></li>
-              </ul>
-              <a href="checkout.html" class="btn karl-checkout-btn">Proceed to checkout</a>
+                <div class="custom-control custom-radio mb-30">
+                  <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+                  <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Next day delivery</span><span>$4.99</span></label>
+                </div>
+
+                <div class="custom-control custom-radio mb-30">
+                  <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+                  <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Standard delivery</span><span>$1.99</span></label>
+                </div>
+
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
+                  <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio3"><span>Personal Pickup</span><span>Free</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="cart-total-area mt-70">
+                <div class="cart-page-heading">
+                  <h5>Total del Carrito</h5>
+                  <p>Información Final</p>
+                </div>
+
+                <ul class="cart-total-chart">
+                  <li><span>Subtotal</span> <span>$<?php echo $TotalxArtGlobal ?></span></li>
+                  <li><span>Envío</span> <span>$0.00 </span></li>
+                  <li><span><strong>Total</strong></span> <span><strong>$<?php echo $TotalxArtGlobal ?></strong></span></li>
+                </ul>
+                <a href="checkout.html" class="btn karl-checkout-btn">Proceed to checkout</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- ****** Cart Area End ****** -->
+      <!-- ****** Cart Area End ****** -->
 
-    <!-- ****** Footer Area Start ****** -->
-    <footer class="footer_area">
-      <div class="container">
-        <div class="row">
-          <!-- Single Footer Area Start -->
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="single_footer_area">
-              <div class="footer-logo">
-                <img src="img/core-img/logo.png" alt="">
+      <!-- ****** Footer Area Start ****** -->
+      <footer class="footer_area">
+        <div class="container">
+          <div class="row">
+            <!-- Single Footer Area Start -->
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="single_footer_area">
+                <div class="footer-logo">
+                  <img src="img/core-img/logo.png" alt="">
+                </div>
+                <div class="copywrite_text d-flex align-items-center">
+                  <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                  </div>
+                </div>
               </div>
-              <div class="copywrite_text d-flex align-items-center">
-                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+              <!-- Single Footer Area Start -->
+              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+                <div class="single_footer_area">
+                  <ul class="footer_widget_menu">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Faq</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Contact</a></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- Single Footer Area Start -->
+              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+                <div class="single_footer_area">
+                  <ul class="footer_widget_menu">
+                    <li><a href="#">My Account</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Our Policies</a></li>
+                    <li><a href="#">Afiliates</a></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- Single Footer Area Start -->
+              <div class="col-12 col-lg-5">
+                <div class="single_footer_area">
+                  <div class="footer_heading mb-30">
+                    <h6>Subscribe to our newsletter</h6>
+                  </div>
+                  <div class="subscribtion_form">
+                    <form action="#" method="post">
+                      <input type="email" name="mail" class="mail" placeholder="Your email here">
+                      <button type="submit" class="submit">Subscribe</button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-              <div class="single_footer_area">
-                <ul class="footer_widget_menu">
-                  <li><a href="#">About</a></li>
-                  <li><a href="#">Blog</a></li>
-                  <li><a href="#">Faq</a></li>
-                  <li><a href="#">Returns</a></li>
-                  <li><a href="#">Contact</a></li>
-                </ul>
-              </div>
-            </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-              <div class="single_footer_area">
-                <ul class="footer_widget_menu">
-                  <li><a href="#">My Account</a></li>
-                  <li><a href="#">Shipping</a></li>
-                  <li><a href="#">Our Policies</a></li>
-                  <li><a href="#">Afiliates</a></li>
-                </ul>
-              </div>
-            </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-lg-5">
-              <div class="single_footer_area">
-                <div class="footer_heading mb-30">
-                  <h6>Subscribe to our newsletter</h6>
-                </div>
-                <div class="subscribtion_form">
-                  <form action="#" method="post">
-                    <input type="email" name="mail" class="mail" placeholder="Your email here">
-                    <button type="submit" class="submit">Subscribe</button>
-                  </form>
+            <div class="line"></div>
+
+            <!-- Footer Bottom Area Start -->
+            <div class="footer_bottom_area">
+              <div class="row">
+                <div class="col-12">
+                  <div class="footer_social_area text-center">
+                    <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="line"></div>
+        </footer>
+        <!-- ****** Footer Area End ****** -->
+      </div>
+      <!-- /.wrapper end -->
 
-          <!-- Footer Bottom Area Start -->
-          <div class="footer_bottom_area">
-            <div class="row">
-              <div class="col-12">
-                <div class="footer_social_area text-center">
-                  <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-      <!-- ****** Footer Area End ****** -->
-    </div>
-    <!-- /.wrapper end -->
+      <!-- jQuery (Necessary for All JavaScript Plugins) -->
+      <script src="js/jquery/jquery-2.2.4.min.js"></script>
+      <!-- Popper js -->
+      <script src="js/popper.min.js"></script>
+      <!-- Bootstrap js -->
+      <script src="js/bootstrap.min.js"></script>
+      <!-- Plugins js -->
+      <script src="js/plugins.js"></script>
+      <!-- Active js -->
+      <script src="js/active.js"></script>
 
-    <!-- jQuery (Necessary for All JavaScript Plugins) -->
-    <script src="js/jquery/jquery-2.2.4.min.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Active js -->
-    <script src="js/active.js"></script>
+    </body>
 
-  </body>
+    </html>
 
-  </html>
+    <script type="text/javascript">
 
-  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#btnGuardar').click(function(){
 
-  $(document).ready(function(){
-    $('#btnGuardar').click(function(){
+        email= $('#txtEmail').val();
+        pass= $('#txtPass').val();
 
-      email= $('#txtEmail').val();
-      pass= $('#txtPass').val();
+        if($('#txtEmail').val() == ""){
 
-      if($('#txtEmail').val() == ""){
+          alert("Debe ingresar un E-mail...");
+        }
+        if($('#txtPass').val() == ""){
 
-        alert("Debe ingresar un E-mail...");
-      }
-      if($('#txtPass').val() == ""){
+          alert("Debe ingresar una contraseña...");
+        }
+        if($('#txtEmail').val() != "" && $('#txtPass').val() != ""){
+          agregarUsuarios(email, pass);
+        }
+      });
 
-        alert("Debe ingresar una contraseña...");
-      }
-      if($('#txtEmail').val() != "" && $('#txtPass').val() != ""){
-        agregarUsuarios(email, pass);
-      }
-    });
+      <?php
+      foreach ($aCarrito as $key => $value) {
+        ?>
+        $('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>);
 
-    <?php
-    foreach ($aCarrito as $key => $value) {
-      ?>
-      $('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>);
+        <?php } ?>
+      });
 
-      <?php } ?>
-    });
-
-    </script>
+      </script>

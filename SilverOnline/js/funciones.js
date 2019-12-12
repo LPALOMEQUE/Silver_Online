@@ -44,9 +44,9 @@ function AddCart(id, nombre, precio, url, cantidad){
 
 }
 
-function ModCart(totalNew, envioSiNo){
+function cartModPrice(id, nombre, precio, url, cantidad){
 
-  cadena = "totalNew=" + totalNew + "&envioSiNo=" + envioSiNo;
+  cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad;
 
   $.ajax({
     type:"POST",
@@ -54,8 +54,7 @@ function ModCart(totalNew, envioSiNo){
     data:cadena,
     success:function(result){
 
-      // $('#quickview' + id ).hide();
-      //location.reload();
+      location.reload();
     }
 
   });
