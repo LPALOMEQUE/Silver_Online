@@ -44,9 +44,9 @@ function AddCart(id, nombre, precio, url, cantidad){
 
 }
 
-function cartModPrice(id, nombre, precio, url, cantidad){
+function cartModPrice(id, nombre, precio, url, cantidad, posicion){
 
-  cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad;
+  cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad + "&Posicion=" + posicion;
 
   $.ajax({
     type:"POST",
