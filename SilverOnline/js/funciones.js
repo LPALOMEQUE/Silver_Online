@@ -61,9 +61,9 @@ function cartModPrice(id, nombre, precio, url, cantidad, posicion){
 
 }
 
-function eliminarArticulo(id, valida){
+function eliminarArticulo(id, posicion, valida){
 
-  cadena = "ID=" + id + "&DelArt=" + valida;
+  cadena = "ID=" + id + "&Posicion=" + posicion + "&DelArt=" + valida;
 
   $.ajax({
     type:"POST",
