@@ -180,6 +180,7 @@
                       <!-- <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span> Shoes</a></li> -->
                       <!-- <li class="nav-item"><a class="nav-link" href="#">Contact</a></li> -->
                       <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
                     </ul>
                   </div>
                 </nav>
@@ -214,6 +215,94 @@
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                       <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal para registro de Articulos -->
+              <div class="modal fade bd-example-modal-lg" id="ModalArticulos" tabindex="-1" role="dialog" aria-labelledby="ModalArticulos" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalArticulos">Registro de Artículos...</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNameArt">Nombre</label>
+                          <input type="text" class="form-control" id="txtNameArt" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtDescArt">Descripción</label>
+                          <input type="text" class="form-control" id="txtDescArt" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtBarCode">Codigo de barra</label>
+                          <input type="text" class="form-control" id="txtBarCode" value="" required>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtModelo">Modelo</label>
+                          <input type="text" class="form-control" id="txtModelo" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label id="lblcbmMarca" for="cbmMarca">Marca</label>
+                          <select class="form-control" id="cbmMarca" name="marca">
+                            <option value="0">Selecciona...</option>
+                            <?php
+                            require_once "php/Conexion.php";
+                            $con = conexion();
+
+                            $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
+
+                            $result = mysqli_query($con,$sql);
+                            while($marca = mysqli_fetch_row($result)){
+
+                              echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                            }
+                            ?>
+                          </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtPrecio">Precio</label>
+                          <input type="number" class="form-control" id="txtPrecio" value="" required>
+                        </div>
+
+                      </div>
+                      <div class="row">
+                        <div class="col-md-2 mb-3">
+                          <label id="lbStatus" for="cbmStatus">Estatus</label>
+                          <select id="cbmStatus"  class="form-control" name="state">
+                            <option value="2">Selecciona...</option>
+                            ...
+                            <option value="1">Activo</option>
+                            ...
+                            <option value="0">Inactivo</option>form-control
+                          </select>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                          <label for="txtNameIMG">Nombre URL</label>
+                          <input type="text" class="form-control" id="txtNameIMG" value="img/product-img/" placeholder="img/product-img/Nombre_img.jpg" required>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                          <label for="Conteimg">Carga IMG</label>
+                          <!-- <input type="file" name="pic" accept="image/*" placeholder="Formato jpg"> -->
+                          <input type="file" class="form-control-file" name="image" id="image">
+                          <!-- <input type="file" name="archivo[]" multiple="multiple"> -->
+
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      <button type="button" class="btn btn-primary" id="btnGuardarArt">Guardar</button>
                     </div>
                   </div>
                 </div>
@@ -728,6 +817,68 @@
       }
     });
 
-  });
 
-</script>
+
+
+    $('#btnGuardarArt').click(function(){
+      debugger;
+      nomArt= $('#txtNameArt').val();
+      descArt= $('#txtDescArt').val();
+      barCode = $('#txtBarCode').val();
+      modelArt = $('#txtModelo').val();
+      marcaArt = $("#cbmMarca option:selected").val();
+      precioArt = $('#txtPrecio').val();
+      statusArt = $("#cbmStatus option:selected").val();
+      nombreImg = $('#txtNameIMG').val();
+
+
+      if(nomArt == ""){
+
+        alert("Debe ingresar el nombre del artículo...");
+      }
+      if(descArt == ""){
+
+        alert("Debe ingresar la descripción del artículo...");
+      }
+      if(barCode == ""){
+
+        alert("Debe ingresar el codigo de barra del artículo...");
+      }
+      if(modelArt == ""){
+
+        alert("Debe ingresar el modelo del artículo...");
+      }
+      if(marcaArt == 0){
+
+        alert("Debe seleccionar una marca...");
+      }
+      if(precioArt == ""){
+
+        alert("Debe ingresar el precio del artículo...");
+      }
+      if(statusArt == 2){
+
+        alert("Debe seleccionar un estatus del artículo...");
+      }
+
+      if(nombreImg == ""){
+
+        alert("Debe ingresar el nombre de la imagen...");
+      }
+
+      if (nomArt != "" &&  descArt && != ""barCode && != ""modelArt && != ""precioArt && != ""nombreImg && marcaArt !=0 && statusArt !=2){
+        guardarArt(nomArt,
+          descArt,
+          barCode,
+          modelArt,
+          marcaArt,
+          precioArt,
+          statusArt,
+          nombreImg);
+        }
+
+      });
+
+    });
+
+    </script>

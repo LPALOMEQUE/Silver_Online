@@ -77,3 +77,20 @@ function eliminarArticulo(id, posicion, valida){
   });
 
 }
+
+function guardarArt(id, posicion, valida){
+
+  cadena = "ID=" + id + "&Posicion=" + posicion + "&DelArt=" + valida;
+
+  $.ajax({
+    type:"POST",
+    url: "cart.php",
+    data:cadena,
+    success:function(result){
+
+      location.reload();
+    }
+
+  });
+
+}
