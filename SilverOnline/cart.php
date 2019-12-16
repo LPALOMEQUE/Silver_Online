@@ -10,18 +10,12 @@ if(isset($_GET['vaciar'])) {
   unset($_COOKIE['carrito']);
 }
 
-if (isset($_POST['DelArt'])) {
+if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
 
-  // foreach ($aCarrito as $key => $value) {
-  //
-  // $aCarrito = unserialize($_COOKIE['carrito']);
+  foreach ($aCarrito as $key => $value) {
+      unset($aCarrito[0]['ID']);
+}
 
-  // if ($value['ID'] == $_POST['ID']) {
-  // unset($aCarrito[$_POST['ID']-1]);
-  unset($_COOKIE[$_POST['ID']-1]);
-  // }
-  //
-  // }
 }
 
 //Obtenemos los productos anteriores
@@ -35,14 +29,6 @@ if(isset($_COOKIE['carrito'])) {
 if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD']) && isset($_POST['Posicion'])) {
   foreach ($aCarrito as $key => $value) {
 
-    // if ($aCarrito[$_POST['ID']-1]['ID'] == $_POST['ID'])
-    //  {
-    //   $aCarrito[$_POST['ID']-1]['ID'] = $_POST['ID'];
-    //   $aCarrito[$_POST['ID']-1]['NOMBRE'] = $_POST['NOMBRE'];
-    //   $aCarrito[$_POST['ID']-1]['PRECIO'] = $_POST['PRECIO'];
-    //   $aCarrito[$_POST['ID']-1]['URL'] = $_POST['URL'];
-    //   $aCarrito[$_POST['ID']-1]['CANTIDAD'] = $_POST['CANTIDAD'];
-    // }
     if ($aCarrito[$_POST['Posicion']]['ID'] == $_POST['ID'])
     {
       $aCarrito[$_POST['Posicion']]['ID'] = $_POST['ID'];
@@ -419,8 +405,9 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                           $('#btnDel<?php echo $value['ID'] ?>').click(function(){
                             debugger;
                             id = <?php echo $value['ID'] ?>;
+                            posicion = <?php echo $i ?>;
                             valida = 1;
-                            eliminarArticulo(id, valida);
+                            eliminarArticulo(id, posicion, valida);
 
                           });
                         });
