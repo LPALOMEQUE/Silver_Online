@@ -271,12 +271,48 @@
                         </div>
                         <div class="col-md-4 mb-3">
                           <label for="txtPrecio">Precio</label>
-                          <input type="number" class="form-control" id="txtPrecio" value="" required>
+                          <input type="number" class="form-control" id="txtPrecio" value="0" required>
                         </div>
 
                       </div>
                       <div class="row">
-                        <div class="col-md-2 mb-3">
+                        <div class="col-md-4 mb-3">
+                          <label id="lbcategoria" for="cbmCategoria">Categoría</label>
+                          <select id="cbmCategoria"  class="form-control" name="state">
+                            <option value="0">Selecciona...</option>
+                            <?php
+                            require_once "php/Conexion.php";
+                            $con = conexion();
+
+                            $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
+
+                            $result = mysqli_query($con,$sql);
+                            while($marca = mysqli_fetch_row($result)){
+
+                              echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                            }
+                            ?>
+                          </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label id="lbSubcategoria" for="cbmSubcategoria">Subcategoría</label>
+                          <select id="cbmSubcategoria"  class="form-control" name="state">
+                            <option value="0">Selecciona...</option>
+                            <?php
+                            require_once "php/Conexion.php";
+                            $con = conexion();
+
+                            $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
+
+                            $result = mysqli_query($con,$sql);
+                            while($marca = mysqli_fetch_row($result)){
+
+                              echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                            }
+                            ?>
+                          </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
                           <label id="lbStatus" for="cbmStatus">Estatus</label>
                           <select id="cbmStatus"  class="form-control" name="state">
                             <option value="2">Selecciona...</option>
@@ -286,9 +322,12 @@
                             <option value="0">Inactivo</option>form-control
                           </select>
                         </div>
-                        <div class="col-md-5 mb-3">
-                          <label for="txtNameIMG">Nombre URL</label>
-                          <input type="text" class="form-control" id="txtNameIMG" value="img/product-img/" placeholder="img/product-img/Nombre_img.jpg" required>
+
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNameIMG">Nombre IMG</label>
+                          <input type="text" class="form-control" id="txtNameIMG" value="" placeholder="Nombre_img" required>
                         </div>
                         <div class="col-md-5 mb-3">
                           <label for="Conteimg">Carga IMG</label>
@@ -298,7 +337,6 @@
 
                         </div>
                       </div>
-
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -821,13 +859,15 @@
 
 
     $('#btnGuardarArt').click(function(){
-      debugger;
+
       nomArt= $('#txtNameArt').val();
       descArt= $('#txtDescArt').val();
       barCode = $('#txtBarCode').val();
       modelArt = $('#txtModelo').val();
       marcaArt = $("#cbmMarca option:selected").val();
       precioArt = $('#txtPrecio').val();
+      categoria = $("#cbmCategoria option:selected").val();
+      subCatego = $("#cbmSubcategoria option:selected").val();
       statusArt = $("#cbmStatus option:selected").val();
       nombreImg = $('#txtNameIMG').val();
 
@@ -852,9 +892,17 @@
 
         alert("Debe seleccionar una marca...");
       }
-      if(precioArt == ""){
+      if(precioArt == "" && precioArt !=0){
 
         alert("Debe ingresar el precio del artículo...");
+      }
+      if(categoria == 0){
+
+        alert("Debe seleccionar una categoría...");
+      }
+      if(subCatego == 0){
+
+        alert("Debe seleccionar una subcategoría...");
       }
       if(statusArt == 2){
 
@@ -866,13 +914,15 @@
         alert("Debe ingresar el nombre de la imagen...");
       }
 
-      if (nomArt != "" &&  descArt && != ""barCode && != ""modelArt && != ""precioArt && != ""nombreImg && marcaArt !=0 && statusArt !=2){
+      if (nomArt != "" && descArt != "" && barCode != "" && modelArt != "" && precioArt != "" && precioArt != 0 && nombreImg != "" && marcaArt !=0 && statusArt !=2){
         guardarArt(nomArt,
           descArt,
           barCode,
           modelArt,
           marcaArt,
           precioArt,
+          categoria,
+          subCatego,
           statusArt,
           nombreImg);
         }

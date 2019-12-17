@@ -78,17 +78,44 @@ function eliminarArticulo(id, posicion, valida){
 
 }
 
-function guardarArt(id, posicion, valida){
-
-  cadena = "ID=" + id + "&Posicion=" + posicion + "&DelArt=" + valida;
+function guardarArt(nomArt,  descArt, barCode, modelArt, marcaArt, precioArt, categoria, subCatego, statusArt, nombreImg){
+debugger;
+  cadena = "NomArt=" + nomArt +
+            "&DescArt=" + descArt +
+            "&BarCode=" + barCode +
+            "&ModelArt=" + modelArt +
+            "&MarcaArt=" + marcaArt +
+            "&PrecioArt=" + precioArt +
+            "&Categoria=" + categoria +
+            "&SubCatego=" + subCatego +
+            "&StatusArt=" + statusArt +
+            "&NombreImg=" + nombreImg;
 
   $.ajax({
     type:"POST",
-    url: "cart.php",
+    url: "php/agregarArticulos.php",
     data:cadena,
     success:function(result){
 
-      location.reload();
+      if(result==1){
+
+        alert("Se registro el artículo de forma correcta...");
+        $('#txtNameArt').val('');
+        $('#txtDescArt').val('');
+        $('#txtBarCode').val('');
+        $('#txtModelo').val('');
+        $("#cbmMarca option[value=0]").attr("selected",true);
+        $('#txtPrecio').val(0);
+        $("#cbmCategoria option[value=0]").attr("selected",true);
+        $("#cbmSubcategoria option[value=0]").attr("selected",true);
+        $("#cbmStatus option[value=0]").attr("selected",true);
+        $('#txtNameIMG').val('');
+
+        //$('#ModalArticulos').hide();
+      }
+      else{
+        alert("Error...");
+      }
     }
 
   });
