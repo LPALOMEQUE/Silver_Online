@@ -105,7 +105,7 @@ foreach ($aCarrito as $key => $value) {
             <a href="#">Joyas<span class="arrow"></span></a>
             <ul class="sub-menu collapse" id="joyas">
               <li><a href="joyas-h.php">Hombre</a></li>
-              <li><a href="joyas-m.ph">Mujer</a></li>
+              <li><a href="joyas-m.php">Mujer</a></li>
             </ul>
           </li>
 

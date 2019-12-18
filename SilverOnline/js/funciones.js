@@ -78,7 +78,7 @@ function eliminarArticulo(id, posicion, valida){
 
 }
 
-function guardarArt(nomArt,  descArt, barCode, modelArt, marcaArt, precioArt, categoria, subCatego, statusArt, nombreImg){
+function guardarArt(nomArt,  descArt, barCode, modelArt, marcaArt, precioArt, categoria, subCatego, statusArt, nameArticulo){
 debugger;
   cadena = "NomArt=" + nomArt +
             "&DescArt=" + descArt +
@@ -89,7 +89,7 @@ debugger;
             "&Categoria=" + categoria +
             "&SubCatego=" + subCatego +
             "&StatusArt=" + statusArt +
-            "&NombreImg=" + nombreImg;
+            "&NombreImg=" + nameArticulo;
 
   $.ajax({
     type:"POST",
@@ -108,10 +108,8 @@ debugger;
         $('#txtPrecio').val(0);
         $("#cbmCategoria option[value=0]").attr("selected",true);
         $("#cbmSubcategoria option[value=0]").attr("selected",true);
-        $("#cbmStatus option[value=0]").attr("selected",true);
-        $('#txtNameIMG').val('');
+        $("#cbmStatus option[value=2]").attr("selected",true);
 
-        //$('#ModalArticulos').hide();
       }
       else{
         alert("Error...");
@@ -119,5 +117,4 @@ debugger;
     }
 
   });
-
 }

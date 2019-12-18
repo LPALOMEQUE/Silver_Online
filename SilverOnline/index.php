@@ -1,3 +1,49 @@
+<?php
+
+$aCarrito = array();
+$sHTML = '';
+$bagNumber = 0;
+$TotalxArtGlobal = 0;
+$cantidad = 0;
+//Vaciamos el carrito
+
+if(isset($_POST['vaciar'])) {
+  unset($_COOKIE['carrito']);
+}
+
+//Obtenemos los productos anteriores
+
+if(isset($_COOKIE['carrito'])) {
+  $aCarrito = unserialize($_COOKIE['carrito']);
+}
+
+//Anyado un nuevo articulo al carrito
+
+if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
+  $iUltimaPos = count($aCarrito);
+  $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
+  $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+  $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
+  $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+
+}
+
+//Creamos la cookie (serializamos)
+
+$iTemCad = time() + (60 * 60);
+setcookie('carrito', serialize($aCarrito), $iTemCad);
+
+//Imprimimos el contenido del array
+
+foreach ($aCarrito as $key => $value) {
+  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+  $bagNumber = count($aCarrito);
+  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,6 +82,8 @@
 
 <body>
 
+
+
   <div class="catagories-side-menu">
     <!-- Close Icon -->
     <div id="sideMenuClose">
@@ -52,7 +100,7 @@
             <a href="#">Joyas<span class="arrow"></span></a>
             <ul class="sub-menu collapse" id="joyas">
               <li><a href="joyas-h.php">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
+              <li><a href="joyas-m.php">Mujer</a></li>
             </ul>
           </li>
 
@@ -108,29 +156,27 @@
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity">2</span> <i class="ti-bag"></i> Your Bag $20</a>
+                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu carrito $<?php echo $TotalxArtGlobal ?> </a>
                     <!-- Cart List Area Start -->
                     <ul class="cart-list">
-                      <li>
-                        <a href="#" class="image"><img src="img/product-img/product-10.jpg" class="cart-thumb" alt=""></a>
-                        <div class="cart-item-desc">
-                          <h6><a href="#">Women's Fashion</a></h6>
-                          <p>1x - <span class="price">$10</span></p>
-                        </div>
-                        <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                      </li>
-                      <li>
-                        <a href="#" class="image"><img src="img/product-img/product-11.jpg" class="cart-thumb" alt=""></a>
-                        <div class="cart-item-desc">
-                          <h6><a href="#">Women's Fashion</a></h6>
-                          <p>1x - <span class="price">$10</span></p>
-                        </div>
-                        <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                      </li>
+
+                      <?php foreach ($aCarrito as $key => $value) {
+
+                        $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+                        ?>
+                        <li>
+                          <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
+                          <div class="cart-item-desc">
+                            <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
+                            <p> <?php echo $value['CANTIDAD'] ?>  x - <span class="price">$<?php echo $TotalxArt ?></span></p>
+                          </div>
+                          <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
+                        </li>
+                      <?php } ?>
                       <li class="total">
-                        <span class="pull-right">Total: $20.00</span>
-                        <a href="cart.html" class="btn btn-sm btn-cart">Cart</a>
-                        <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
+                        <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
+                        <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
+                        <a href="checkout-1.html" class="btn btn-sm btn-checkout">Pagar</a>
                       </li>
                     </ul>
                   </div>
@@ -325,16 +371,10 @@
 
                       </div>
                       <div class="row">
-                        <div class="col-md-4 mb-3">
-                          <label for="txtNameIMG">Nombre IMG</label>
-                          <input type="text" class="form-control" id="txtNameIMG" value="" placeholder="Nombre_img" required>
-                        </div>
-                        <div class="col-md-5 mb-3">
-                          <label for="Conteimg">Carga IMG</label>
-                          <!-- <input type="file" name="pic" accept="image/*" placeholder="Formato jpg"> -->
-                          <input type="file" class="form-control-file" name="image" id="image">
-                          <!-- <input type="file" name="archivo[]" multiple="multiple"> -->
-
+                        <div class="col-md-12 mb-12">
+                          <label for="txtNameIMG">Carga de Img</label>
+                          <input id="sortpicture" type="file" class="form-control" name="sortpic" />
+                          <button id="upload" class="form-control">Upload</button>
                         </div>
                       </div>
                     </div>
@@ -837,6 +877,8 @@
   <script type="text/javascript">
 
   $(document).ready(function(){
+    var validaImg =0;
+    var nameArticulo ="";
     $('#btnGuardar').click(function(){
 
       email= $('#txtEmail').val();
@@ -854,9 +896,6 @@
         agregarUsuarios(email, pass);
       }
     });
-
-
-
 
     $('#btnGuardarArt').click(function(){
 
@@ -909,12 +948,12 @@
         alert("Debe seleccionar un estatus del artículo...");
       }
 
-      if(nombreImg == ""){
+      if (validaImg == 0) {
 
-        alert("Debe ingresar el nombre de la imagen...");
+        alert("Debe cargar la imagen del artículo...");
       }
 
-      if (nomArt != "" && descArt != "" && barCode != "" && modelArt != "" && precioArt != "" && precioArt != 0 && nombreImg != "" && marcaArt !=0 && statusArt !=2){
+      if (nomArt != "" && descArt != "" && barCode != "" && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
         guardarArt(nomArt,
           descArt,
           barCode,
@@ -924,11 +963,36 @@
           categoria,
           subCatego,
           statusArt,
-          nombreImg);
+          nameArticulo);
+          validaImg=0;
+          nameArticulo = "";
         }
 
       });
+      $('#upload').on('click', function() {
 
+        var file_data = $('#sortpicture').prop('files')[0];
+        var form_data = new FormData();
+        form_data.append('file', file_data);
+        $.ajax({
+          url: 'pruebaImg.php', // point to server-side PHP script
+          dataType: 'text',  // what to expect back from the PHP script, if anything
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          type: 'post',
+          success: function(result){
+            if (result != "") {
+              validaImg =1;
+              nameArticulo = result;
+            }else{
+
+              validaImg=0;
+            }
+          }
+        });
+      });
     });
 
     </script>

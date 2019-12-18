@@ -50,7 +50,7 @@ $con = conexion();
     "NULL,".
     "NULL,".
     "NULL,".
-    "'img/product-img/$nombreImg.jpg')";
+    "'img/product-img/$nombreImg')";
   // EL echo NOS RETORNA UN 0 O UN 1 DEPENDIENDO SI EJECUTA O NO EL COMANDO
   echo $result = mysqli_query($con,$sql);
 
