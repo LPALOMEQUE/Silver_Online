@@ -986,9 +986,10 @@ foreach ($aCarrito as $key => $value) {
             if (result != "") {
               validaImg =1;
               nameArticulo = result;
+              document.getElementById("sortpicture").value = "";
             }else{
-
               validaImg=0;
+              document.getElementById("sortpicture").value = "";
             }
           }
         });

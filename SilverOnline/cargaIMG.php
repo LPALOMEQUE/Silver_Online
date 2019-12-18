@@ -9,8 +9,6 @@ if(isset($_FILES["file"])){
   else {
     move_uploaded_file($_FILES['file']['tmp_name'], 'img\product-img//' . $_FILES['file']['name']);
     echo $name = $_FILES['file']['name'];
-    // echo $validaIMG = 1;
-
   }
 }
 ?>
