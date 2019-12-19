@@ -79,17 +79,16 @@ function eliminarArticulo(id, posicion, valida){
 }
 
 function guardarArt(nomArt,  descArt, barCode, modelArt, marcaArt, precioArt, categoria, subCatego, statusArt, nameArticulo){
-debugger;
   cadena = "NomArt=" + nomArt +
-            "&DescArt=" + descArt +
-            "&BarCode=" + barCode +
-            "&ModelArt=" + modelArt +
-            "&MarcaArt=" + marcaArt +
-            "&PrecioArt=" + precioArt +
-            "&Categoria=" + categoria +
-            "&SubCatego=" + subCatego +
-            "&StatusArt=" + statusArt +
-            "&NombreImg=" + nameArticulo;
+  "&DescArt=" + descArt +
+  "&BarCode=" + barCode +
+  "&ModelArt=" + modelArt +
+  "&MarcaArt=" + marcaArt +
+  "&PrecioArt=" + precioArt +
+  "&Categoria=" + categoria +
+  "&SubCatego=" + subCatego +
+  "&StatusArt=" + statusArt +
+  "&NombreImg=" + nameArticulo;
 
   $.ajax({
     type:"POST",
@@ -116,5 +115,20 @@ debugger;
       }
     }
 
+  });
+}
+
+function buscarArticulos(buscador){
+  cadena = "BarCode=" + buscador;
+
+  $.ajax({
+    type:"POST",
+    url: "index.php",
+    data:cadena,
+    success:function(result){
+      debugger;
+x=result;
+
+    }
   });
 }
