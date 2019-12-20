@@ -69,8 +69,10 @@ function eliminarArticulo(id, posicion, valida){
     type:"POST",
     url: "cart.php",
     data:cadena,
-    success:function(result){
 
+    success:function(result){
+debugger;
+      x=result;
       location.reload();
     }
 
