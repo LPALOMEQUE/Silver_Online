@@ -10,19 +10,84 @@ if(isset($_GET['vaciar'])) {
   unset($_COOKIE['carrito']);
 }
 
-if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
+//ELIMINAR LA COOKIE COMPLETA DEL NAVEGADOR, USAR ESTO EN CASO DE QUE TRUENE EL unset
+//if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
+// setcookie('carrito', '',$iTemCad -3600);
+//}
 
-  foreach ($aCarrito as $key => $value) {
-      unset($aCarrito[0]['ID']);
-}
 
-}
 
 //Obtenemos los productos anteriores
 
 if(isset($_COOKIE['carrito'])) {
   $aCarrito = unserialize($_COOKIE['carrito']);
 }
+
+
+if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
+  // echo ("posicion: ".$_POST['Posicion']);
+  // echo ("del: ".$_POST['DelArt']);
+  // echo ("ID: ".$_POST['ID']);
+  // foreach ($aCarrito as $key => $value) {
+  // unset($aCarrito[$_POST['Posicion']]['ID']);
+  // unset($aCarrito[0]);
+  // echo   $key.' ' . $value['ID'] . ' ' . $value['NOMBRE'];
+  // $valCookie = unserialize($_COOKIE['carrito']);
+  // unset($valCookie[$_POST['Posicion']]);
+  // Setcookie("carrito", serialize($valCookie));
+  // $valCookie = unserialize($_COOKIE['carrito']);
+
+  // unset($valCookie[$_POST['Posicion']]);
+
+  // setcookie('carrito', '',$iTemCad -3600);
+
+  // header ("Location: cart.php");
+  //$aCarrito = unserialize($_COOKIE['carrito']);
+  // echo $_COOKIE['carrito'];
+  //unset($aCarrito[$_POST['Posicion']]);
+  // }
+  // ----foreach ($aCarrito as $key => $value) {
+    // if ($aCarrito[$_POST['Posicion']]['ID'] == $_POST['ID'])
+    // {
+//       $aCarrito = unserialize($_COOKIE['carrito']);
+//       $iUltimaPos = count($aCarrito);
+      // unset($aCarrito[$_POST['Posicion']]['ID']);
+      // unset($aCarrito[$_POST['Posicion']]['NOMBRE']);
+      // unset($aCarrito[$_POST['Posicion']]['PRECIO']);
+      // unset($aCarrito[$_POST['Posicion']]['URL']);
+      // unset($aCarrito[$_POST['Posicion']]['CANTIDAD']);
+//
+// $iTemCad = time() + (60 * 60);
+// setcookie('carrito', '',$iTemCad -3600);
+//
+//
+//       setcookie('carrito', serialize($aCarrito), $iTemCad);
+
+// unset($aCarrito[$_POST['Posicion']]);
+
+// $aCarrito = unserialize($_COOKIE['carrito']);
+
+    unset($aCarrito[$_POST['Posicion']]);
+
+    setcookie('carrito', serialize($aCarrito));
+    echo ("posicion: ".$_POST['Posicion']);
+    echo "   -----------------   ";
+    echo $_COOKIE['carrito'];
+
+
+// echo $_COOKIE['carrito'];
+      // $iUltimaPos = count($aCarrito);
+      // echo $iUltimaPos;
+      // unset($aCarrito[$iUltimaPos -1]['ID']);
+      // unset($aCarrito[$iUltimaPos -1]['NOMBRE']);
+      // unset($aCarrito[$iUltimaPos -1]['PRECIO']);
+      // unset($aCarrito[$iUltimaPos -1]['URL']);
+      // unset($aCarrito[$iUltimaPos -1]['CANTIDAD']);
+    // }
+   // }
+
+}
+
 
 //Anyado un nuevo articulo al carrito
 
