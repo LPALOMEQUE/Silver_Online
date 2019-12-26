@@ -73,7 +73,8 @@ function eliminarArticulo(id, posicion, valida){
     success:function(result){
 debugger;
       x=result;
-      location.reload();
+      //location.reload();
+      location.href="cart.php";
     }
 
   });

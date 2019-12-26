@@ -360,7 +360,7 @@ foreach ($aCarrito as $key => $value) {
                         <!-- <form id="formEnvio" class="cart" method="post"> -->
                         <div class="quantity">
                           <button type="button" class="qty-minus" id="btnMenos<?php echo $category[0] ?>">-</button>
-                          <input type="number" class="qty-text" id="qty<?php echo $category[0] ?>" name="CANTIDAD" value="1">
+                          <input type="number" readonly class="qty-text" id="qty<?php echo $category[0] ?>" name="CANTIDAD" value="1">
                           <button type="button" class="qty-minus" id="btnMas<?php echo $category[0] ?>">+</button>
 
                         </div>

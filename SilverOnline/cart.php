@@ -25,45 +25,7 @@ if(isset($_COOKIE['carrito'])) {
 
 
 if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
-  // echo ("posicion: ".$_POST['Posicion']);
-  // echo ("del: ".$_POST['DelArt']);
-  // echo ("ID: ".$_POST['ID']);
-  // foreach ($aCarrito as $key => $value) {
-  // unset($aCarrito[$_POST['Posicion']]['ID']);
-  // unset($aCarrito[0]);
-  // echo   $key.' ' . $value['ID'] . ' ' . $value['NOMBRE'];
-  // $valCookie = unserialize($_COOKIE['carrito']);
-  // unset($valCookie[$_POST['Posicion']]);
-  // Setcookie("carrito", serialize($valCookie));
-  // $valCookie = unserialize($_COOKIE['carrito']);
 
-  // unset($valCookie[$_POST['Posicion']]);
-
-  // setcookie('carrito', '',$iTemCad -3600);
-
-  // header ("Location: cart.php");
-  //$aCarrito = unserialize($_COOKIE['carrito']);
-  // echo $_COOKIE['carrito'];
-  //unset($aCarrito[$_POST['Posicion']]);
-  // }
-  // ----foreach ($aCarrito as $key => $value) {
-    // if ($aCarrito[$_POST['Posicion']]['ID'] == $_POST['ID'])
-    // {
-//       $aCarrito = unserialize($_COOKIE['carrito']);
-//       $iUltimaPos = count($aCarrito);
-      // unset($aCarrito[$_POST['Posicion']]['ID']);
-      // unset($aCarrito[$_POST['Posicion']]['NOMBRE']);
-      // unset($aCarrito[$_POST['Posicion']]['PRECIO']);
-      // unset($aCarrito[$_POST['Posicion']]['URL']);
-      // unset($aCarrito[$_POST['Posicion']]['CANTIDAD']);
-//
-// $iTemCad = time() + (60 * 60);
-// setcookie('carrito', '',$iTemCad -3600);
-//
-//
-//       setcookie('carrito', serialize($aCarrito), $iTemCad);
-
-// unset($aCarrito[$_POST['Posicion']]);
 
 // $aCarrito = unserialize($_COOKIE['carrito']);
 
@@ -72,19 +34,11 @@ if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) 
     setcookie('carrito', serialize($aCarrito));
     echo ("posicion: ".$_POST['Posicion']);
     echo "   -----------------   ";
+    unserialize(urldecode($_COOKIE['carrito']));
     echo $_COOKIE['carrito'];
+// header("location:cart.php");
 
 
-// echo $_COOKIE['carrito'];
-      // $iUltimaPos = count($aCarrito);
-      // echo $iUltimaPos;
-      // unset($aCarrito[$iUltimaPos -1]['ID']);
-      // unset($aCarrito[$iUltimaPos -1]['NOMBRE']);
-      // unset($aCarrito[$iUltimaPos -1]['PRECIO']);
-      // unset($aCarrito[$iUltimaPos -1]['URL']);
-      // unset($aCarrito[$iUltimaPos -1]['CANTIDAD']);
-    // }
-   // }
 
 }
 
@@ -399,7 +353,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                 </thead>
                 <tbody>
                   <?php
-                  $i=0;
+
                   foreach ($aCarrito as $key => $value) {
 
                     $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
@@ -414,7 +368,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       <td class="qty">
                         <div class="quantity">
                           <button type="button" class="qty-minus" id="btnMenos<?php echo $value['ID'] ?>">-</button>
-                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD">
+                          <input type="number" readonly class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD">
                           <button type="button" class="qty-minus" id="btnMas<?php echo $value['ID'] ?>">+</button>
 
                         </div>
@@ -440,7 +394,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                         precio = <?php echo $value['PRECIO'] ?>;
                         url = '<?php echo $value['URL'] ?>';
                         cantidad=$('#qty<?php echo $value['ID'] ?>').val();
-                        posicion = <?php echo $i ?>;
+                        posicion = <?php echo $key ?>;
                         cartModPrice(id,
                           nombre,
                           precio,
@@ -457,7 +411,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                           precio = <?php echo $value['PRECIO'] ?>;
                           url = '<?php echo $value['URL'] ?>';
                           cantidad=$('#qty<?php echo $value['ID'] ?>').val();
-                          posicion = <?php echo $i ?>;
+                          posicion = <?php echo $key ?>;
                           cartModPrice(id,
                             nombre,
                             precio,
@@ -470,7 +424,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                           $('#btnDel<?php echo $value['ID'] ?>').click(function(){
                             debugger;
                             id = <?php echo $value['ID'] ?>;
-                            posicion = <?php echo $i ?>;
+                            posicion = <?php echo $key ?>;
                             valida = 1;
                             eliminarArticulo(id, posicion, valida);
 
@@ -478,7 +432,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                         });
                         </script>
                         <?php
-                        $i++;
+
                       }
                       ?>
                     </tbody>
@@ -487,11 +441,11 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
                 <div class="cart-footer d-flex mt-30">
                   <div class="back-to-shop w-50">
-                    <a href="shop.html">Continue shooping</a>
+                    <a href="joyas-m.php">Continuar Comprando</a>
                   </div>
                   <div class="update-checkout w-50 text-right">
                     <a href="cart.php?vaciar=1">Vaciar carrito</a>
-                    <a href="#">Update cart</a>
+                    <!-- <a href="#">Update cart</a> -->
                   </div>
                 </div>
 
@@ -514,24 +468,24 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="shipping-method-area mt-70">
                   <div class="cart-page-heading">
-                    <h5>Shipping method</h5>
-                    <p>Select the one you want</p>
+                    <h5>Metodo de envío</h5>
+                    <p>Selecciona el tipo de envío</p>
                   </div>
 
                   <div class="custom-control custom-radio mb-30">
                     <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Next day delivery</span><span>$4.99</span></label>
+                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Día siguiente</span><span>$4.99</span></label>
                   </div>
 
                   <div class="custom-control custom-radio mb-30">
                     <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Standard delivery</span><span>$1.99</span></label>
+                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Entrega estandar</span><span>$1.99</span></label>
                   </div>
 
-                  <div class="custom-control custom-radio">
+                  <!-- <div class="custom-control custom-radio">
                     <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio3"><span>Personal Pickup</span><span>Free</span></label>
-                  </div>
+                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio3"><span>Recoger en sucursal</span><span>Free</span></label>
+                  </div> -->
                 </div>
               </div>
               <div class="col-12 col-lg-4">
