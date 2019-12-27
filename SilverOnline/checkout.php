@@ -1,3 +1,51 @@
+<?php
+
+$aCarrito = array();
+$sHTML = '';
+$bagNumber = 0;
+$TotalxArtGlobal = 0;
+$cantidad = 0;
+//Vaciamos el carrito
+
+if(isset($_POST['vaciar'])) {
+  unset($_COOKIE['carrito']);
+}
+
+//Obtenemos los productos anteriores
+
+if(isset($_COOKIE['carrito'])) {
+  $aCarrito = unserialize($_COOKIE['carrito']);
+}
+
+//Anyado un nuevo articulo al carrito
+
+if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
+  $iUltimaPos = count($aCarrito);
+  $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
+  $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+  $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
+  $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+
+}
+
+//Creamos la cookie (serializamos)
+
+$iTemCad = time() + (60 * 60);
+setcookie('carrito', serialize($aCarrito), $iTemCad);
+
+
+
+//Imprimimos el contenido del array
+
+foreach ($aCarrito as $key => $value) {
+  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+  $bagNumber = count($aCarrito);
+  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,58 +83,41 @@
                 <h6>Categories</h6>
                 <ul id="menu-content" class="menu-content collapse out">
                     <!-- Single Item -->
-                    <li data-toggle="collapse" data-target="#women" class="collapsed active">
-                        <a href="#">Woman wear <span class="arrow"></span></a>
-                        <ul class="sub-menu collapse" id="women">
-                            <li><a href="#">Midi Dresses</a></li>
-                            <li><a href="#">Maxi Dresses</a></li>
-                            <li><a href="#">Prom Dresses</a></li>
-                            <li><a href="#">Little Black Dresses</a></li>
-                            <li><a href="#">Mini Dresses</a></li>
-                        </ul>
+                    <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
+                      <a href="#">Joyas<span class="arrow"></span></a>
+                      <ul class="sub-menu collapse" id="joyas">
+                        <li><a href="joyas-h.php">Hombre</a></li>
+                        <li><a href="joyas-m.php">Mujer</a></li>
+                      </ul>
                     </li>
+
                     <!-- Single Item -->
-                    <li data-toggle="collapse" data-target="#man" class="collapsed">
-                        <a href="#">Man Wear <span class="arrow"></span></a>
-                        <ul class="sub-menu collapse" id="man">
-                            <li><a href="#">Man Dresses</a></li>
-                            <li><a href="#">Man Black Dresses</a></li>
-                            <li><a href="#">Man Mini Dresses</a></li>
-                        </ul>
+                    <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
+                      <a href="#">Bolsas<span class="arrow"></span></a>
+                      <ul class="sub-menu collapse" id="bolsas">
+                        <li><a href="#">Hombre</a></li>
+                        <li><a href="#">Mujer</a></li>
+                      </ul>
                     </li>
+
                     <!-- Single Item -->
-                    <li data-toggle="collapse" data-target="#kids" class="collapsed">
-                        <a href="#">Children <span class="arrow"></span></a>
-                        <ul class="sub-menu collapse" id="kids">
-                            <li><a href="#">Children Dresses</a></li>
-                            <li><a href="#">Mini Dresses</a></li>
-                        </ul>
+                    <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
+                      <a href="#">Perfumes<span class="arrow"></span></a>
+                      <ul class="sub-menu collapse" id="perfumes">
+                        <li><a href="#">Hombre</a></li>
+                        <li><a href="#">Mujer</a></li>
+                      </ul>
                     </li>
+
                     <!-- Single Item -->
-                    <li data-toggle="collapse" data-target="#bags" class="collapsed">
-                        <a href="#">Bags &amp; Purses <span class="arrow"></span></a>
-                        <ul class="sub-menu collapse" id="bags">
-                            <li><a href="#">Bags</a></li>
-                            <li><a href="#">Purses</a></li>
-                        </ul>
-                    </li>
-                    <!-- Single Item -->
-                    <li data-toggle="collapse" data-target="#eyewear" class="collapsed">
-                        <a href="#">Eyewear <span class="arrow"></span></a>
-                        <ul class="sub-menu collapse" id="eyewear">
-                            <li><a href="#">Eyewear Style 1</a></li>
-                            <li><a href="#">Eyewear Style 2</a></li>
-                            <li><a href="#">Eyewear Style 3</a></li>
-                        </ul>
-                    </li>
-                    <!-- Single Item -->
-                    <li data-toggle="collapse" data-target="#footwear" class="collapsed">
-                        <a href="#">Footwear <span class="arrow"></span></a>
-                        <ul class="sub-menu collapse" id="footwear">
-                            <li><a href="#">Footwear 1</a></li>
-                            <li><a href="#">Footwear 2</a></li>
-                            <li><a href="#">Footwear 3</a></li>
-                        </ul>
+                    <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
+                      <a href="#">Ropa<span class="arrow"></span></a>
+                      <ul class="sub-menu collapse" id="ropa">
+                        <li><a href="#">Hombre</a></li>
+                        <li><a href="#">Mujer</a></li>
+                        <li><a href="#">Niño</a></li>
+                        <li><a href="#">Niña</a></li>
+                      </ul>
                     </li>
                 </ul>
             </div>
@@ -112,31 +143,27 @@
                                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                                     <!-- Cart Area -->
                                     <div class="cart">
-                                        <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity">2</span> <i class="ti-bag"></i> Your Bag $20</a>
-                                        <!-- Cart List Area Start -->
-                                        <ul class="cart-list">
-                                            <li>
-                                                <a href="#" class="image"><img src="img/product-img/product-10.jpg" class="cart-thumb" alt=""></a>
-                                                <div class="cart-item-desc">
-                                                    <h6><a href="#">Women's Fashion</a></h6>
-                                                    <p>1x - <span class="price">$10</span></p>
-                                                </div>
-                                                <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="image"><img src="img/product-img/product-11.jpg" class="cart-thumb" alt=""></a>
-                                                <div class="cart-item-desc">
-                                                    <h6><a href="#">Women's Fashion</a></h6>
-                                                    <p>1x - <span class="price">$10</span></p>
-                                                </div>
-                                                <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                                            </li>
-                                            <li class="total">
-                                                <span class="pull-right">Total: $20.00</span>
-                                                <a href="cart.html" class="btn btn-sm btn-cart">Cart</a>
-                                                <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
-                                            </li>
-                                        </ul>
+                                      <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu bolsa $ <?php echo $TotalxArtGlobal ?></a>
+                                      <!-- Cart List Area Start -->
+                                      <ul class="cart-list">
+                                        <?php foreach ($aCarrito as $key => $value) {
+                                          $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+                                          ?>
+                                          <li>
+                                            <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
+                                            <div class="cart-item-desc">
+                                              <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
+                                              <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo $TotalxArt ?></span></p>
+                                            </div>
+                                            <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
+                                          </li>
+                                        <?php } ?>
+                                        <li class="total">
+                                          <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
+                                          <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
+                                          <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
+                                        </li>
+                                      </ul>
                                     </div>
                                     <div class="header-right-side-menu ml-15">
                                         <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
@@ -189,7 +216,7 @@
                             </div>
                             <!-- Help Line -->
                             <div class="help-line">
-                                <a href="tel:+346573556778"><i class="ti-headphone-alt"></i> +34 657 3556 778</a>
+                              <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
                             </div>
                         </div>
                     </div>
@@ -225,76 +252,69 @@
                         <div class="checkout_details_area mt-50 clearfix">
 
                             <div class="cart-page-heading">
-                                <h5>Billing Address</h5>
-                                <p>Enter your cupone code</p>
+                                <h5>Direccion de envío</h5>
+                                <p>...</p>
                             </div>
 
                             <form action="#" method="post">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="first_name">First Name <span>*</span></label>
+                                        <label for="first_name">Nombre <span>*</span></label>
                                         <input type="text" class="form-control" id="first_name" value="" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="last_name">Last Name <span>*</span></label>
+                                        <label for="last_name">Apellido <span>*</span></label>
                                         <input type="text" class="form-control" id="last_name" value="" required>
                                     </div>
-                                    <div class="col-12 mb-3">
+                                    <!-- <div class="col-12 mb-3">
                                         <label for="company">Company Name</label>
                                         <input type="text" class="form-control" id="company" value="">
-                                    </div>
+                                    </div> -->
                                     <div class="col-12 mb-3">
-                                        <label for="country">Country <span>*</span></label>
+                                        <label for="country">País <span>*</span></label>
                                         <select class="custom-select d-block w-100" id="country">
-                                        <option value="usa">United States</option>
-                                        <option value="uk">United Kingdom</option>
-                                        <option value="ger">Germany</option>
-                                        <option value="fra">France</option>
-                                        <option value="ind">India</option>
-                                        <option value="aus">Australia</option>
-                                        <option value="bra">Brazil</option>
-                                        <option value="cana">Canada</option>
+                                        <option value="Mex">México</option>
                                     </select>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <label for="street_address">Address <span>*</span></label>
+                                        <label for="street_address">Dirección <span>*</span></label>
                                         <input type="text" class="form-control mb-3" id="street_address" value="">
                                         <input type="text" class="form-control" id="street_address2" value="">
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <label for="postcode">Postcode <span>*</span></label>
+                                        <label for="postcode">Codígo Postal <span>*</span></label>
                                         <input type="text" class="form-control" id="postcode" value="">
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <label for="city">Town/City <span>*</span></label>
+                                        <label for="city">Ciudad <span>*</span></label>
                                         <input type="text" class="form-control" id="city" value="">
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <label for="state">Province <span>*</span></label>
+                                        <label for="state">Estado <span>*</span></label>
                                         <input type="text" class="form-control" id="state" value="">
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <label for="phone_number">Phone No <span>*</span></label>
+                                        <label for="phone_number">Num. de contacto <span>*</span></label>
                                         <input type="number" class="form-control" id="phone_number" min="0" value="">
                                     </div>
                                     <div class="col-12 mb-4">
-                                        <label for="email_address">Email Address <span>*</span></label>
+                                        <label for="email_address">Dirección de correo <span>*</span></label>
                                         <input type="email" class="form-control" id="email_address" value="">
                                     </div>
 
                                     <div class="col-12">
                                         <div class="custom-control custom-checkbox d-block mb-2">
                                             <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                            <label class="custom-control-label" for="customCheck1">Terms and conitions</label>
+                                            <label class="custom-control-label" for="customCheck1">Terminos y coniciones</label>
                                         </div>
                                         <div class="custom-control custom-checkbox d-block mb-2">
                                             <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                            <label class="custom-control-label" for="customCheck2">Create an accout</label>
+                                            <label class="custom-control-label" for="customCheck2">Registrarse</label>
                                         </div>
-                                        <div class="custom-control custom-checkbox d-block">
+                                        <!-- <div class="custom-control custom-checkbox d-block">
                                             <input type="checkbox" class="custom-control-input" id="customCheck3">
                                             <label class="custom-control-label" for="customCheck3">Subscribe to our newsletter</label>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </form>
@@ -305,16 +325,21 @@
                         <div class="order-details-confirmation">
 
                             <div class="cart-page-heading">
-                                <h5>Your Order</h5>
-                                <p>The Details</p>
+                                <h5>Tu orden</h5>
+                                <p>Detalles</p>
                             </div>
 
                             <ul class="order-details-form mb-4">
-                                <li><span>Product</span> <span>Total</span></li>
-                                <li><span>Cocktail Yellow dress</span> <span>$59.90</span></li>
-                                <li><span>Subtotal</span> <span>$59.90</span></li>
-                                <li><span>Shipping</span> <span>Free</span></li>
-                                <li><span>Total</span> <span>$59.90</span></li>
+                                <li><span>Artículos</span> <span>Total</span></li>
+                                <?php foreach ($aCarrito as $key => $value) {
+                                  $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+                                  ?>
+                                <li><span><?php echo $value['NOMBRE'] ?></span> <span>$<?php echo $TotalxArt ?></span></li>
+
+                              <?php } ?>
+                              <!-- <li><span>Subtotal</span> <span>$<?php echo $TotalxArtGlobal ?></span></li> -->
+                                <li><span>Envio</span> <span>Free</span></li>
+                                <li><span>Total</span> <span>$<?php echo $TotalxArtGlobal ?></span></li>
                             </ul>
 
 

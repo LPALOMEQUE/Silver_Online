@@ -69,16 +69,26 @@ function eliminarArticulo(id, posicion, valida){
     type:"POST",
     url: "cart.php",
     data:cadena,
-
     success:function(result){
-debugger;
-      x=result;
-      //location.reload();
       location.href="cart.php";
     }
-
   });
+}
 
+function DeliveryPrice(price){
+debugger;
+  cadena = "PrecioEnvios=" + price;
+
+  $.ajax({
+    type:"POST",
+    url: "cart.php",
+    data:cadena,
+    success:function(result){
+        debugger;
+          x = result;
+          
+    }
+  });
 }
 
 function guardarArt(nomArt,  descArt, barCode, modelArt, marcaArt, precioArt, categoria, subCatego, statusArt, nameArticulo){
