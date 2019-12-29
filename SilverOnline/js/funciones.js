@@ -75,20 +75,23 @@ function eliminarArticulo(id, posicion, valida){
   });
 }
 
-function DeliveryPrice(price){
-debugger;
-  cadena = "PrecioEnvios=" + price;
+function getPriceDeli(precioEnvio, total){
+
+  cadena = "envioCosto=" + precioEnvio + "&finalTotal=" + total;
 
   $.ajax({
     type:"POST",
     url: "cart.php",
     data:cadena,
     success:function(result){
-        debugger;
-          x = result;
-          
+      debugger;
+      $('#txtcost').val('$'+precioEnvio);
+      $('#txtcostT').val('$'+total);
+
     }
+
   });
+
 }
 
 function guardarArt(nomArt,  descArt, barCode, modelArt, marcaArt, precioArt, categoria, subCatego, statusArt, nameArticulo){

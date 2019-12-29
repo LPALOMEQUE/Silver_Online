@@ -5,7 +5,14 @@ $sHTML = '';
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $cantidad = 0;
+$totalP =0;
 //Vaciamos el carrito
+
+if(isset($_POST['envioCosto']) && isset($_POST['finalTotal'])) {
+setcookie('cookieEnvio',$_POST['envioCosto'],$iTemCad);
+$CostPrice = $_POST['envioCosto'];
+$totalP = $_POST['finalTotal'];
+}
 
 if(isset($_POST['vaciar'])) {
   unset($_COOKIE['carrito']);

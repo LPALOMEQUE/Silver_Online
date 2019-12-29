@@ -15,3 +15,12 @@
     .sinborde {
     border: 0;
   }
+
+
+  .styleGrey {
+      background-color: #f4f2f8;
+      border: 0;
+      font-size: 14px;
+      text-align: right;
+      /* padding: 30px; */
+  }

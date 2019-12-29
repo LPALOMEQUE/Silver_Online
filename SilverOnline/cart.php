@@ -1,50 +1,40 @@
 <?php
 $aCarrito = array();
+$aEnvio = array();
 $sHTML = '';
 $fPrecioTotal = 0;
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
+$CostPrice = 0;
+$totalP =0;
+$prueba = 0;
 
 //Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
   unset($_COOKIE['carrito']);
 }
 
-//ELIMINAR LA COOKIE COMPLETA DEL NAVEGADOR, USAR ESTO EN CASO DE QUE TRUENE EL unset
-//if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
-// setcookie('carrito', '',$iTemCad -3600);
-//}
-
-
-
 //Obtenemos los productos anteriores
-
 if(isset($_COOKIE['carrito'])) {
   $aCarrito = unserialize($_COOKIE['carrito']);
 }
 
-
-if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
-
-
-// $aCarrito = unserialize($_COOKIE['carrito']);
-
-    unset($aCarrito[$_POST['Posicion']]);
-
-    setcookie('carrito', serialize($aCarrito));
-    echo ("posicion: ".$_POST['Posicion']);
-    echo "   -----------------   ";
-    unserialize(urldecode($_COOKIE['carrito']));
-    echo $_COOKIE['carrito'];
-// header("location:cart.php");
-
-
-
+if(isset($_COOKIE['cookieEnvio'])) {
+  $aEnvio = unserialize($_COOKIE['cookieEnvio']);
 }
 
+//Eliminamos articulos del carrito
+if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
+
+  unset($aCarrito[$_POST['Posicion']]);
+  setcookie('carrito', serialize($aCarrito));
+  // echo ("posicion: ".$_POST['Posicion']);
+  // echo "   -----------------   ";
+  unserialize(urldecode($_COOKIE['carrito']));
+  // echo $_COOKIE['carrito'];
+}
 
 //Anyado un nuevo articulo al carrito
-
 if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD']) && isset($_POST['Posicion'])) {
   foreach ($aCarrito as $key => $value) {
 
@@ -69,13 +59,29 @@ if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && 
   }
 }
 
-//Creamos la cookie (serializamos)
+if( isset($_POST['finalTotal'])) {
+  foreach ($aEnvio as $key2 => $value2) {
+    $iUltimaPos2 = count($aEnvio);
+    $aEnvio[$iUltimaPos2]['envioCosto'] = $_POST['envioCosto'];
+    $aEnvio[$iUltimaPos2]['finalTotal'] = $_POST['finalTotal'];
+  }
+}
 
+//Creamos la cookie (serializamos)
 $iTemCad = time() + (60 * 60);
 setcookie('carrito', serialize($aCarrito), $iTemCad);
+$iTemCad2 = time() + (60 * 60);
+
+setcookie('express',700,$iTemCad2);
+setcookie('normal',250,$iTemCad2);
+
+
+foreach ($aEnvio as $key2 => $value2) {
+  $value2['envioCosto'];
+  $totalP = $value2['finalTotal'];
+}
 
 //Imprimimos el contenido del array
-
 foreach ($aCarrito as $key => $value) {
   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
   $fPrecioTotal += $value['PRECIO'];
@@ -83,12 +89,8 @@ foreach ($aCarrito as $key => $value) {
   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
 }
 
-//Imprimimos el precio total
-$sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
 
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -259,7 +261,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                           <a class="dropdown-item" href="shop.html">Shop</a>
                           <a class="dropdown-item" href="product-details.html">Product Details</a>
                           <a class="dropdown-item" href="cart.php">Carrito</a>
-                          <a class="dropdown-item" href="checkout.html">Checkout</a>
+                          <a class="dropdown-item" href="checkout.php">Checkout</a>
                         </div>
                       </li>
                       <li class="nav-item"><a class="nav-link" href="#">Dresses</a></li>
@@ -368,7 +370,7 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                       <td class="qty">
                         <div class="quantity">
                           <button type="button" class="qty-minus" id="btnMenos<?php echo $value['ID'] ?>">-</button>
-                          <input type="number" readonly class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD">
+                          <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD">
                           <button type="button" class="qty-minus" id="btnMas<?php echo $value['ID'] ?>">+</button>
 
                         </div>
@@ -429,6 +431,18 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                             eliminarArticulo(id, posicion, valida);
 
                           });
+                          var input = document.getElementById("qty<?php echo $value['ID'] ?>");
+
+                          // Execute a function when the user releases a key on the keyboard
+                          input.addEventListener("keyup", function(event) {
+                            // Number 13 is the "Enter" key on the keyboard
+                            if (event.keyCode === 13) {
+                              // Cancel the default action, if needed
+                              event.preventDefault();
+                              // Trigger the button element with a click
+                              document.getElementById("btnMas<?php echo $value['ID'] ?>").click();
+                            }
+                          });
                         });
                         </script>
                         <?php
@@ -471,161 +485,186 @@ $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
                     <h5>Metodo de envío</h5>
                     <p>Selecciona el tipo de envío</p>
                   </div>
-
                   <div class="custom-control custom-radio mb-30">
-                    <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Día siguiente</span><span>$4.99</span></label>
+                    <input type="radio" id="customRadio1" name="rbDelivery" class="custom-control-input" value="700">
+                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Día siguiente</span><span>$700.00</span></label>
                   </div>
 
                   <div class="custom-control custom-radio mb-30">
-                    <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Entrega estandar</span><span>$1.99</span></label>
+                    <input type="radio" id="customRadio2" name="rbDelivery" class="custom-control-input" value="250">
+                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Entrega estandar</span><span>$250.00</span></label>
                   </div>
 
                   <!-- <div class="custom-control custom-radio">
-                    <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio3"><span>Recoger en sucursal</span><span>Free</span></label>
-                  </div> -->
-                </div>
+                  <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
+                  <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio3"><span>Recoger en sucursal</span><span>Free</span></label>
+                </div> -->
               </div>
-              <div class="col-12 col-lg-4">
-                <div class="cart-total-area mt-70">
-                  <div class="cart-page-heading">
-                    <h5>Total del Carrito</h5>
-                    <p>Información Final</p>
-                  </div>
-
-                  <ul class="cart-total-chart">
-                    <li><span>Subtotal</span> <span>$<?php echo $TotalxArtGlobal ?></span></li>
-                    <li><span>Envío</span> <span>$0.00 </span></li>
-                    <li><span><strong>Total</strong></span> <span><strong>$<?php echo $TotalxArtGlobal ?></strong></span></li>
-                  </ul>
-                  <a href="checkout.html" class="btn karl-checkout-btn">Proceed to checkout</a>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="cart-total-area mt-70">
+                <div class="cart-page-heading">
+                  <h5>Total del Carrito</h5>
+                  <p>Información Final</p>
                 </div>
+
+                <ul class="cart-total-chart">
+                  <li><span>Subtotal</span> <span>$<?php echo $TotalxArtGlobal ?></span></li>
+
+                  <li><span>Envío</span> <span><input type="text" class="styleGrey" name="cost" value="$0" readonly id="txtcost"></span></li>
+                  <li><span><strong>Total</strong></span> <span><strong><input type="text" class="styleGrey" name="total" value="$0" readonly id="txtcostT"></strong></span></li>
+                </ul>
+                <a href="checkout.php" class="btn karl-checkout-btn">Proceed to checkout</a>
               </div>
             </div>
           </div>
         </div>
-        <!-- ****** Cart Area End ****** -->
+      </div>
+      <!-- ****** Cart Area End ****** -->
 
-        <!-- ****** Footer Area Start ****** -->
-        <footer class="footer_area">
-          <div class="container">
-            <div class="row">
-              <!-- Single Footer Area Start -->
-              <div class="col-12 col-md-6 col-lg-3">
-                <div class="single_footer_area">
-                  <div class="footer-logo">
-                    <img src="img/core-img/logo.png" alt="">
-                  </div>
-                  <div class="copywrite_text d-flex align-items-center">
-                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                      Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                      <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                    </div>
-                  </div>
+      <!-- ****** Footer Area Start ****** -->
+      <footer class="footer_area">
+        <div class="container">
+          <div class="row">
+            <!-- Single Footer Area Start -->
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="single_footer_area">
+                <div class="footer-logo">
+                  <img src="img/core-img/logo.png" alt="">
                 </div>
-                <!-- Single Footer Area Start -->
-                <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-                  <div class="single_footer_area">
-                    <ul class="footer_widget_menu">
-                      <li><a href="#">About</a></li>
-                      <li><a href="#">Blog</a></li>
-                      <li><a href="#">Faq</a></li>
-                      <li><a href="#">Returns</a></li>
-                      <li><a href="#">Contact</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- Single Footer Area Start -->
-                <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-                  <div class="single_footer_area">
-                    <ul class="footer_widget_menu">
-                      <li><a href="#">My Account</a></li>
-                      <li><a href="#">Shipping</a></li>
-                      <li><a href="#">Our Policies</a></li>
-                      <li><a href="#">Afiliates</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- Single Footer Area Start -->
-                <div class="col-12 col-lg-5">
-                  <div class="single_footer_area">
-                    <div class="footer_heading mb-30">
-                      <h6>Subscribe to our newsletter</h6>
-                    </div>
-                    <div class="subscribtion_form">
-                      <form action="#" method="post">
-                        <input type="email" name="mail" class="mail" placeholder="Your email here">
-                        <button type="submit" class="submit">Subscribe</button>
-                      </form>
-                    </div>
+                <div class="copywrite_text d-flex align-items-center">
+                  <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                   </div>
                 </div>
               </div>
-              <div class="line"></div>
-
-              <!-- Footer Bottom Area Start -->
-              <div class="footer_bottom_area">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="footer_social_area text-center">
-                      <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                      <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                      <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                      <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                    </div>
+              <!-- Single Footer Area Start -->
+              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+                <div class="single_footer_area">
+                  <ul class="footer_widget_menu">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Faq</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Contact</a></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- Single Footer Area Start -->
+              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+                <div class="single_footer_area">
+                  <ul class="footer_widget_menu">
+                    <li><a href="#">My Account</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Our Policies</a></li>
+                    <li><a href="#">Afiliates</a></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- Single Footer Area Start -->
+              <div class="col-12 col-lg-5">
+                <div class="single_footer_area">
+                  <div class="footer_heading mb-30">
+                    <h6>Subscribe to our newsletter</h6>
+                  </div>
+                  <div class="subscribtion_form">
+                    <form action="#" method="post">
+                      <input type="email" name="mail" class="mail" placeholder="Your email here">
+                      <button type="submit" class="submit">Subscribe</button>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
-          </footer>
-          <!-- ****** Footer Area End ****** -->
-        </div>
-        <!-- /.wrapper end -->
+            <div class="line"></div>
 
-        <!-- jQuery (Necessary for All JavaScript Plugins) -->
-        <script src="js/jquery/jquery-2.2.4.min.js"></script>
-        <!-- Popper js -->
-        <script src="js/popper.min.js"></script>
-        <!-- Bootstrap js -->
-        <script src="js/bootstrap.min.js"></script>
-        <!-- Plugins js -->
-        <script src="js/plugins.js"></script>
-        <!-- Active js -->
-        <script src="js/active.js"></script>
+            <!-- Footer Bottom Area Start -->
+            <div class="footer_bottom_area">
+              <div class="row">
+                <div class="col-12">
+                  <div class="footer_social_area text-center">
+                    <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+        <!-- ****** Footer Area End ****** -->
+      </div>
+      <!-- /.wrapper end -->
 
-      </body>
+      <!-- jQuery (Necessary for All JavaScript Plugins) -->
+      <script src="js/jquery/jquery-2.2.4.min.js"></script>
+      <!-- Popper js -->
+      <script src="js/popper.min.js"></script>
+      <!-- Bootstrap js -->
+      <script src="js/bootstrap.min.js"></script>
+      <!-- Plugins js -->
+      <script src="js/plugins.js"></script>
+      <!-- Active js -->
+      <script src="js/active.js"></script>
 
-      </html>
+    </body>
 
-      <script type="text/javascript">
+    </html>
 
-      $(document).ready(function(){
-        $('#btnGuardar').click(function(){
+    <script type="text/javascript">
 
-          email= $('#txtEmail').val();
-          pass= $('#txtPass').val();
+    $(document).ready(function(){
+      $('#btnGuardar').click(function(){
 
-          if($('#txtEmail').val() == ""){
+        email= $('#txtEmail').val();
+        pass= $('#txtPass').val();
 
-            alert("Debe ingresar un E-mail...");
-          }
-          if($('#txtPass').val() == ""){
+        if($('#txtEmail').val() == ""){
 
-            alert("Debe ingresar una contraseña...");
-          }
-          if($('#txtEmail').val() != "" && $('#txtPass').val() != ""){
-            agregarUsuarios(email, pass);
-          }
-        });
+          alert("Debe ingresar un E-mail...");
+        }
+        if($('#txtPass').val() == ""){
 
-        <?php
-        foreach ($aCarrito as $key => $value) {
-          ?>
-          $('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>);
+          alert("Debe ingresar una contraseña...");
+        }
+        if($('#txtEmail').val() != "" && $('#txtPass').val() != ""){
+          agregarUsuarios(email, pass);
+        }
+      });
 
-          <?php } ?>
-        });
 
-        </script>
+      $("input[name=rbDelivery]").change(function () {
+        debugger;
+        precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+
+
+        if (precioEnvio = 700) {
+          x = <?php echo $_COOKIE['express'] ?>;
+        }
+        else{
+          x = <?php echo $_COOKIE['normal'] ?>;
+        }
+        z = <?php echo $TotalxArtGlobal ?>;
+        total = precioEnvio + z;
+        getPriceDeli(x,total);
+      });
+
+      // $("input[name=rbDelivery]").change(function () {
+      //   debugger;
+      //   precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+      //
+      //   getPriceDeli(precioEnvio);
+      // });
+
+      <?php
+      foreach ($aCarrito as $key => $value) {
+        ?>
+        $('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>);
+
+        <?php } ?>
+
+      });
+
+      </script>
