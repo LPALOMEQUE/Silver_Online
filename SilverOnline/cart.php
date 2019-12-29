@@ -431,8 +431,8 @@ foreach ($aCarrito as $key => $value) {
                             eliminarArticulo(id, posicion, valida);
 
                           });
-                          var input = document.getElementById("qty<?php echo $value['ID'] ?>");
 
+                          var input = document.getElementById("qty<?php echo $value['ID'] ?>");
                           // Execute a function when the user releases a key on the keyboard
                           input.addEventListener("keyup", function(event) {
                             // Number 13 is the "Enter" key on the keyboard
@@ -440,7 +440,20 @@ foreach ($aCarrito as $key => $value) {
                               // Cancel the default action, if needed
                               event.preventDefault();
                               // Trigger the button element with a click
-                              document.getElementById("btnMas<?php echo $value['ID'] ?>").click();
+                              valor = document.getElementById("qty<?php echo $value['ID'] ?>");
+                              // valor.value ++;
+                              id = <?php echo $value['ID'] ?>;
+                              nombre = '<?php echo $value['NOMBRE'] ?>';
+                              precio = <?php echo $value['PRECIO'] ?>;
+                              url = '<?php echo $value['URL'] ?>';
+                              cantidad=$('#qty<?php echo $value['ID'] ?>').val();
+                              posicion = <?php echo $key ?>;
+                              cartModPrice(id,
+                                nombre,
+                                precio,
+                                url,
+                                cantidad,
+                                posicion);
                             }
                           });
                         });
