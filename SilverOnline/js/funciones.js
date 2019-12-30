@@ -85,9 +85,14 @@ function getPriceDeli(precioEnvio, total){
     data:cadena,
     success:function(result){
       debugger;
-      $('#txtcost').val('$'+precioEnvio);
-      $('#txtcostT').val('$'+total);
-
+      var ventaTotal = total;
+      var montoEnvio = precioEnvio;
+      const formatterDolar = new Intl.NumberFormat('en-US', {
+         style: 'currency',
+         currency: 'USD'
+       })
+       $('#txtcost').val(formatterDolar.format(montoEnvio));
+       $('#txtcostT').val(formatterDolar.format(ventaTotal));
     }
 
   });

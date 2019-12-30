@@ -87,6 +87,11 @@ foreach ($aCarrito as $key => $value) {
   $fPrecioTotal += $value['PRECIO'];
   $bagNumber = count($aCarrito);
   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+  // muestra el formato internacional para la configuración regional en_US
+  // setlocale(LC_MONETARY, 'en_US');
+  // echo money_format('%i', $TotalxArtGlobal);
+
+
 }
 
 
@@ -200,7 +205,7 @@ foreach ($aCarrito as $key => $value) {
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu bolsa $ <?php echo $TotalxArtGlobal ?></a>
+                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu bolsa $<?php echo number_format($TotalxArtGlobal,2) ?></a>
                     <!-- Cart List Area Start -->
                     <ul class="cart-list">
                       <?php foreach ($aCarrito as $key => $value) {
@@ -210,13 +215,13 @@ foreach ($aCarrito as $key => $value) {
                           <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
                           <div class="cart-item-desc">
                             <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-                            <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo $TotalxArt ?></span></p>
+                            <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo number_format($TotalxArt,2) ?></span></p>
                           </div>
                           <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
                         </li>
                       <?php } ?>
                       <li class="total">
-                        <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
+                        <span class="pull-right">Total: $<?php echo number_format($TotalxArtGlobal,2) ?></span>
                         <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
                         <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
                       </li>
@@ -366,7 +371,7 @@ foreach ($aCarrito as $key => $value) {
                         <a href="#"><img src="<?php echo $value['URL'] ?>" alt="Product"></a>
                         <h6 id="h6Nombre<?php echo $value['ID'] ?>"><?php echo $value['NOMBRE'] ?></h6>
                       </td>
-                      <td class="price">$<?php echo $value['PRECIO'] ?></span></td>
+                      <td class="price">$<?php echo number_format($value['PRECIO'],2) ?></span></td>
                       <td class="qty">
                         <div class="quantity">
                           <button type="button" class="qty-minus" id="btnMenos<?php echo $value['ID'] ?>">-</button>
@@ -377,11 +382,9 @@ foreach ($aCarrito as $key => $value) {
                       </td>
                       <td>
                         <button type="button" class="btn btn-danger" id="btnDel<?php echo $value['ID'] ?>">X</button>
-
-                        <!-- <a href="cart.php?DelArt=1" class="btn btn-danger">as<i class="glyphicon glyphicon-trash"></i></a> -->
                       </td>
                       <td >
-                        <input type="text" class="sinborde" id="txtTotalxArt<?php echo $value['ID'] ?>" name="CANTIDAD" value="$<?php echo $TotalxArt ?>" readonly="readonly">
+                        <input type="text" class="sinborde" id="txtTotalxArt<?php echo $value['ID'] ?>" name="CANTIDAD" value="$<?php echo number_format($TotalxArt,2) ?>" readonly="readonly">
                       </td>
                     </tr>
 
@@ -499,12 +502,12 @@ foreach ($aCarrito as $key => $value) {
                     <p>Selecciona el tipo de envío</p>
                   </div>
                   <div class="custom-control custom-radio mb-30">
-                    <input type="radio" id="customRadio1" name="rbDelivery" class="custom-control-input" value="700">
+                    <input type="radio" id="customRadio1" name="rbDelivery" class="custom-control-input" value="express">
                     <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Día siguiente</span><span>$700.00</span></label>
                   </div>
 
                   <div class="custom-control custom-radio mb-30">
-                    <input type="radio" id="customRadio2" name="rbDelivery" class="custom-control-input" value="250">
+                    <input type="radio" id="customRadio2" name="rbDelivery" class="custom-control-input" value="normal">
                     <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Entrega estandar</span><span>$250.00</span></label>
                   </div>
 
@@ -522,7 +525,7 @@ foreach ($aCarrito as $key => $value) {
                 </div>
 
                 <ul class="cart-total-chart">
-                  <li><span>Subtotal</span> <span>$<?php echo $TotalxArtGlobal ?></span></li>
+                  <li><span>Subtotal</span> <span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></li>
 
                   <li><span>Envío</span> <span><input type="text" class="styleGrey" name="cost" value="$0" readonly id="txtcost"></span></li>
                   <li><span><strong>Total</strong></span> <span><strong><input type="text" class="styleGrey" name="total" value="$0" readonly id="txtcostT"></strong></span></li>
@@ -653,14 +656,14 @@ foreach ($aCarrito as $key => $value) {
         precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
 
 
-        if (precioEnvio = 700) {
+        if (precioEnvio == 'express') {
           x = <?php echo $_COOKIE['express'] ?>;
         }
         else{
           x = <?php echo $_COOKIE['normal'] ?>;
         }
         z = <?php echo $TotalxArtGlobal ?>;
-        total = precioEnvio + z;
+        total = x + z;
         getPriceDeli(x,total);
       });
 

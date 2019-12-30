@@ -161,7 +161,7 @@ foreach ($aCarrito as $key => $value) {
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu carrito $<?php echo $TotalxArtGlobal ?> </a>
+                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu carrito $<?php echo number_format($TotalxArtGlobal,2) ?> </a>
                     <!-- Cart List Area Start -->
                     <ul class="cart-list">
 
@@ -173,7 +173,7 @@ foreach ($aCarrito as $key => $value) {
                           <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
                           <div class="cart-item-desc">
                             <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-                            <p> <?php echo $value['CANTIDAD'] ?>  x - <span class="price">$<?php echo $TotalxArt ?></span></p>
+                            <p> <?php echo $value['CANTIDAD'] ?>  x - <span class="price">$<?php echo number_format($TotalxArt,2) ?></span></p>
                           </div>
                           <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
                         </li>
@@ -181,7 +181,7 @@ foreach ($aCarrito as $key => $value) {
 
 
                       <li class="total">
-                        <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
+                        <span class="pull-right">Total: $<?php echo number_format($TotalxArtGlobal,2) ?></span>
                         <!-- </br> -->
                         <!-- <a class="pull-right" href="joyas-h.php?vaciar=1">Vaciar carrito</a> -->
 
@@ -351,7 +351,7 @@ foreach ($aCarrito as $key => $value) {
                           <i class="fa fa-star" aria-hidden="true"></i>
                           <i class="fa fa-star" aria-hidden="true"></i>
                         </div>
-                        <h5 class="price">$<?php echo $category[2] ?> <span>$624</span></h5>
+                        <h5 class="price">$<?php echo number_format($category[2],2) ?> <span>$624</span></h5>
                         <p>Marca: <?php echo $category[5] ?></p>
                         <p><?php echo $category[4] ?></p>
                       </div>
@@ -600,7 +600,7 @@ foreach ($aCarrito as $key => $value) {
                         </div>
                         <!-- Product Description -->
                         <div class="product-description">
-                          <h4 class="product-price">$<?php echo $category[2] ; ?></h4>
+                          <h4 class="product-price">$<?php echo number_format($category[2],2) ; ?></h4>
                           <p><?php echo $category[1] ?></p>
                           <!-- Add to Cart -->
                           <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
