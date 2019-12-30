@@ -1,11 +1,10 @@
 <?php
 $aCarrito = array();
-$aEnvio = array();
 $sHTML = '';
 $fPrecioTotal = 0;
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
-$CostPrice = 0;
+$costoEnvio = 0;
 $totalP =0;
 $prueba = 0;
 
@@ -19,9 +18,9 @@ if(isset($_COOKIE['carrito'])) {
   $aCarrito = unserialize($_COOKIE['carrito']);
 }
 
-if(isset($_COOKIE['cookieEnvio'])) {
-  $aEnvio = unserialize($_COOKIE['cookieEnvio']);
-}
+// if(isset($_COOKIE['cookieEnvio'])) {
+//   $aEnvio = unserialize($_COOKIE['cookieEnvio']);
+// }
 
 //Eliminamos articulos del carrito
 if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
@@ -59,26 +58,21 @@ if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && 
   }
 }
 
-if( isset($_POST['finalTotal'])) {
-  foreach ($aEnvio as $key2 => $value2) {
-    $iUltimaPos2 = count($aEnvio);
-    $aEnvio[$iUltimaPos2]['envioCosto'] = $_POST['envioCosto'];
-    $aEnvio[$iUltimaPos2]['finalTotal'] = $_POST['finalTotal'];
-  }
-}
+// if( isset($_POST['finalTotal'])) {
+//   foreach ($aEnvio as $key2 => $value2) {
+//     $iUltimaPos2 = count($aEnvio);
+//     $aEnvio[$iUltimaPos2]['envioCosto'] = $_POST['envioCosto'];
+//     $aEnvio[$iUltimaPos2]['finalTotal'] = $_POST['finalTotal'];
+//   }
+// }
 
 //Creamos la cookie (serializamos)
 $iTemCad = time() + (60 * 60);
 setcookie('carrito', serialize($aCarrito), $iTemCad);
-$iTemCad2 = time() + (60 * 60);
 
-setcookie('express',700,$iTemCad2);
-setcookie('normal',250,$iTemCad2);
-
-
-foreach ($aEnvio as $key2 => $value2) {
-  $value2['envioCosto'];
-  $totalP = $value2['finalTotal'];
+if (isset($_POST['MONTO'])) {
+  setcookie('express',$_POST['MONTO'],$iTemCad);
+  $costoEnvio = $_COOKIE['express'];
 }
 
 //Imprimimos el contenido del array
@@ -530,7 +524,10 @@ foreach ($aCarrito as $key => $value) {
                   <li><span>Envío</span> <span><input type="text" class="styleGrey" name="cost" value="$0" readonly id="txtcost"></span></li>
                   <li><span><strong>Total</strong></span> <span><strong><input type="text" class="styleGrey" name="total" value="$0" readonly id="txtcostT"></strong></span></li>
                 </ul>
-                <a href="checkout.php" class="btn karl-checkout-btn">Proceed to checkout</a>
+                <!-- <button type="button" href="checkout.php" class="btn karl-checkout-btn" id="btnPay">X</button> -->
+                <button type="button" href="checkout.php" class="btn karl-checkout-btn" id="btnPay2">Proceder al pago</button>
+                <!-- <input type="button" class="btn karl-checkout-btn" name="pay" value="Proceder al pago"> -->
+                <!-- <a href="checkout.php" class="btn karl-checkout-btn" name="pay" id="bntPay" >Proceder al pago</a> -->
               </div>
             </div>
           </div>
@@ -652,27 +649,36 @@ foreach ($aCarrito as $key => $value) {
 
 
       $("input[name=rbDelivery]").change(function () {
-        debugger;
         precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
 
-
+debugger;
         if (precioEnvio == 'express') {
-          x = <?php echo $_COOKIE['express'] ?>;
+
+          x = 700;
         }
         else{
-          x = <?php echo $_COOKIE['normal'] ?>;
+          x = 250;
         }
         z = <?php echo $TotalxArtGlobal ?>;
         total = x + z;
         getPriceDeli(x,total);
       });
 
-      // $("input[name=rbDelivery]").change(function () {
-      //   debugger;
-      //   precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
-      //
-      //   getPriceDeli(precioEnvio);
-      // });
+      $('#btnPay2').click(function(){
+        debugger;
+        precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+
+
+        if (precioEnvio == 'express') {
+          x = 700;
+        }
+        else{
+          x = 250;
+        }
+
+        pruebas(x);
+      });
+
 
       <?php
       foreach ($aCarrito as $key => $value) {

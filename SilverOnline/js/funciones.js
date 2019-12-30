@@ -77,7 +77,7 @@ function eliminarArticulo(id, posicion, valida){
 
 function getPriceDeli(precioEnvio, total){
 
-  cadena = "envioCosto=" + precioEnvio + "&finalTotal=" + total;
+  cadena = "MONTO=" + precioEnvio + "&finalTotal=" + total;
 
   $.ajax({
     type:"POST",
@@ -95,6 +95,40 @@ function getPriceDeli(precioEnvio, total){
        $('#txtcostT').val(formatterDolar.format(ventaTotal));
     }
 
+  });
+
+}
+
+// function sendMoney(envio, vtaTotal){
+// debugger;
+//   cadena = "ENVIO=" + envio + "&VTATOTAL=" + vtaTotal;
+//
+//   $.ajax({
+//     type:"POST",
+//     url: "checkout.php",
+//     data:cadena,
+//     success:function(result){
+// debugger;
+// location.href ="checkout.php";
+//
+//     }
+//
+//   });
+//
+// }
+
+function pruebas(envio, vtaTotal){
+debugger;
+  cadena = "MONTO=" + envio + "&VTATOTAL=" + vtaTotal;
+
+  $.ajax({
+    type:"POST",
+    url: "checkout.php",
+    data:cadena,
+    success:function(result){
+debugger;
+location.href ="checkout.php";
+    }
   });
 
 }
