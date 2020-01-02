@@ -371,9 +371,47 @@ foreach ($aCarrito as $key => $value) {
 
                     <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                       <div class="card-body">
-                        <button type="button" class="btn karl-checkout-btn" id="btnPaypal">PAYPAL</button>
+                        <!-- <button type="button" class="btn karl-checkout-btn" id="btnPaypal">PAYPAL</button> -->
 
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.</p>
+
+                        <div id="paypal-button-container"></div>
+                        <div id="paypal-button"></div>
+                        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                        <script>
+                        paypal.Button.render({
+                          env: 'sandbox',
+                          style:{
+
+                            label: 'checkout',
+                            size: 'responsive',
+                            shape: 'pill',
+                            color: 'gold'
+
+                          },
+                          client: {
+                            sandbox: 'AZouiQJ_ecOO2hGI0RYFOxJWCzA-4-xFIO8keTZA42Ss2DN2fXPHtAwKMItRHFJ9rP3JqtoHG1bJJDsy',
+                            production: '<insert production client>'
+
+                          },
+                          payment: function (data, actions) {
+                            return actions.payment.create({
+                              transactions:
+                              [
+                                {
+                                amount: {total: '<?php echo $vtaTotal; ?>', currency: 'MXN'},
+                                description: 'Compra de artículos a Evolution:$<?php echo number_format($vtaTotal,2);?>'
+                              }
+                            ]
+                            });
+                          },
+                          onAuthorize: function (data, actions) {
+                            return actions.payment.execute().then(function () {
+                                window.alert = "Pago completado!";
+                              });
+                          }
+                        }, '#paypal-button-container');
+                        </script>
+
                       </div>
                     </div>
                   </div>
