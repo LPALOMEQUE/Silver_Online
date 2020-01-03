@@ -390,7 +390,7 @@ foreach ($aCarrito as $key => $value) {
                           },
                           client: {
                             sandbox: 'AZouiQJ_ecOO2hGI0RYFOxJWCzA-4-xFIO8keTZA42Ss2DN2fXPHtAwKMItRHFJ9rP3JqtoHG1bJJDsy',
-                            production: '<insert production client>'
+                            production: 'AUcPq4L0XGeCK2BjFRQ3qovLS1BUVkLhvWpsQspr4yQlOW0ucBydMFlFUsCqYqncz-Tb2jNuOtUMeO8S'
 
                           },
                           payment: function (data, actions) {
@@ -399,14 +399,16 @@ foreach ($aCarrito as $key => $value) {
                               [
                                 {
                                 amount: {total: '<?php echo $vtaTotal; ?>', currency: 'MXN'},
-                                description: 'Compra de artículos a Evolution:$<?php echo number_format($vtaTotal,2);?>'
+                                description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
                               }
                             ]
                             });
                           },
                           onAuthorize: function (data, actions) {
                             return actions.payment.execute().then(function () {
-                                window.alert = "Pago completado!";
+                                console.log(data);
+                                // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
+                                window.location="verificador.php?paymentToken="+ data.paymentToken+"&paymentID="+data.paymentID;
                               });
                           }
                         }, '#paypal-button-container');
