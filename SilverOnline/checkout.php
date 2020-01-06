@@ -10,14 +10,15 @@ $vtaTotal = 0;
 $costoEnvio = 0;
 //Vaciamos el carrito
 
-if(isset($_POST['envioCosto']) && isset($_POST['finalTotal'])) {
-  setcookie('cookieEnvio',$_POST['envioCosto'],$iTemCad);
-  $CostPrice = $_POST['envioCosto'];
-  $totalP = $_POST['finalTotal'];
-}
+// if(isset($_POST['envioCosto']) && isset($_POST['finalTotal'])) {
+//   setcookie('cookieEnvio',$_POST['envioCosto'],$iTemCad);
+//   $CostPrice = $_POST['envioCosto'];
+//   $totalP = $_POST['finalTotal'];
+// }
 
 if(isset($_POST['vaciar'])) {
   unset($_COOKIE['carrito']);
+  unset($_COOKIE['express']);
 }
 
 //Obtenemos los productos anteriores
@@ -356,7 +357,13 @@ foreach ($aCarrito as $key => $value) {
 
             <?php } ?>
             <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
-              <li><strong><span>Envio</span></span></strong> <strong><span>$<?php echo number_format($_COOKIE['express'],2) ?></span></span></li>
+              <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
+              if (isset($_COOKIE['express'])) {
+                echo number_format($_COOKIE['express'],2);
+              }else {
+                echo $snf='$0.00';
+              }
+                ?></span></span></li>
                 <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
                 </ul>
 
@@ -379,7 +386,7 @@ foreach ($aCarrito as $key => $value) {
                         <script src="https://www.paypalobjects.com/api/checkout.js"></script>
                         <script>
                         paypal.Button.render({
-                          env: 'sandbox',
+                          env: 'production',
                           style:{
 
                             label: 'checkout',
@@ -389,8 +396,8 @@ foreach ($aCarrito as $key => $value) {
 
                           },
                           client: {
-                            sandbox: 'AZouiQJ_ecOO2hGI0RYFOxJWCzA-4-xFIO8keTZA42Ss2DN2fXPHtAwKMItRHFJ9rP3JqtoHG1bJJDsy',
-                            production: 'AUcPq4L0XGeCK2BjFRQ3qovLS1BUVkLhvWpsQspr4yQlOW0ucBydMFlFUsCqYqncz-Tb2jNuOtUMeO8S'
+                            sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
+                            production: 'AT7sSm-M7LOWsHJwVSnCH5ZUJ6HtjSawkqZzNhHuR8h9SA9Aw4Qv3YcKDX-RM6bGRsdLKi1bUXhGse4d'
 
                           },
                           payment: function (data, actions) {
@@ -408,7 +415,7 @@ foreach ($aCarrito as $key => $value) {
                             return actions.payment.execute().then(function () {
                                 console.log(data);
                                 // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
-                                window.location="verificador.php?paymentToken="+ data.paymentToken+"&paymentID="+data.paymentID;
+                                window.location="verificador.php?paymentToken="+ data.paymentToken+"&paymentID="+data.paymentID+"&vaciar="+1;
                               });
                           }
                         }, '#paypal-button-container');

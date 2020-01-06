@@ -7,7 +7,7 @@ $TotalxArtGlobal = 0;
 $cantidad = 0;
 //Vaciamos el carrito
 
-if(isset($_POST['vaciar'])) {
+if(isset($_GET['vaciar'])) {
   unset($_COOKIE['carrito']);
 }
 
@@ -18,16 +18,16 @@ if(isset($_COOKIE['carrito'])) {
 }
 
 //Anyado un nuevo articulo al carrito
-
-if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
-  $iUltimaPos = count($aCarrito);
-  $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
-  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
-  $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
-  $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-  $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
-
-}
+//
+// if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
+//   $iUltimaPos = count($aCarrito);
+//   $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+//   $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
+//   $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+//   $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
+//   $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+//
+// }
 
 //Creamos la cookie (serializamos)
 
@@ -36,11 +36,11 @@ setcookie('carrito', serialize($aCarrito), $iTemCad);
 
 //Imprimimos el contenido del array
 
-foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  $bagNumber = count($aCarrito);
-  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-}
+// foreach ($aCarrito as $key => $value) {
+//   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+//   $bagNumber = count($aCarrito);
+//   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+// }
 
 ?>
 

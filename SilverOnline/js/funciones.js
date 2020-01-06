@@ -70,7 +70,8 @@ function eliminarArticulo(id, posicion, valida){
     url: "cart.php",
     data:cadena,
     success:function(result){
-      location.href="cart.php";
+      // location.href="cart.php";
+      location.reload();
     }
   });
 }
