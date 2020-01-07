@@ -1,15 +1,23 @@
 <?php
 //print_r($_GET);
 
+// ----------------------------------------------------------------------------------------------------------------
 //PRUEBAS.......
 // $ClientID = "AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G";
 // $Secret = "EIRbeX9Yv6ze9ozLPagaHsMvOmvdw_MWK2kPH-CYmcGnov-RssU2sEh4KFHd2DZfpQQ28d1s-rd5TydZ";
 
 // PRODUCCION
-$ClientID = "AT7sSm-M7LOWsHJwVSnCH5ZUJ6HtjSawkqZzNhHuR8h9SA9Aw4Qv3YcKDX-RM6bGRsdLKi1bUXhGse4d";
-$Secret = "ELdce2O3fIYshzowJyIlLN2qRX3x06tJHqJRaLYQUTO0gPfhzf-ryfsOUQyLT3rNXuCSBSx8njhhwi9X";
+$ClientID = "AWkFACdq0h4aeDpN-yfYhlk4FxnpGYbLmX6rcVA5qo3N2ErxCp3GrPyQ1sWIwCR2EH6UubCHJfNnH84I";
+$Secret = "EDiXuARlbHy0D8LdGLpOTOFO7YLdrqk9oapqR2mmQxJfq9DIYESd84N7DyZq6LVr2Wnz-yRJVbXcmtsb";
+// ----------------------------------------------------------------------------------------------------------------
 
-$login = curl_init("https://api.sandbox.paypal.com/v1/oauth2/token");
+// ----------------------------------------------------------------------------------------------------------------
+//PRUEBAS.......
+// $login = curl_init("https://api.sandbox.paypal.com/v1/oauth2/token");
+
+//PRODUCCION
+$login = curl_init("https://api.paypal.com/v1/oauth2/token");
+// ----------------------------------------------------------------------------------------------------------------
 
 curl_setopt($login,CURLOPT_RETURNTRANSFER,TRUE);
 
@@ -27,7 +35,13 @@ $accessToken = $objRespuesta->access_token;
 
 // print_r($accessToken);
 
-$venta = curl_init("https://api.sandbox.paypal.com/v1/payments/payment/".$_GET['paymentID']);
+// ----------------------------------------------------------------------------------------------------------------
+//PRUEBAS.......
+// $venta = curl_init("https://api.sandbox.paypal.com/v1/payments/payment/".$_GET['paymentID']);
+
+//PRODUCCION
+$venta = curl_init("https://api.paypal.com/v1/payments/payment/".$_GET['paymentID']);
+// ----------------------------------------------------------------------------------------------------------------
 
 curl_setopt($venta,CURLOPT_HTTPHEADER,array("Content-Type: application/json","Authorization: Bearer ".$accessToken));
 
@@ -47,23 +61,23 @@ $currrency = $objDatosTransaccion->transactions[0]->amount->currency;
 
 // echo $total;
 // echo " , ";
-// echo $state;
+echo $state;
 
 curl_close($venta);
 curl_close($login);
 
 if ($state == 'approved') {
   echo "<script>
-                alert('Pago aprobado');
-                window.location = 'index.php?vaciar=1';
-    </script>";
+  window.location= 'index.php?vaciar=1';
+  alert('Pago aprobado');
+  </script>";
 
 }
 else{
   echo "<script>
-                alert('Ocurrio un error con el pago');
-                window.location= 'index.php';
-    </script>";
+  window.location= 'index.php';
+  alert('Ocurrio un error con el pago');
+  </script>";
 }
 
- ?>
+?>

@@ -89,11 +89,11 @@ function getPriceDeli(precioEnvio, total){
       var ventaTotal = total;
       var montoEnvio = precioEnvio;
       const formatterDolar = new Intl.NumberFormat('en-US', {
-         style: 'currency',
-         currency: 'USD'
-       })
-       $('#txtcost').val(formatterDolar.format(montoEnvio));
-       $('#txtcostT').val(formatterDolar.format(ventaTotal));
+        style: 'currency',
+        currency: 'USD'
+      })
+      $('#txtcost').val(formatterDolar.format(montoEnvio));
+      $('#txtcostT').val(formatterDolar.format(ventaTotal));
     }
 
   });
@@ -119,7 +119,6 @@ function getPriceDeli(precioEnvio, total){
 // }
 
 function pruebas(envio, vtaTotal){
-debugger;
   cadena = "MONTO=" + envio + "&VTATOTAL=" + vtaTotal;
 
   $.ajax({
@@ -127,8 +126,7 @@ debugger;
     url: "checkout.php",
     data:cadena,
     success:function(result){
-debugger;
-location.href ="checkout.php";
+      location.href ="checkout.php";
     }
   });
 
@@ -182,8 +180,8 @@ function buscarArticulos(buscador){
     url: "index.php",
     data:cadena,
     success:function(result){
-      debugger;
-x=result;
+
+      x=result;
 
     }
   });

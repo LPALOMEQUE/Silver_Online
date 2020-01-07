@@ -8,13 +8,8 @@ $cantidad = 0;
 $totalP =0;
 $vtaTotal = 0;
 $costoEnvio = 0;
-//Vaciamos el carrito
 
-// if(isset($_POST['envioCosto']) && isset($_POST['finalTotal'])) {
-//   setcookie('cookieEnvio',$_POST['envioCosto'],$iTemCad);
-//   $CostPrice = $_POST['envioCosto'];
-//   $totalP = $_POST['finalTotal'];
-// }
+//Vaciamos el carrito
 
 if(isset($_POST['vaciar'])) {
   unset($_COOKIE['carrito']);
@@ -363,224 +358,224 @@ foreach ($aCarrito as $key => $value) {
               }else {
                 echo $snf='$0.00';
               }
-                ?></span></span></li>
-                <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
-                </ul>
+              ?></span></span></li>
+              <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
+              </ul>
 
 
-                <div id="accordion" role="tablist" class="mb-4">
-                  <div class="card">
-                    <div class="card-header" role="tab" id="headingOne">
-                      <h6 class="mb-0">
-                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
-                      </h6>
-                    </div>
+              <div id="accordion" role="tablist" class="mb-4">
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingOne">
+                    <h6 class="mb-0">
+                      <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
+                    </h6>
+                  </div>
 
-                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                      <div class="card-body">
-                        <!-- <button type="button" class="btn karl-checkout-btn" id="btnPaypal">PAYPAL</button> -->
+                  <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                      <!-- <button type="button" class="btn karl-checkout-btn" id="btnPaypal">PAYPAL</button> -->
 
 
-                        <div id="paypal-button-container"></div>
-                        <div id="paypal-button"></div>
-                        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-                        <script>
-                        paypal.Button.render({
-                          env: 'production',
-                          style:{
+                      <div id="paypal-button-container"></div>
+                      <div id="paypal-button"></div>
+                      <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                      <script>
+                      paypal.Button.render({
+                        env: 'production',
+                        style:{
 
-                            label: 'checkout',
-                            size: 'responsive',
-                            shape: 'pill',
-                            color: 'gold'
+                          label: 'checkout',
+                          size: 'responsive',
+                          shape: 'pill',
+                          color: 'gold'
 
-                          },
-                          client: {
-                            sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
-                            production: 'AT7sSm-M7LOWsHJwVSnCH5ZUJ6HtjSawkqZzNhHuR8h9SA9Aw4Qv3YcKDX-RM6bGRsdLKi1bUXhGse4d'
+                        },
+                        client: {
+                          sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
+                          production: 'AWkFACdq0h4aeDpN-yfYhlk4FxnpGYbLmX6rcVA5qo3N2ErxCp3GrPyQ1sWIwCR2EH6UubCHJfNnH84I'
 
-                          },
-                          payment: function (data, actions) {
-                            return actions.payment.create({
-                              transactions:
-                              [
-                                {
+                        },
+                        payment: function (data, actions) {
+                          return actions.payment.create({
+                            transactions:
+                            [
+                              {
                                 amount: {total: '<?php echo $vtaTotal; ?>', currency: 'MXN'},
                                 description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
                               }
                             ]
-                            });
-                          },
-                          onAuthorize: function (data, actions) {
-                            return actions.payment.execute().then(function () {
-                                console.log(data);
-                                // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
-                                window.location="verificador.php?paymentToken="+ data.paymentToken+"&paymentID="+data.paymentID+"&vaciar="+1;
-                              });
-                          }
-                        }, '#paypal-button-container');
-                        </script>
+                          });
+                        },
+                        onAuthorize: function (data, actions) {
+                          return actions.payment.execute().then(function () {
+                            console.log(data);
+                            // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
+                            window.location="verificador.php?paymentToken="+ data.paymentToken+"&paymentID="+data.paymentID;
+                          });
+                        }
+                      }, '#paypal-button-container');
+                      </script>
 
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header" role="tab" id="headingTwo">
-                      <h6 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
-                      </h6>
-                    </div>
-                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                      <div class="card-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header" role="tab" id="headingThree">
-                      <h6 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
-                      </h6>
-                    </div>
-                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                      <div class="card-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="card-header" role="tab" id="headingFour">
-                      <h6 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
-                      </h6>
-                    </div>
-                    <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                      <div class="card-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
-                      </div>
                     </div>
                   </div>
                 </div>
-
-                <a href="#" class="btn karl-checkout-btn">Place Order</a>
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingTwo">
+                    <h6 class="mb-0">
+                      <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
+                    </h6>
+                  </div>
+                  <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingThree">
+                    <h6 class="mb-0">
+                      <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
+                    </h6>
+                  </div>
+                  <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+                    <div class="card-body">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingFour">
+                    <h6 class="mb-0">
+                      <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
+                    </h6>
+                  </div>
+                  <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+                    <div class="card-body">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
 
+              <a href="#" class="btn karl-checkout-btn">Place Order</a>
+            </div>
           </div>
+
         </div>
       </div>
-      <!-- ****** Checkout Area End ****** -->
+    </div>
+    <!-- ****** Checkout Area End ****** -->
 
-      <!-- ****** Footer Area Start ****** -->
-      <footer class="footer_area">
-        <div class="container">
-          <div class="row">
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-md-6 col-lg-3">
-              <div class="single_footer_area">
-                <div class="footer-logo">
-                  <img src="img/core-img/logo.png" alt="">
-                </div>
-                <div class="copywrite_text d-flex align-items-center">
-                  <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                  </div>
-                </div>
+    <!-- ****** Footer Area Start ****** -->
+    <footer class="footer_area">
+      <div class="container">
+        <div class="row">
+          <!-- Single Footer Area Start -->
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="single_footer_area">
+              <div class="footer-logo">
+                <img src="img/core-img/logo.png" alt="">
               </div>
-              <!-- Single Footer Area Start -->
-              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-                <div class="single_footer_area">
-                  <ul class="footer_widget_menu">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Faq</a></li>
-                    <li><a href="#">Returns</a></li>
-                    <li><a href="#">Contact</a></li>
-                  </ul>
-                </div>
-              </div>
-              <!-- Single Footer Area Start -->
-              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-                <div class="single_footer_area">
-                  <ul class="footer_widget_menu">
-                    <li><a href="#">My Account</a></li>
-                    <li><a href="#">Shipping</a></li>
-                    <li><a href="#">Our Policies</a></li>
-                    <li><a href="#">Afiliates</a></li>
-                  </ul>
-                </div>
-              </div>
-              <!-- Single Footer Area Start -->
-              <div class="col-12 col-lg-5">
-                <div class="single_footer_area">
-                  <div class="footer_heading mb-30">
-                    <h6>Subscribe to our newsletter</h6>
-                  </div>
-                  <div class="subscribtion_form">
-                    <form action="#" method="post">
-                      <input type="email" name="mail" class="mail" placeholder="Your email here">
-                      <button type="submit" class="submit">Subscribe</button>
-                    </form>
-                  </div>
+              <div class="copywrite_text d-flex align-items-center">
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                 </div>
               </div>
             </div>
-            <div class="line"></div>
-
-            <!-- Footer Bottom Area Start -->
-            <div class="footer_bottom_area">
-              <div class="row">
-                <div class="col-12">
-                  <div class="footer_social_area text-center">
-                    <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                  </div>
+            <!-- Single Footer Area Start -->
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+              <div class="single_footer_area">
+                <ul class="footer_widget_menu">
+                  <li><a href="#">About</a></li>
+                  <li><a href="#">Blog</a></li>
+                  <li><a href="#">Faq</a></li>
+                  <li><a href="#">Returns</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- Single Footer Area Start -->
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+              <div class="single_footer_area">
+                <ul class="footer_widget_menu">
+                  <li><a href="#">My Account</a></li>
+                  <li><a href="#">Shipping</a></li>
+                  <li><a href="#">Our Policies</a></li>
+                  <li><a href="#">Afiliates</a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- Single Footer Area Start -->
+            <div class="col-12 col-lg-5">
+              <div class="single_footer_area">
+                <div class="footer_heading mb-30">
+                  <h6>Subscribe to our newsletter</h6>
+                </div>
+                <div class="subscribtion_form">
+                  <form action="#" method="post">
+                    <input type="email" name="mail" class="mail" placeholder="Your email here">
+                    <button type="submit" class="submit">Subscribe</button>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
-        </footer>
-        <!-- ****** Footer Area End ****** -->
-      </div>
-      <!-- /.wrapper end -->
+          <div class="line"></div>
 
-      <!-- jQuery (Necessary for All JavaScript Plugins) -->
-      <script src="js/jquery/jquery-2.2.4.min.js"></script>
-      <!-- Popper js -->
-      <script src="js/popper.min.js"></script>
-      <!-- Bootstrap js -->
-      <script src="js/bootstrap.min.js"></script>
-      <!-- Plugins js -->
-      <script src="js/plugins.js"></script>
-      <!-- Active js -->
-      <script src="js/active.js"></script>
+          <!-- Footer Bottom Area Start -->
+          <div class="footer_bottom_area">
+            <div class="row">
+              <div class="col-12">
+                <div class="footer_social_area text-center">
+                  <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                  <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                  <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                  <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- ****** Footer Area End ****** -->
+    </div>
+    <!-- /.wrapper end -->
 
-      <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="js/plugins.js"></script>
+    <!-- Active js -->
+    <script src="js/active.js"></script>
 
-    </body>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
 
-    </html>
+  </body>
 
-    <script type="text/javascript">
-    $(document).ready(function(){
+  </html>
 
-      $('#btnPaypal').click(function(){
-        Email.send({
-          Host : "smtp.elasticemail.com",
-          Username : "fernando18092105@gmail.com",
-          Password : "C8C00D5D9EEF4F923A4B7190F4F83F9D4E5B",
-          To : 'fer18092105@icloud.com',
-          From : "fernando18092105@gmail.com",
-          Subject : "This is the subject",
-          Body : "And this is the body"
-        }).then(
-          message => alert(message)
-        );
-      });
+  <script type="text/javascript">
+  $(document).ready(function(){
 
+    $('#btnPaypal').click(function(){
+      Email.send({
+        Host : "smtp.elasticemail.com",
+        Username : "fernando18092105@gmail.com",
+        Password : "C8C00D5D9EEF4F923A4B7190F4F83F9D4E5B",
+        To : 'fer18092105@icloud.com',
+        From : "fernando18092105@gmail.com",
+        Subject : "This is the subject",
+        Body : "And this is the body"
+      }).then(
+        message => alert(message)
+      );
     });
 
-    </script>
+  });
+
+  </script>
