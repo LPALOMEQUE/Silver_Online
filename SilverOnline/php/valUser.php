@@ -20,6 +20,7 @@ $sql = "SELECT * FROM USER WHERE EMAIL ='$email' AND PASS='$pass'";
       echo 1;
       $_SESSION["ID_USER"] = $user[0];
       $_SESSION["Email"] = $user[1];
+      $_SESSION["status"] = $user[12];
     }
   }
 
