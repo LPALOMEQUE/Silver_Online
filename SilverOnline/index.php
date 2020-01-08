@@ -232,7 +232,7 @@ foreach ($aCarrito as $key => $value) {
 
               <!-- Modal para registro de Usuarios -->
               <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
@@ -241,7 +241,49 @@ foreach ($aCarrito as $key => $value) {
                       </button>
                     </div>
                     <div class="modal-body">
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNombre">Nombre(s)</label>
+                          <input type="text" class="form-control" id="txtNombre" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtApellidoP">Apellido Paterno</label>
+                          <input type="text" class="form-control" id="txtApellidoP" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtApellidoM">Apellido Materno</label>
+                          <input type="text" class="form-control" id="txtApellidoM" value="" required>
+                        </div>
+                      </div>
+                      <h6>Datos de envío...</h6>
+                      <br/>
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtCalle">Calle</label>
+                          <input type="text" class="form-control" id="txtCalle" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNumCalle">Núm(#)</label>
+                          <input type="number" class="form-control" id="txtNumCalle" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtCp">C.P.</label>
+                          <input type="number" class="form-control" id="txtCp" value="" required>
+                        </div>
+                      </div>
 
+                      <div class="row">
+                        <div class="col-md-6" "mb-3">
+                          <label for="txtCiudad">Ciudad</label>
+                          <input type="text" class="form-control" id="txtCiudad" value="" required>
+                        </div>
+                        <div class="col-md-6" "mb-3">
+                          <label for="txtEstado">Estado</label>
+                          <input type="text" class="form-control" id="txtEstado" value="" required>
+                        </div>
+                      </div>
+                      <br/>
+                      <h6>Datos de cuenta...</h6>
                       <div class="row">
                         <div class="col-md-12 mb-3">
                           <label for="txtEmail">E-MaiL</label>
@@ -879,19 +921,57 @@ foreach ($aCarrito as $key => $value) {
     var nameArticulo ="";
     $('#btnGuardar').click(function(){
 
+
+      nombre = $('#txtNombre').val();
+      apellidoP = $('#txtApellidoP').val();
+      apellidoM = $('#txtApellidoM').val();
+      calle = $('#txtCalle').val();
+      numCalle = $('#txtNumCalle').val();
+      cp = $('#txtCp').val();
+      ciudad = $('#txtCiudad').val();
+      estado = $('#txtEstado').val();
       email= $('#txtEmail').val();
       pass= $('#txtPass').val();
 
-      if($('#txtEmail').val() == ""){
+      if(nombre == ""){
+
+        alert("Debe ingresar un nombrel...");
+      }
+      if(apellidoP == ""){
+
+        alert("Debe ingresar un apellido paterno...");
+      }if(apellidoM == ""){
+
+        alert("Debe ingresar un apellido Materno...");
+      }
+      if(calle == ""){
+
+        alert("Debe ingresar una calle...");
+      }if(numCalle == ""){
+
+        alert("Debe ingresar un número de la hubicación...");
+      }
+      if(cp == ""){
+
+        alert("Debe ingresar un código postal...");
+      }if(ciudad == ""){
+
+        alert("Debe ingresar una ciudad...");
+      }
+      if(estado == ""){
+
+        alert("Debe ingresar un estado...");
+      }
+      if(email == ""){
 
         alert("Debe ingresar un E-mail...");
       }
-      if($('#txtPass').val() == ""){
+      if(pass == ""){
 
         alert("Debe ingresar una contraseña...");
       }
-      if($('#txtEmail').val() != "" && $('#txtPass').val() != ""){
-        agregarUsuarios(email, pass);
+      if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && email != "" && pass != ""){
+        agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,email, pass);
       }
     });
 

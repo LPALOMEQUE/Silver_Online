@@ -2106,6 +2106,8 @@ img {
 
 .right{text-align: right;}
 
+.center{text-align: center;}
+
 .hidden{
     visibility="hidden";
 }

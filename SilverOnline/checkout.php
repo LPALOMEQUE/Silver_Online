@@ -287,36 +287,29 @@ foreach ($aCarrito as $key => $value) {
             <div class="checkout_details_area mt-50 clearfix">
 
               <div class="cart-page-heading">
-                <h5>Direccion de envío</h5>
+                <h5>Datos de envío</h5>
                 <p>...</p>
               </div>
 
               <form action="#" method="post">
                 <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="first_name">Nombre <span>*</span></label>
+                  <div class="col-md-12 mb-3">
+                    <label for="first_name">Nombre(s)<span>*</span></label>
                     <input type="text" class="form-control" id="first_name" value="" required>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="last_name">Apellido <span>*</span></label>
+                    <br/>
+                    <label for="last_name">Apellido(s) <span>*</span></label>
                     <input type="text" class="form-control" id="last_name" value="" required>
                   </div>
-                  <!-- <div class="col-12 mb-3">
-                  <label for="company">Company Name</label>
-                  <input type="text" class="form-control" id="company" value="">
-                </div> -->
-                <div class="col-12 mb-3">
-                  <label for="country">País <span>*</span></label>
-                  <select class="custom-select d-block w-100" id="country">
-                    <option value="Mex">México</option>
-                  </select>
-                </div>
-                <div class="col-12 mb-3">
-                  <label for="street_address">Dirección <span>*</span></label>
+
+                <div class="col-6 mb-3">
+                  <label for="street_address">Calle <span>*</span></label>
                   <input type="text" class="form-control mb-3" id="street_address" value="">
+                </div>
+                <div class="col-3 mb-3">
+                  <label for="street_address">Número # <span>*</span></label>
                   <input type="text" class="form-control" id="street_address2" value="">
                 </div>
-                <div class="col-12 mb-3">
+                <div class="col-3 mb-3">
                   <label for="postcode">Codígo Postal <span>*</span></label>
                   <input type="text" class="form-control" id="postcode" value="">
                 </div>
@@ -346,10 +339,6 @@ foreach ($aCarrito as $key => $value) {
                     <input type="checkbox" class="custom-control-input" id="customCheck2">
                     <label class="custom-control-label" for="customCheck2">Registrarse</label>
                   </div>
-                  <!-- <div class="custom-control custom-checkbox d-block">
-                  <input type="checkbox" class="custom-control-input" id="customCheck3">
-                  <label class="custom-control-label" for="customCheck3">Subscribe to our newsletter</label>
-                </div> -->
               </div>
             </div>
           </form>
@@ -578,7 +567,7 @@ foreach ($aCarrito as $key => $value) {
   </html>
 
   <script type="text/javascript">
-  
+
   $(document).ready(function(){
 
     $('#btnLogOut').click(function(){

@@ -1,19 +1,36 @@
 
-function agregarUsuarios(email, pass){
-
-  cadena = "EMAIL=" + email + "&PASS=" + pass;
+function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,email, pass){
+  cadena = "NOMBRE=" +nombre +
+  "&apellidoP=" + apellidoP +
+  "&apellidoM=" +apellidoM +
+  "&CALLE=" + calle +
+  "&numCalle=" + numCalle +
+  "&CP=" + cp +
+  "&CIUDAD=" + ciudad +
+  "&ESTADO=" + estado +
+  "&EMAIL=" + email +
+  "&PASS=" + pass;
 
   $.ajax({
     type:"POST",
     url: "php/agregarUsuarios.php",
     data:cadena,
     success:function(result){
-
       if(result==1){
 
         alert("Se registro el usuario de forma correcta...");
+
+        $('#txtNombre').val('');
+        $('#txtApellidoP').val('');
+        $('#txtApellidoM').val('');
+        $('#txtCalle').val('');
+        $('#txtNumCalle').val('');
+        $('#txtCp').val('');
+        $('#txtCiudad').val('');
+        $('#txtEstado').val('');
         $('#txtEmail').val('');
         $('#txtPass').val('');
+
         $('#ModalRegistroUsuarios').hide();
       }
       else{

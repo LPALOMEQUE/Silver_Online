@@ -16,7 +16,7 @@ $sql = "SELECT * FROM USER WHERE EMAIL ='$email' AND PASS='$pass'";
 
   while($user = mysqli_fetch_row($result)){
 
-    if ($email == $user[1] && $pass == $user[2]) {
+    if ($email == $user[1] && $pass == $user[10]) {
       echo 1;
       $_SESSION["ID_USER"] = $user[0];
       $_SESSION["Email"] = $user[1];
