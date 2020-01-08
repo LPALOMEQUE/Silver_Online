@@ -32,7 +32,6 @@ function login(email, pass){
   $.ajax({
     type:"POST",
     url: "php/valUser.php",
-    // url: "cart.php",
     data:cadena,
     success:function(result){
       if(result==1){
@@ -41,6 +40,21 @@ function login(email, pass){
         $('#txt_Email').val('');
         $('#txt_Pass').val('');
         $('#ModalLogin').hide();
+
+        if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
+
+          precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+
+          if (precioEnvio == 'express') {
+            x = 700;
+          }
+          else{
+            x = 250;
+          }
+          pruebas(x);
+        }else{
+          alert('Debe seleccionar un metodo de envío.');
+        }
         location.reload();
       }
       else{
@@ -51,6 +65,7 @@ function login(email, pass){
 
   });
 }
+
 function AddCart(id, nombre, precio, url, cantidad){
 
   cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad;
@@ -66,7 +81,21 @@ function AddCart(id, nombre, precio, url, cantidad){
     }
 
   });
+}
 
+function logOut(vaciar){
+
+  cadena = "VACIAR=" + vaciar;
+
+  $.ajax({
+
+    type:"POST",
+    url: "checkout.php",
+    data: cadena,
+    success: function(result){
+      location.reload();
+    }
+  });
 }
 
 function cartModPrice(id, nombre, precio, url, cantidad, posicion){

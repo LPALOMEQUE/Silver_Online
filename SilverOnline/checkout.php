@@ -13,8 +13,14 @@ if (!isset($_SESSION["ID_USER"])) {
   header('Location: index.php');
 }
 
-//Vaciamos el carrito
+//Vaciamos el la session
+if (isset($_POST['VACIAR'])) {
+  unset($_SESSION['ID_USER']);
+  unset($_SESSION['Email']);
+  session_destroy();
+}
 
+//Vaciamos el carrito
 if(isset($_POST['vaciar'])) {
   unset($_COOKIE['carrito']);
   unset($_COOKIE['express']);
@@ -147,7 +153,13 @@ foreach ($aCarrito as $key => $value) {
     <!-- ****** Header Area Start ****** -->
     <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
       <div class="right">
-      <a> <strong>Usuario:</strong> <?php echo $_SESSION["Email"] ?></a>
+      <a> <strong>Usuario:</strong> <?php
+      if (isset($_SESSION["Email"])) {
+        echo $_SESSION["Email"];
+      }else {
+        echo $invitado = 'Invitado...';
+      } ?>
+    </a>
         <!-- <br/> -->
         <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
 </div>
@@ -566,12 +578,16 @@ foreach ($aCarrito as $key => $value) {
   </html>
 
   <script type="text/javascript">
+  
   $(document).ready(function(){
+
     $('#btnLogOut').click(function(){
+      vaciar = 1;
 
-
+      logOut(vaciar);
 
     });
+
     $('#btnPaypal').click(function(){
       Email.send({
         Host : "smtp.elasticemail.com",

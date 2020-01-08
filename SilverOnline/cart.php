@@ -9,11 +9,15 @@ $costoEnvio = 0;
 $totalP =0;
 $prueba = 0;
 
+if (isset($_POST['VACIAR'])) {
+  unset($_SESSION['ID_USER']);
+  unset($_SESSION['Email']);
+  session_destroy();
+}
+
 //Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
   unset($_COOKIE['carrito']);
-  unset($_SESSION['ID_USER']);
-  session_destroy();
 }
 
 //Obtenemos los productos anteriores
@@ -199,7 +203,16 @@ foreach ($aCarrito as $key => $value) {
   </div>
 
   <div id="wrapper">
-
+    <div class="right">
+    <a> <strong>Usuario:</strong> <?php
+    if (isset($_SESSION["Email"])) {
+      echo $_SESSION["Email"];
+    }else {
+      echo $invitado = 'Invitado...';
+    } ?>
+    </a>
+      <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
+    </div>
     <!-- ****** Header Area Start ****** -->
     <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
       <!-- Top Header Area Start -->
@@ -438,7 +451,7 @@ foreach ($aCarrito as $key => $value) {
                           });
 
                           $('#btnDel<?php echo $value['ID'] ?>').click(function(){
-                            debugger;
+
                             id = <?php echo $value['ID'] ?>;
                             posicion = <?php echo $key ?>;
                             valida = 1;
@@ -486,7 +499,6 @@ foreach ($aCarrito as $key => $value) {
                     </div>
                     <div class="update-checkout w-50 text-right">
                       <a href="cart.php?vaciar=1">Vaciar carrito</a>
-                      <!-- <a href="#">Update cart</a> -->
                     </div>
                   </div>
 
@@ -521,11 +533,6 @@ foreach ($aCarrito as $key => $value) {
                       <input type="radio" id="customRadio2" name="rbDelivery" class="custom-control-input" value="normal">
                       <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Entrega estandar</span><span>$250.00</span></label>
                     </div>
-
-                    <!-- <div class="custom-control custom-radio">
-                    <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio3"><span>Recoger en sucursal</span><span>Free</span></label>
-                  </div> -->
                 </div>
               </div>
               <div class="col-12 col-lg-4">
@@ -644,6 +651,7 @@ foreach ($aCarrito as $key => $value) {
       <script type="text/javascript">
 
       $(document).ready(function(){
+
         $('#btnGuardar').click(function(){
 
           email= $('#txtEmail').val();
@@ -717,11 +725,14 @@ foreach ($aCarrito as $key => $value) {
           }
           if(email != "" && pass != ""){
             login(email, pass);
-            validaEnvio();
-            // -------------------------------------------------------------------------------------------------
-
-            // -------------------------------------------------------------------------------------------------
           }
+        });
+
+        $('#btnLogOut').click(function(){
+          vaciar = 1;
+
+          logOut(vaciar);
+
         });
 
         function validaEnvio(){
@@ -741,6 +752,7 @@ foreach ($aCarrito as $key => $value) {
           }
 
         }
+
         <?php
         foreach ($aCarrito as $key => $value) {
           ?>

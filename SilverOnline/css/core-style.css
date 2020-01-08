@@ -2105,3 +2105,10 @@ img {
 }
 
 .right{text-align: right;}
+
+.hidden{
+    visibility="hidden";
+}
+.show{
+    visibility="visible";
+}
