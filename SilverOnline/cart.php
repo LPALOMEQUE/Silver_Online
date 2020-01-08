@@ -21,10 +21,6 @@ if(isset($_COOKIE['carrito'])) {
   $aCarrito = unserialize($_COOKIE['carrito']);
 }
 
-// if(isset($_COOKIE['cookieEnvio'])) {
-//   $aEnvio = unserialize($_COOKIE['cookieEnvio']);
-// }
-
 //Eliminamos articulos del carrito
 if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
 
@@ -76,9 +72,7 @@ foreach ($aCarrito as $key => $value) {
   $fPrecioTotal += $value['PRECIO'];
   $bagNumber = count($aCarrito);
   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -668,7 +662,6 @@ foreach ($aCarrito as $key => $value) {
           }
         });
 
-
         $("input[name=rbDelivery]").change(function () {
           precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
 
@@ -682,11 +675,10 @@ foreach ($aCarrito as $key => $value) {
           z = <?php echo $TotalxArtGlobal ?>;
           total = x + z;
           getPriceDeli(x,total);
+
         });
 
         $('#btnPay2').click(function(){
-          debugger;
-
           valUser =<?php
           if (isset($_SESSION["ID_USER"])) {
             echo $_SESSION["ID_USER"];
@@ -701,31 +693,11 @@ foreach ($aCarrito as $key => $value) {
           }
           else {
 
-
             if (valUser == 0) {
               $("#ModalLogin").modal("show");
             }
             else {
-              // id_user = $('#txtId_user').val();
-              // email = $('#txt_Email').val();
-              // pass = $('#txtPass').val();
-
-              if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
-
-                precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
-
-                if (precioEnvio == 'express') {
-                  x = 700;
-                }
-                else{
-                  x = 250;
-                }
-                pruebas(x);
-              }else{
-                alert('Debe seleccionar un metodo de envío.');
-
-              }
-
+              validaEnvio();
             }
           }
         });
@@ -745,27 +717,30 @@ foreach ($aCarrito as $key => $value) {
           }
           if(email != "" && pass != ""){
             login(email, pass);
-// -------------------------------------------------------------------------------------------------
-debugger;
-            if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
+            validaEnvio();
+            // -------------------------------------------------------------------------------------------------
 
-              precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
-
-              if (precioEnvio == 'express') {
-                x = 700;
-              }
-              else{
-                x = 250;
-              }
-              pruebas(x);
-            }else{
-              alert('Debe seleccionar un metodo de envío.');
-
-            }
-// -------------------------------------------------------------------------------------------------
-
+            // -------------------------------------------------------------------------------------------------
           }
         });
+
+        function validaEnvio(){
+          if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
+
+            precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+
+            if (precioEnvio == 'express') {
+              x = 700;
+            }
+            else{
+              x = 250;
+            }
+            pruebas(x);
+          }else{
+            alert('Debe seleccionar un metodo de envío.');
+          }
+
+        }
         <?php
         foreach ($aCarrito as $key => $value) {
           ?>

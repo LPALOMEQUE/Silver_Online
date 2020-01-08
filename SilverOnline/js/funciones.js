@@ -35,8 +35,6 @@ function login(email, pass){
     // url: "cart.php",
     data:cadena,
     success:function(result){
-debugger;
-
       if(result==1){
 
         alert("Inicio de sesión correcto, ya puede continuar coprando...");
@@ -112,7 +110,6 @@ function getPriceDeli(precioEnvio, total){
     url: "cart.php",
     data:cadena,
     success:function(result){
-      debugger;
       var ventaTotal = total;
       var montoEnvio = precioEnvio;
       const formatterDolar = new Intl.NumberFormat('en-US', {
@@ -127,24 +124,6 @@ function getPriceDeli(precioEnvio, total){
 
 }
 
-// function sendMoney(envio, vtaTotal){
-// debugger;
-//   cadena = "ENVIO=" + envio + "&VTATOTAL=" + vtaTotal;
-//
-//   $.ajax({
-//     type:"POST",
-//     url: "checkout.php",
-//     data:cadena,
-//     success:function(result){
-// debugger;
-// location.href ="checkout.php";
-//
-//     }
-//
-//   });
-//
-// }
-
 function pruebas(envio, vtaTotal){
   cadena = "MONTO=" + envio + "&VTATOTAL=" + vtaTotal;
 
@@ -156,7 +135,6 @@ function pruebas(envio, vtaTotal){
       location.href ="checkout.php";
     }
   });
-
 }
 
 function guardarArt(nomArt,  descArt, barCode, modelArt, marcaArt, precioArt, categoria, subCatego, statusArt, nameArticulo){
