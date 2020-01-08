@@ -1,4 +1,5 @@
 <?php
+session_start();
 $aCarrito = array();
 $sHTML = '';
 $fPrecioTotal = 0;
@@ -11,6 +12,8 @@ $prueba = 0;
 //Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
   unset($_COOKIE['carrito']);
+  unset($_SESSION['ID_USER']);
+  session_destroy();
 }
 
 //Obtenemos los productos anteriores
@@ -73,10 +76,6 @@ foreach ($aCarrito as $key => $value) {
   $fPrecioTotal += $value['PRECIO'];
   $bagNumber = count($aCarrito);
   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-  // muestra el formato internacional para la configuración regional en_US
-  // setlocale(LC_MONETARY, 'en_US');
-  // echo money_format('%i', $TotalxArtGlobal);
-
 
 }
 
@@ -119,6 +118,39 @@ foreach ($aCarrito as $key => $value) {
 </head>
 
 <body>
+  <!-- Modal para registro de Usuarios -->
+  <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLogin">Debe iniciar sesión para continuar...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="txtEmail">E-MaiL</label>
+              <input type="email" class="form-control" id="txt_Email" value="" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="txtPass">Contraseña</label>
+              <input type="password" class="form-control" id="txt_Pass" value="" required>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="catagories-side-menu">
     <!-- Close Icon -->
     <div id="sideMenuClose">
@@ -244,21 +276,20 @@ foreach ($aCarrito as $key => $value) {
 
                   <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
                     <ul class="navbar-nav animated" id="nav">
-                      <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
+                      <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
                       <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                        <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
                         <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                          <a class="dropdown-item" href="index.php">Home</a>
-                          <a class="dropdown-item" href="shop.html">Shop</a>
-                          <a class="dropdown-item" href="product-details.html">Product Details</a>
-                          <a class="dropdown-item" href="cart.php">Carrito</a>
-                          <a class="dropdown-item" href="checkout.php">Checkout</a>
+                          <a class="dropdown-item" href="index.php">Inicio</a>
+                          <a class="dropdown-item" href="shop.html">Compras</a>
+                          <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
+                          <a class="dropdown-item" href="cart.html">Carrito</a>
+                          <a class="dropdown-item" href="checkout.html">Resiva</a>
                         </div>
                       </li>
-                      <li class="nav-item"><a class="nav-link" href="#">Dresses</a></li>
-                      <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span> Shoes</a></li>
-                      <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span>Dresses</a></li>
                       <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
                     </ul>
                   </div>
                 </nav>
@@ -518,8 +549,6 @@ foreach ($aCarrito as $key => $value) {
                   </ul>
                   <!-- <button type="button" href="checkout.php" class="btn karl-checkout-btn" id="btnPay">X</button> -->
                   <button type="button" href="checkout.php" class="btn karl-checkout-btn" id="btnPay2">Proceder al pago</button>
-                  <!-- <input type="button" class="btn karl-checkout-btn" name="pay" value="Proceder al pago"> -->
-                  <!-- <a href="checkout.php" class="btn karl-checkout-btn" name="pay" id="bntPay" >Proceder al pago</a> -->
                 </div>
               </div>
             </div>
@@ -643,7 +672,6 @@ foreach ($aCarrito as $key => $value) {
         $("input[name=rbDelivery]").change(function () {
           precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
 
-          debugger;
           if (precioEnvio == 'express') {
 
             x = 700;
@@ -658,20 +686,86 @@ foreach ($aCarrito as $key => $value) {
 
         $('#btnPay2').click(function(){
           debugger;
-          precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
 
+          valUser =<?php
+          if (isset($_SESSION["ID_USER"])) {
+            echo $_SESSION["ID_USER"];
+          }else {
+            echo $valida = 0;
+          } ?>;
 
-          if (precioEnvio == 'express') {
-            x = 700;
+          valTotal = <?php echo $TotalxArtGlobal ?>;
+
+          if (valTotal == 0) {
+            alert('No puede continuar ya que no cuenta con artículos en el carrito.');
           }
-          else{
-            x = 250;
-          }
+          else {
 
-          pruebas(x);
+
+            if (valUser == 0) {
+              $("#ModalLogin").modal("show");
+            }
+            else {
+              // id_user = $('#txtId_user').val();
+              // email = $('#txt_Email').val();
+              // pass = $('#txtPass').val();
+
+              if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
+
+                precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+
+                if (precioEnvio == 'express') {
+                  x = 700;
+                }
+                else{
+                  x = 250;
+                }
+                pruebas(x);
+              }else{
+                alert('Debe seleccionar un metodo de envío.');
+
+              }
+
+            }
+          }
         });
 
+        $('#btnEntrar').click(function(){
 
+          email= $('#txt_Email').val();
+          pass= $('#txt_Pass').val();
+
+          if(email == ""){
+
+            alert("Debe ingresar un E-mail...");
+          }
+          if(pass == ""){
+
+            alert("Debe ingresar una contraseña...");
+          }
+          if(email != "" && pass != ""){
+            login(email, pass);
+// -------------------------------------------------------------------------------------------------
+debugger;
+            if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
+
+              precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+
+              if (precioEnvio == 'express') {
+                x = 700;
+              }
+              else{
+                x = 250;
+              }
+              pruebas(x);
+            }else{
+              alert('Debe seleccionar un metodo de envío.');
+
+            }
+// -------------------------------------------------------------------------------------------------
+
+          }
+        });
         <?php
         foreach ($aCarrito as $key => $value) {
           ?>

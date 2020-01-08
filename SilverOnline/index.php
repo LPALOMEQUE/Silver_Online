@@ -176,7 +176,7 @@ foreach ($aCarrito as $key => $value) {
                       <li class="total">
                         <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
                         <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
-                        <a href="checkout-1.html" class="btn btn-sm btn-checkout">Pagar</a>
+                        <a href="checkout.php" class="btn btn-sm btn-checkout">Pagar</a>
                       </li>
                     </ul>
                   </div>
@@ -223,8 +223,6 @@ foreach ($aCarrito as $key => $value) {
                         </div>
                       </li>
                       <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span>Dresses</a></li>
-                      <!-- <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span> Shoes</a></li> -->
-                      <!-- <li class="nav-item"><a class="nav-link" href="#">Contact</a></li> -->
                       <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
                       <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
                     </ul>

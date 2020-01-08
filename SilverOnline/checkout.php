@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $aCarrito = array();
 $sHTML = '';
 $bagNumber = 0;
@@ -8,6 +8,10 @@ $cantidad = 0;
 $totalP =0;
 $vtaTotal = 0;
 $costoEnvio = 0;
+
+if (!isset($_SESSION["ID_USER"])) {
+  header('Location: index.php');
+}
 
 //Vaciamos el carrito
 
@@ -142,6 +146,11 @@ foreach ($aCarrito as $key => $value) {
 
     <!-- ****** Header Area Start ****** -->
     <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
+      <div class="right">
+      <a> <strong>Usuario:</strong> <?php echo $_SESSION["Email"] ?></a>
+        <!-- <br/> -->
+        <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
+</div>
       <!-- Top Header Area Start -->
       <div class="top_header_area">
         <div class="container h-100">
@@ -356,7 +365,7 @@ foreach ($aCarrito as $key => $value) {
               if (isset($_COOKIE['express'])) {
                 echo number_format($_COOKIE['express'],2);
               }else {
-                echo $snf='$0.00';
+                echo $snf='0.00';
               }
               ?></span></span></li>
               <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
@@ -373,9 +382,6 @@ foreach ($aCarrito as $key => $value) {
 
                   <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                      <!-- <button type="button" class="btn karl-checkout-btn" id="btnPaypal">PAYPAL</button> -->
-
-
                       <div id="paypal-button-container"></div>
                       <div id="paypal-button"></div>
                       <script src="https://www.paypalobjects.com/api/checkout.js"></script>
@@ -431,7 +437,7 @@ foreach ($aCarrito as $key => $value) {
                     </div>
                   </div>
                 </div>
-                <div class="card">
+                <!-- <div class="card">
                   <div class="card-header" role="tab" id="headingThree">
                     <h6 class="mb-0">
                       <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
@@ -442,8 +448,8 @@ foreach ($aCarrito as $key => $value) {
                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
                     </div>
                   </div>
-                </div>
-                <div class="card">
+                </div> -->
+                <!-- <div class="card">
                   <div class="card-header" role="tab" id="headingFour">
                     <h6 class="mb-0">
                       <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
@@ -454,10 +460,10 @@ foreach ($aCarrito as $key => $value) {
                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
 
-              <a href="#" class="btn karl-checkout-btn">Place Order</a>
+              <!-- <a href="#" class="btn karl-checkout-btn">Place Order</a> -->
             </div>
           </div>
 
@@ -561,7 +567,11 @@ foreach ($aCarrito as $key => $value) {
 
   <script type="text/javascript">
   $(document).ready(function(){
+    $('#btnLogOut').click(function(){
 
+
+
+    });
     $('#btnPaypal').click(function(){
       Email.send({
         Host : "smtp.elasticemail.com",

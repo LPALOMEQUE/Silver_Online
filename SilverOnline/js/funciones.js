@@ -23,9 +23,36 @@ function agregarUsuarios(email, pass){
     }
 
   });
-
 }
 
+function login(email, pass){
+
+  cadena = "EMAIL=" + email + "&PASS=" + pass;
+
+  $.ajax({
+    type:"POST",
+    url: "php/valUser.php",
+    // url: "cart.php",
+    data:cadena,
+    success:function(result){
+debugger;
+
+      if(result==1){
+
+        alert("Inicio de sesión correcto, ya puede continuar coprando...");
+        $('#txt_Email').val('');
+        $('#txt_Pass').val('');
+        $('#ModalLogin').hide();
+        location.reload();
+      }
+      else{
+        alert("Usuario o contraseña incorrectos...");
+      }
+
+    }
+
+  });
+}
 function AddCart(id, nombre, precio, url, cantidad){
 
   cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad;
