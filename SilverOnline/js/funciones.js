@@ -1,5 +1,5 @@
 
-function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,email, pass){
+function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass){
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +
   "&apellidoM=" +apellidoM +
@@ -8,6 +8,7 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
   "&CP=" + cp +
   "&CIUDAD=" + ciudad +
   "&ESTADO=" + estado +
+  "&CEL=" + cel +
   "&EMAIL=" + email +
   "&PASS=" + pass;
 
@@ -28,6 +29,7 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
         $('#txtCp').val('');
         $('#txtCiudad').val('');
         $('#txtEstado').val('');
+        $('#txtCel').val('');
         $('#txtEmail').val('');
         $('#txtPass').val('');
 
@@ -53,7 +55,7 @@ function login(email, pass){
     success:function(result){
       if(result==1){
 
-        alert("Inicio de sesión correcto, ya puede continuar coprando...");
+        alert("Inicio de sesión correcto, ya puede continuar comprando...");
         $('#txt_Email').val('');
         $('#txt_Pass').val('');
         $('#ModalLogin').hide();

@@ -12,10 +12,11 @@ $numCalle = $_POST['numCalle'];
 $cp = $_POST['CP'];
 $ciudad = $_POST['CIUDAD'];
 $estado = $_POST['ESTADO'];
+$cel = $_POST['CEL'];
 $email = $_POST['EMAIL'];
 $pass = $_POST['PASS'];
 
-  $sql = "INSERT INTO USER (EMAIL,NOMBRE,apellidoP,apellidoM,CALLE,numCalle,CP,CIUDAD,ESTADO,PASS) VALUES ('$email','$nombre','$apellidoP','$apellidoM','$calle',$numCalle,$cp,'$ciudad','$estado','$pass')";
+  $sql = "INSERT INTO USER (EMAIL,NOMBRE,apellidoP,apellidoM,CALLE,numCalle,CP,CIUDAD,ESTADO,CEL,PASS) VALUES ('$email','$nombre','$apellidoP','$apellidoM','$calle',$numCalle,$cp,'$ciudad','$estado','$cel','$pass')";
 
   // EL echo NOS RETORNA UN 0 O UN 1 DEPENDIENDO SI EJECUTA O NO EL COMANDO
   echo $result = mysqli_query($con,$sql);
