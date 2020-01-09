@@ -161,34 +161,9 @@ foreach ($aCarrito as $key => $value) {
                 <div class="header-cart-menu d-flex align-items-center ml-auto">
                   <!-- Cart Area -->
                   <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu carrito $<?php echo number_format($TotalxArtGlobal,2) ?> </a>
+                    <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
                     <!-- Cart List Area Start -->
-                    <ul class="cart-list">
 
-                      <?php foreach ($aCarrito as $key => $value) {
-
-                        $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
-                        ?>
-                        <li>
-                          <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
-                          <div class="cart-item-desc">
-                            <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-                            <p> <?php echo $value['CANTIDAD'] ?>  x - <span class="price">$<?php echo number_format($TotalxArt,2) ?></span></p>
-                          </div>
-                          <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                        </li>
-                      <?php } ?>
-
-
-                      <li class="total">
-                        <span class="pull-right">Total: $<?php echo number_format($TotalxArtGlobal,2) ?></span>
-                        <!-- </br> -->
-                        <!-- <a class="pull-right" href="joyas-h.php?vaciar=1">Vaciar carrito</a> -->
-
-                        <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
-                        <a href="checkout-1.html" class="btn btn-sm btn-checkout">Pagar</a>
-                      </li>
-                    </ul>
                   </div>
                   <div class="header-right-side-menu ml-15">
                     <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
