@@ -153,153 +153,153 @@ foreach ($aCarrito as $key => $value) {
     <!-- ****** Header Area Start ****** -->
     <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
       <div class="right">
-      <a> <strong>Usuario:</strong> <?php
-      if (isset($_SESSION["Email"])) {
-        echo $_SESSION["Email"];
-      }else {
-        echo $invitado = 'Invitado...';
-      } ?>
-    </a>
-        <!-- <br/> -->
-        <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
-</div>
-      <!-- Top Header Area Start -->
-      <div class="top_header_area">
-        <div class="container h-100">
-          <div class="row h-100 align-items-center justify-content-end">
+        <a> <strong>Usuario:</strong> <?php
+        if (isset($_SESSION["Email"])) {
+          echo $_SESSION["Email"];
+        }else {
+          echo $invitado = 'Invitado...';
+        } ?>
+      </a>
+      <!-- <br/> -->
+      <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
+    </div>
+    <!-- Top Header Area Start -->
+    <div class="top_header_area">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center justify-content-end">
 
-            <div class="col-12 col-lg-7">
-              <div class="top_single_area d-flex align-items-center">
-                <!-- Logo Area -->
-                <div class="top_logo">
-                  <a href="#"><img src="img/core-img/logo.png" alt=""></a>
-                </div>
-                <!-- Cart & Menu Area -->
-                <div class="header-cart-menu d-flex align-items-center ml-auto">
-                  <!-- Cart Area -->
-                  <div class="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu bolsa $ <?php echo number_format($TotalxArtGlobal,2) ?></a>
-                    <!-- Cart List Area Start -->
-                    <ul class="cart-list">
-                      <?php foreach ($aCarrito as $key => $value) {
-                        $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
-                        ?>
-                        <li>
-                          <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
-                          <div class="cart-item-desc">
-                            <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-                            <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo number_format($TotalxArt,2) ?></span></p>
-                          </div>
-                          <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                        </li>
-                      <?php } ?>
-                      <li class="total">
-                        <span class="pull-right">Total: $<?php echo number_format($TotalxArtGlobal,2) ?></span>
-                        <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
-                        <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="header-right-side-menu ml-15">
-                    <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
-                  </div>
-                </div>
+          <div class="col-12 col-lg-7">
+            <div class="top_single_area d-flex align-items-center">
+              <!-- Logo Area -->
+              <div class="top_logo">
+                <a href="#"><img src="img/core-img/logo.png" alt=""></a>
               </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- Top Header Area End -->
-      <div class="main_header_area">
-        <div class="container h-100">
-          <div class="row h-100">
-            <div class="col-12 d-md-flex justify-content-between">
-              <!-- Header Social Area -->
-              <div class="header-social-area">
-                <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-              </div>
-              <!-- Menu Area -->
-              <div class="main-menu-area">
-                <nav class="navbar navbar-expand-lg align-items-start">
-
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
-
-                  <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
-                    <ul class="navbar-nav animated" id="nav">
-                      <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
-                        <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                          <a class="dropdown-item" href="index.php">Inicio</a>
-                          <a class="dropdown-item" href="shop.html">Compras</a>
-                          <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
-                          <a class="dropdown-item" href="cart.html">Carrito</a>
-                          <a class="dropdown-item" href="checkout.html">Resiva</a>
+              <!-- Cart & Menu Area -->
+              <div class="header-cart-menu d-flex align-items-center ml-auto">
+                <!-- Cart Area -->
+                <div class="cart">
+                  <a href="#" id="header-cart-btn" target="_blank"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i> Tu bolsa $ <?php echo number_format($TotalxArtGlobal,2) ?></a>
+                  <!-- Cart List Area Start -->
+                  <ul class="cart-list">
+                    <?php foreach ($aCarrito as $key => $value) {
+                      $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+                      ?>
+                      <li>
+                        <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
+                        <div class="cart-item-desc">
+                          <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
+                          <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo number_format($TotalxArt,2) ?></span></p>
                         </div>
+                        <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
                       </li>
+                    <?php } ?>
+                    <li class="total">
+                      <span class="pull-right">Total: $<?php echo number_format($TotalxArtGlobal,2) ?></span>
+                      <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
+                      <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
+                    </li>
                   </ul>
                 </div>
-                </nav>
+                <div class="header-right-side-menu ml-15">
+                  <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
+                </div>
               </div>
-              <!-- Help Line -->
-              <div class="help-line">
-                <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
-              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Header Area End -->
+    <div class="main_header_area">
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-12 d-md-flex justify-content-between">
+            <!-- Header Social Area -->
+            <div class="header-social-area">
+              <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            </div>
+            <!-- Menu Area -->
+            <div class="main-menu-area">
+              <nav class="navbar navbar-expand-lg align-items-start">
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
+
+                <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
+                  <ul class="navbar-nav animated" id="nav">
+                    <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
+                      <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                        <a class="dropdown-item" href="index.php">Inicio</a>
+                        <a class="dropdown-item" href="shop.html">Compras</a>
+                        <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
+                        <a class="dropdown-item" href="cart.html">Carrito</a>
+                        <a class="dropdown-item" href="checkout.html">Resiva</a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+            <!-- Help Line -->
+            <div class="help-line">
+              <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
             </div>
           </div>
         </div>
       </div>
-    </header>
-    <!-- ****** Header Area End ****** -->
+    </div>
+  </header>
+  <!-- ****** Header Area End ****** -->
 
-    <section class="top-discount-area d-md-flex align-items-center">
-      <!-- Single Discount Area -->
-      <div class="single-discount-area">
-        <h5>Free Shipping &amp; Returns</h5>
-        <h6><a href="#">BUY NOW</a></h6>
-      </div>
-      <!-- Single Discount Area -->
-      <div class="single-discount-area">
-        <h5>20% Discount for all dresses</h5>
-        <h6>USE CODE: Colorlib</h6>
-      </div>
-      <!-- Single Discount Area -->
-      <div class="single-discount-area">
-        <h5>20% Discount for students</h5>
-        <h6>USE CODE: Colorlib</h6>
-      </div>
-    </section>
+  <section class="top-discount-area d-md-flex align-items-center">
+    <!-- Single Discount Area -->
+    <div class="single-discount-area">
+      <h5>Free Shipping &amp; Returns</h5>
+      <h6><a href="#">BUY NOW</a></h6>
+    </div>
+    <!-- Single Discount Area -->
+    <div class="single-discount-area">
+      <h5>20% Discount for all dresses</h5>
+      <h6>USE CODE: Colorlib</h6>
+    </div>
+    <!-- Single Discount Area -->
+    <div class="single-discount-area">
+      <h5>20% Discount for students</h5>
+      <h6>USE CODE: Colorlib</h6>
+    </div>
+  </section>
 
-    <!-- ****** Checkout Area Start ****** -->
-    <div class="checkout_area section_padding_100">
-      <div class="container">
-        <div class="row">
+  <!-- ****** Checkout Area Start ****** -->
+  <div class="checkout_area section_padding_100">
+    <div class="container">
+      <div class="row">
 
-          <div class="col-12 col-md-6">
-            <div class="checkout_details_area mt-50 clearfix">
+        <div class="col-12 col-md-6">
+          <div class="checkout_details_area mt-50 clearfix">
 
-              <div class="cart-page-heading">
-                <h5>Datos de envío</h5>
-                <p>...</p>
-              </div>
+            <div class="cart-page-heading">
+              <h5>Datos de envío</h5>
+              <p>...</p>
+            </div>
 
-              <form action="#" method="post">
-                <?php
-                require_once "php/Conexion.php";
-                $con = conexion();
-                $ID = $_SESSION['ID_USER'];
-                $MAIL = $_SESSION['Email'];
-                $sql = "SELECT * FROM user WHERE ID_USER='$ID' AND Email='$MAIL'";
+            <form action="#" method="post">
+              <?php
+              require_once "php/Conexion.php";
+              $con = conexion();
+              $ID = $_SESSION['ID_USER'];
+              $MAIL = $_SESSION['Email'];
+              $sql = "SELECT * FROM user WHERE ID_USER='$ID' AND Email='$MAIL'";
 
-                $result = mysqli_query($con,$sql);
-                while($user = mysqli_fetch_row($result)){
+              $result = mysqli_query($con,$sql);
+              while($user = mysqli_fetch_row($result)){
 
-                  ?>
+                ?>
                 <div class="row">
                   <div class="col-md-12 mb-3">
                     <label for="first_name">Nombre(s)<span>*</span></label>
@@ -309,35 +309,35 @@ foreach ($aCarrito as $key => $value) {
                     <input type="text" class="form-control" id="last_name" value="<?php echo $user[3]. " ". $user[4] ?>" required>
                   </div>
 
-                <div class="col-6 mb-3">
-                  <label for="street_address">Calle <span>*</span></label>
-                  <input type="text" class="form-control mb-3" id="street_address" value="<?php echo $user[5] ?>">
-                </div>
-                <div class="col-3 mb-3">
-                  <label for="street_address">Número # <span>*</span></label>
-                  <input type="text" class="form-control" id="street_address2" value="<?php echo $user[6] ?>">
-                </div>
-                <div class="col-3 mb-3">
-                  <label for="postcode">Codígo Postal <span>*</span></label>
-                  <input type="text" class="form-control" id="postcode" value="<?php echo $user[7] ?>">
-                </div>
-                <div class="col-12 mb-3">
-                  <label for="city">Ciudad <span>*</span></label>
-                  <input type="text" class="form-control" id="city" value="<?php echo $user[8] ?>">
-                </div>
-                <div class="col-12 mb-3">
-                  <label for="state">Estado <span>*</span></label>
-                  <input type="text" class="form-control" id="state" value="<?php echo $user[9] ?>">
-                </div>
-                <div class="col-12 mb-3">
-                  <label for="phone_number">Num. de contacto <span>*</span></label>
-                  <input type="number" class="form-control" id="phone_number" min="0" value="<?php echo $user[10] ?>">
-                </div>
-                <div class="col-12 mb-4">
-                  <label for="email_address">Dirección de correo <span>*</span></label>
-                  <input type="email" class="form-control" id="email_address" value="<?php echo $user[1] ?>">
-                </div>
-              <?php } ?>
+                  <div class="col-6 mb-3">
+                    <label for="street_address">Calle <span>*</span></label>
+                    <input type="text" class="form-control mb-3" id="street_address" value="<?php echo $user[5] ?>">
+                  </div>
+                  <div class="col-3 mb-3">
+                    <label for="street_address">Número # <span>*</span></label>
+                    <input type="text" class="form-control" id="street_address2" value="<?php echo $user[6] ?>">
+                  </div>
+                  <div class="col-3 mb-3">
+                    <label for="postcode">Codígo Postal <span>*</span></label>
+                    <input type="text" class="form-control" id="postcode" value="<?php echo $user[7] ?>">
+                  </div>
+                  <div class="col-12 mb-3">
+                    <label for="city">Ciudad <span>*</span></label>
+                    <input type="text" class="form-control" id="city" value="<?php echo $user[8] ?>">
+                  </div>
+                  <div class="col-12 mb-3">
+                    <label for="state">Estado <span>*</span></label>
+                    <input type="text" class="form-control" id="state" value="<?php echo $user[9] ?>">
+                  </div>
+                  <div class="col-12 mb-3">
+                    <label for="phone_number">Num. de contacto <span>*</span></label>
+                    <input type="number" class="form-control" id="phone_number" min="0" value="<?php echo $user[10] ?>">
+                  </div>
+                  <div class="col-12 mb-4">
+                    <label for="email_address">Dirección de correo <span>*</span></label>
+                    <input type="email" class="form-control" id="email_address" value="<?php echo $user[1] ?>">
+                  </div>
+                <?php } ?>
 
                 <div class="col-12">
                   <div class="custom-control custom-checkbox d-block mb-2">
@@ -348,258 +348,258 @@ foreach ($aCarrito as $key => $value) {
                     <input type="checkbox" class="custom-control-input" id="customCheck2">
                     <label class="custom-control-label" for="customCheck2">Registrarse</label>
                   </div>
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
-        <div class="order-details-confirmation">
-
-          <div class="cart-page-heading">
-            <h5>Tu orden</h5>
-            <p>Detalles</p>
+            </form>
           </div>
+        </div>
 
-          <ul class="order-details-form mb-4">
-            <li><span>Artículos</span> <span>Total</span></li>
-            <?php foreach ($aCarrito as $key => $value) {
-              $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
-              ?>
-              <li><span><?php echo $value['NOMBRE'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+        <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
+          <div class="order-details-confirmation">
 
-            <?php } ?>
-            <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
-              <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
-              if (isset($_COOKIE['express'])) {
-                echo number_format($_COOKIE['express'],2);
-              }else {
-                echo $snf='0.00';
-              }
-              ?></span></span></li>
-              <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
-              </ul>
+            <div class="cart-page-heading">
+              <h5>Tu orden</h5>
+              <p>Detalles</p>
+            </div>
+
+            <ul class="order-details-form mb-4">
+              <li><span>Artículos</span> <span>Total</span></li>
+              <?php foreach ($aCarrito as $key => $value) {
+                $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+                ?>
+                <li><span><?php echo $value['NOMBRE'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+
+              <?php } ?>
+              <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
+                <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
+                if (isset($_COOKIE['express'])) {
+                  echo number_format($_COOKIE['express'],2);
+                }else {
+                  echo $snf='0.00';
+                }
+                ?></span></span></li>
+                <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
+                </ul>
 
 
-              <div id="accordion" role="tablist" class="mb-4">
-                <div class="card">
-                  <div class="card-header" role="tab" id="headingOne">
-                    <h6 class="mb-0">
-                      <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
-                    </h6>
-                  </div>
+                <div id="accordion" role="tablist" class="mb-4">
+                  <div class="card">
+                    <div class="card-header" role="tab" id="headingOne">
+                      <h6 class="mb-0">
+                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
+                      </h6>
+                    </div>
 
-                  <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                      <div id="paypal-button-container"></div>
-                      <div id="paypal-button"></div>
-                      <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-                      <script>
-                      paypal.Button.render({
-                        env: 'production',
-                        style:{
+                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                      <div class="card-body">
+                        <div id="paypal-button-container"></div>
+                        <div id="paypal-button"></div>
+                        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                        <script>
+                        paypal.Button.render({
+                          env: 'production',
+                          style:{
 
-                          label: 'checkout',
-                          size: 'responsive',
-                          shape: 'pill',
-                          color: 'gold'
+                            label: 'checkout',
+                            size: 'responsive',
+                            shape: 'pill',
+                            color: 'gold'
 
-                        },
-                        client: {
-                          sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
-                          production: 'AWkFACdq0h4aeDpN-yfYhlk4FxnpGYbLmX6rcVA5qo3N2ErxCp3GrPyQ1sWIwCR2EH6UubCHJfNnH84I'
+                          },
+                          client: {
+                            sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
+                            production: 'AWkFACdq0h4aeDpN-yfYhlk4FxnpGYbLmX6rcVA5qo3N2ErxCp3GrPyQ1sWIwCR2EH6UubCHJfNnH84I'
 
-                        },
-                        payment: function (data, actions) {
-                          return actions.payment.create({
-                            transactions:
-                            [
-                              {
-                                amount: {total: '<?php echo $vtaTotal; ?>', currency: 'MXN'},
-                                description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
-                              }
-                            ]
-                          });
-                        },
-                        onAuthorize: function (data, actions) {
-                          return actions.payment.execute().then(function () {
-                            console.log(data);
-                            // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
-                            window.location="verificador.php?paymentToken="+ data.paymentToken+"&paymentID="+data.paymentID;
-                          });
-                        }
-                      }, '#paypal-button-container');
-                      </script>
+                          },
+                          payment: function (data, actions) {
+                            return actions.payment.create({
+                              transactions:
+                              [
+                                {
+                                  amount: {total: '<?php echo $vtaTotal; ?>', currency: 'MXN'},
+                                  description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
+                                }
+                              ]
+                            });
+                          },
+                          onAuthorize: function (data, actions) {
+                            return actions.payment.execute().then(function () {
+                              console.log(data);
+                              // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
+                              window.location="verificador.php?paymentToken="+ data.paymentToken+"&paymentID="+data.paymentID;
+                            });
+                          }
+                        }, '#paypal-button-container');
+                        </script>
 
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="card">
-                  <div class="card-header" role="tab" id="headingTwo">
-                    <h6 class="mb-0">
-                      <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
-                    </h6>
-                  </div>
-                  <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
+                  <div class="card">
+                    <div class="card-header" role="tab" id="headingTwo">
+                      <h6 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
+                      </h6>
+                    </div>
+                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                      <div class="card-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <!-- <div class="card">
+                  <!-- <div class="card">
                   <div class="card-header" role="tab" id="headingThree">
-                    <h6 class="mb-0">
-                      <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
-                    </h6>
-                  </div>
-                  <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
-                    </div>
-                  </div>
-                </div> -->
-                <!-- <div class="card">
-                  <div class="card-header" role="tab" id="headingFour">
-                    <h6 class="mb-0">
-                      <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
-                    </h6>
-                  </div>
-                  <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
-                    </div>
-                  </div>
-                </div> -->
+                  <h6 class="mb-0">
+                  <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
+                </h6>
               </div>
-
-              <!-- <a href="#" class="btn karl-checkout-btn">Place Order</a> -->
+              <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+              <div class="card-body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
             </div>
           </div>
+        </div> -->
+        <!-- <div class="card">
+        <div class="card-header" role="tab" id="headingFour">
+        <h6 class="mb-0">
+        <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
+      </h6>
+    </div>
+    <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+    <div class="card-body">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
+  </div>
+</div>
+</div> -->
+</div>
 
+<!-- <a href="#" class="btn karl-checkout-btn">Place Order</a> -->
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<!-- ****** Checkout Area End ****** -->
+
+<!-- ****** Footer Area Start ****** -->
+<footer class="footer_area">
+  <div class="container">
+    <div class="row">
+      <!-- Single Footer Area Start -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="single_footer_area">
+          <div class="footer-logo">
+            <img src="img/core-img/logo.png" alt="">
+          </div>
+          <div class="copywrite_text d-flex align-items-center">
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            </div>
+          </div>
+        </div>
+        <!-- Single Footer Area Start -->
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="single_footer_area">
+            <ul class="footer_widget_menu">
+              <li><a href="#">About</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Faq</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- Single Footer Area Start -->
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="single_footer_area">
+            <ul class="footer_widget_menu">
+              <li><a href="#">My Account</a></li>
+              <li><a href="#">Shipping</a></li>
+              <li><a href="#">Our Policies</a></li>
+              <li><a href="#">Afiliates</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- Single Footer Area Start -->
+        <div class="col-12 col-lg-5">
+          <div class="single_footer_area">
+            <div class="footer_heading mb-30">
+              <h6>Subscribe to our newsletter</h6>
+            </div>
+            <div class="subscribtion_form">
+              <form action="#" method="post">
+                <input type="email" name="mail" class="mail" placeholder="Your email here">
+                <button type="submit" class="submit">Subscribe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="line"></div>
+
+      <!-- Footer Bottom Area Start -->
+      <div class="footer_bottom_area">
+        <div class="row">
+          <div class="col-12">
+            <div class="footer_social_area text-center">
+              <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <!-- ****** Checkout Area End ****** -->
+  </footer>
+  <!-- ****** Footer Area End ****** -->
+</div>
+<!-- /.wrapper end -->
 
-    <!-- ****** Footer Area Start ****** -->
-    <footer class="footer_area">
-      <div class="container">
-        <div class="row">
-          <!-- Single Footer Area Start -->
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="single_footer_area">
-              <div class="footer-logo">
-                <img src="img/core-img/logo.png" alt="">
-              </div>
-              <div class="copywrite_text d-flex align-items-center">
-                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                </div>
-              </div>
-            </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-              <div class="single_footer_area">
-                <ul class="footer_widget_menu">
-                  <li><a href="#">About</a></li>
-                  <li><a href="#">Blog</a></li>
-                  <li><a href="#">Faq</a></li>
-                  <li><a href="#">Returns</a></li>
-                  <li><a href="#">Contact</a></li>
-                </ul>
-              </div>
-            </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-              <div class="single_footer_area">
-                <ul class="footer_widget_menu">
-                  <li><a href="#">My Account</a></li>
-                  <li><a href="#">Shipping</a></li>
-                  <li><a href="#">Our Policies</a></li>
-                  <li><a href="#">Afiliates</a></li>
-                </ul>
-              </div>
-            </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-lg-5">
-              <div class="single_footer_area">
-                <div class="footer_heading mb-30">
-                  <h6>Subscribe to our newsletter</h6>
-                </div>
-                <div class="subscribtion_form">
-                  <form action="#" method="post">
-                    <input type="email" name="mail" class="mail" placeholder="Your email here">
-                    <button type="submit" class="submit">Subscribe</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="line"></div>
+<!-- jQuery (Necessary for All JavaScript Plugins) -->
+<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Active js -->
+<script src="js/active.js"></script>
 
-          <!-- Footer Bottom Area Start -->
-          <div class="footer_bottom_area">
-            <div class="row">
-              <div class="col-12">
-                <div class="footer_social_area text-center">
-                  <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-      <!-- ****** Footer Area End ****** -->
-    </div>
-    <!-- /.wrapper end -->
+<script src="https://smtpjs.com/v3/smtp.js"></script>
 
-    <!-- jQuery (Necessary for All JavaScript Plugins) -->
-    <script src="js/jquery/jquery-2.2.4.min.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Active js -->
-    <script src="js/active.js"></script>
+</body>
 
-    <script src="https://smtpjs.com/v3/smtp.js"></script>
+</html>
 
-  </body>
+<script type="text/javascript">
 
-  </html>
+$(document).ready(function(){
 
-  <script type="text/javascript">
+  $('#btnLogOut').click(function(){
+    vaciar = 1;
 
-  $(document).ready(function(){
-
-    $('#btnLogOut').click(function(){
-      vaciar = 1;
-
-      logOut(vaciar);
-
-    });
-
-    $('#btnPaypal').click(function(){
-      Email.send({
-        Host : "smtp.elasticemail.com",
-        Username : "fernando18092105@gmail.com",
-        Password : "C8C00D5D9EEF4F923A4B7190F4F83F9D4E5B",
-        To : 'fer18092105@icloud.com',
-        From : "fernando18092105@gmail.com",
-        Subject : "This is the subject",
-        Body : "And this is the body"
-      }).then(
-        message => alert(message)
-      );
-    });
+    logOut(vaciar);
 
   });
 
-  </script>
+  $('#btnPaypal').click(function(){
+    Email.send({
+      Host : "smtp.elasticemail.com",
+      Username : "fernando18092105@gmail.com",
+      Password : "C8C00D5D9EEF4F923A4B7190F4F83F9D4E5B",
+      To : 'fer18092105@icloud.com',
+      From : "fernando18092105@gmail.com",
+      Subject : "This is the subject",
+      Body : "And this is the body"
+    }).then(
+      message => alert(message)
+    );
+  });
+
+});
+
+</script>

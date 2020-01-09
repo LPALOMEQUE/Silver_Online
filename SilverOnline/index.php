@@ -81,9 +81,6 @@ foreach ($aCarrito as $key => $value) {
 </head>
 
 <body>
-
-
-
   <div class="catagories-side-menu">
     <!-- Close Icon -->
     <div id="sideMenuClose">
@@ -1198,8 +1195,8 @@ $(document).ready(function(){
   });
 
   function validar_email( email )
-{
+  {
     var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email) ? true : false;
-}
+  }
   </script>

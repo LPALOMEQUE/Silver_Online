@@ -474,7 +474,6 @@ foreach ($aCarrito as $key => $value) {
                     echo $category = 'none';
                   } ?>">
                   <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
-
                 </div>
               </ul>
             </div>
