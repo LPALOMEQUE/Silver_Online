@@ -466,6 +466,7 @@ img {
     top: 50px;
     width: 280px;
     z-index: 120;
+
 }
 
 .cart-data-open .cart-list {
@@ -2120,4 +2121,9 @@ img {
 }
   .show{
     display: inline;
+}
+
+.prueba{
+
+  overflow: auto;
 }

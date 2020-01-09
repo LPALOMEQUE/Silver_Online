@@ -1018,6 +1018,7 @@ $(document).ready(function(){
       alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
       email = 1;
     }
+    
     pass= $('#txtPass').val();
     roll = $("#cbmRoll option:selected").val();
 
