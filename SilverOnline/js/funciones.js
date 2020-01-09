@@ -1,5 +1,5 @@
 
-function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass){
+function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email,pass,roll){
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +
   "&apellidoM=" +apellidoM +
@@ -10,7 +10,8 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
   "&ESTADO=" + estado +
   "&CEL=" + cel +
   "&EMAIL=" + email +
-  "&PASS=" + pass;
+  "&PASS=" + pass +
+  "&ROLL=" + roll;
 
   $.ajax({
     type:"POST",
@@ -32,6 +33,7 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
         $('#txtCel').val('');
         $('#txtEmail').val('');
         $('#txtPass').val('');
+        $("#cbmRoll option[value=0]").attr("selected",true);
 
         $('#ModalRegistroUsuarios').hide();
       }
@@ -84,6 +86,7 @@ function loginValidaCostoEnv(email, pass){
 
   });
 }
+
 function login(email, pass){
   cadena = "EMAIL=" + email + "&PASS=" + pass;
 
@@ -109,6 +112,7 @@ function login(email, pass){
 
   });
 }
+
 function AddCart(id, nombre, precio, url, cantidad){
 
   cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad;

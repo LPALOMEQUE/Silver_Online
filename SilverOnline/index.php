@@ -235,7 +235,7 @@ foreach ($aCarrito as $key => $value) {
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="ModalLogin">Debe iniciar sesión para continuar...</h5>
+                  <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -282,7 +282,6 @@ foreach ($aCarrito as $key => $value) {
                       <a class="dropdown-item" href="checkout.html">Resiva</a>
                     </div>
                   </li>
-                  <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span>Dresses</a></li>
                   <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
                   <div class="<?php
                   if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
@@ -324,7 +323,7 @@ foreach ($aCarrito as $key => $value) {
                   </div>
                 </div>
                 <h6>Datos de envío...</h6>
-                <br/>
+
                 <div class="row">
                   <div class="col-md-4 mb-3">
                     <label for="txtCalle">Calle</label>
@@ -357,18 +356,27 @@ foreach ($aCarrito as $key => $value) {
                 <br/>
                 <h6>Datos de cuenta...</h6>
                 <div class="row">
-                  <div class="col-md-12 mb-3">
+                  <div class="col-md-6 mb-3">
                     <label for="txtEmail">E-MaiL</label>
                     <input type="email" class="form-control" id="txtEmail" value="" required>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 mb-3">
+                  <div class="col-md-6 mb-3">
                     <label for="txtPass">Contraseña</label>
                     <input type="password" class="form-control" id="txtPass" value="" required>
                   </div>
                 </div>
-
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                    <label id="lbRoll" for="cbmRoll">Roll</label>
+                    <select id="cbmRoll"  class="form-control" name="state">
+                      <option value="0">Selecciona...</option>
+                      ...
+                      <option value="ADMIN">ADMINISTRADOR</option>
+                      ...
+                      <option value="COMUN">COMÚN</option>form-control
+                    </select>
+                  </div>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -1004,7 +1012,17 @@ $(document).ready(function(){
     estado = $('#txtEstado').val();
     cel = $('#txtCel').val();
     email= $('#txtEmail').val();
+
+    if(validar_email( email ) )
+    {
+    }
+    else
+    {
+      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+      email = 1;
+    }
     pass= $('#txtPass').val();
+    roll = $("#cbmRoll option:selected").val();
 
     if(nombre == ""){
 
@@ -1047,8 +1065,12 @@ $(document).ready(function(){
 
       alert("Debe ingresar una contraseña...");
     }
-    if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && pass != ""){
-      agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass);
+    if(roll == 0){
+
+      alert("Debe seleccionar un roll de usuario...");
+    }
+    if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
+      agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
     }
   });
 
@@ -1174,4 +1196,10 @@ $(document).ready(function(){
       login(email, pass);
     }
   });
+
+  function validar_email( email )
+{
+    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email) ? true : false;
+}
   </script>

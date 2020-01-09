@@ -116,12 +116,131 @@ foreach ($aCarrito as $key => $value) {
 </head>
 
 <body>
+  <!-- Modal para registro de Articulos -->
+  <div class="modal fade bd-example-modal-lg" id="ModalArticulos" tabindex="-1" role="dialog" aria-labelledby="ModalArticulos" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalArticulos">Registro de Artículos...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="txtNameArt">Nombre</label>
+              <input type="text" class="form-control" id="txtNameArt" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="txtDescArt">Descripción</label>
+              <input type="text" class="form-control" id="txtDescArt" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="txtBarCode">Codigo de barra</label>
+              <input type="text" class="form-control" id="txtBarCode" value="" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="txtModelo">Modelo</label>
+              <input type="text" class="form-control" id="txtModelo" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label id="lblcbmMarca" for="cbmMarca">Marca</label>
+              <select class="form-control" id="cbmMarca" name="marca">
+                <option value="0">Selecciona...</option>
+                <?php
+                require_once "php/Conexion.php";
+                $con = conexion();
+
+                $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
+
+                $result = mysqli_query($con,$sql);
+                while($marca = mysqli_fetch_row($result)){
+
+                  echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                }
+                ?>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="txtPrecio">Precio</label>
+              <input type="number" class="form-control" id="txtPrecio" value="0" required>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label id="lbcategoria" for="cbmCategoria">Categoría</label>
+              <select id="cbmCategoria"  class="form-control" name="state">
+                <option value="0">Selecciona...</option>
+                <?php
+                require_once "php/Conexion.php";
+                $con = conexion();
+
+                $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
+
+                $result = mysqli_query($con,$sql);
+                while($marca = mysqli_fetch_row($result)){
+
+                  echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                }
+                ?>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label id="lbSubcategoria" for="cbmSubcategoria">Subcategoría</label>
+              <select id="cbmSubcategoria"  class="form-control" name="state">
+                <option value="0">Selecciona...</option>
+                <?php
+                require_once "php/Conexion.php";
+                $con = conexion();
+
+                $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
+
+                $result = mysqli_query($con,$sql);
+                while($marca = mysqli_fetch_row($result)){
+
+                  echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                }
+                ?>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label id="lbStatus" for="cbmStatus">Estatus</label>
+              <select id="cbmStatus"  class="form-control" name="state">
+                <option value="2">Selecciona...</option>
+                ...
+                <option value="1">Activo</option>
+                ...
+                <option value="0">Inactivo</option>form-control
+              </select>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-12">
+              <label for="txtNameIMG">Carga de Img</label>
+              <input id="sortpicture" type="file" class="form-control" name="sortpic" />
+              <button id="upload" class="form-control">Upload</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnGuardarArt">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Modal para inicio de sesion -->
   <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="ModalLogin">Debe iniciar sesión para continuar...</h5>
+          <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -149,6 +268,41 @@ foreach ($aCarrito as $key => $value) {
       </div>
     </div>
   </div>
+
+  <!-- Modal para inicio de sesion valida envio y location a checkout.php -->
+  <div class="modal fade" id="ModalLoginVal" tabindex="-1" role="dialog" aria-labelledby="ModalLoginVal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLoginVal">Inicio de sesión...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="txtEmailVal">E-MaiL</label>
+              <input type="email" class="form-control" id="txt_EmailVal" value="" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="txtPassVal">Contraseña</label>
+              <input type="password" class="form-control" id="txt_PassVal" value="" required>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnEntrarVal">Entrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="catagories-side-menu">
     <!-- Close Icon -->
     <div id="sideMenuClose">
@@ -211,7 +365,6 @@ foreach ($aCarrito as $key => $value) {
         echo $invitado = 'Invitado...';
       } ?>
     </a>
-
     <div class="<?php
     if (isset($_SESSION["Email"])) {
 
@@ -229,7 +382,7 @@ foreach ($aCarrito as $key => $value) {
   }else {
     echo $mostrar = 'inline';
   } ?>">
-  <button type="button" class="btn btn-primary" id="btnLogIn">Entar</button>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalLogin">Entar</button>
 </div>
 </div>
 <!-- ****** Header Area Start ****** -->
@@ -313,7 +466,6 @@ foreach ($aCarrito as $key => $value) {
                       <a class="dropdown-item" href="checkout.html">Resiva</a>
                     </div>
                   </li>
-                  <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span>Dresses</a></li>
                   <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
                   <div class="<?php
                   if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
@@ -331,7 +483,7 @@ foreach ($aCarrito as $key => $value) {
 
         <!-- Modal para registro de Usuarios -->
         <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
-          <div class="modal-dialog" role="document">
+          <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
@@ -340,20 +492,75 @@ foreach ($aCarrito as $key => $value) {
                 </button>
               </div>
               <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-4 mb-3">
+                    <label for="txtNombre">Nombre(s)</label>
+                    <input type="text" class="form-control" id="txtNombre" value="" required>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="txtApellidoP">Apellido Paterno</label>
+                    <input type="text" class="form-control" id="txtApellidoP" value="" required>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="txtApellidoM">Apellido Materno</label>
+                    <input type="text" class="form-control" id="txtApellidoM" value="" required>
+                  </div>
+                </div>
+                <h6>Datos de envío...</h6>
 
                 <div class="row">
-                  <div class="col-md-12 mb-3">
+                  <div class="col-md-4 mb-3">
+                    <label for="txtCalle">Calle</label>
+                    <input type="text" class="form-control" id="txtCalle" value="" required>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="txtNumCalle">Núm(#)</label>
+                    <input type="number" class="form-control" id="txtNumCalle" value="" required>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="txtCp">C.P.</label>
+                    <input type="number" class="form-control" id="txtCp" value="" required>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4" "mb-3">
+                    <label for="txtCiudad">Ciudad</label>
+                    <input type="text" class="form-control" id="txtCiudad" value="" required>
+                  </div>
+                  <div class="col-md-4" "mb-3">
+                    <label for="txtEstado">Estado</label>
+                    <input type="text" class="form-control" id="txtEstado" value="" required>
+                  </div>
+                  <div class="col-md-4" "mb-3">
+                    <label for="txtCel">Celular</label>
+                    <input type="number" class="form-control" id="txtCel" value="" required>
+                  </div>
+                </div>
+                <br/>
+                <h6>Datos de cuenta...</h6>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
                     <label for="txtEmail">E-MaiL</label>
                     <input type="email" class="form-control" id="txtEmail" value="" required>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 mb-3">
+                  <div class="col-md-6 mb-3">
                     <label for="txtPass">Contraseña</label>
                     <input type="password" class="form-control" id="txtPass" value="" required>
                   </div>
                 </div>
-
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                    <label id="lbRoll" for="cbmRoll">Roll</label>
+                    <select id="cbmRoll"  class="form-control" name="state">
+                      <option value="0">Selecciona...</option>
+                      ...
+                      <option value="ADMIN">ADMINISTRADOR</option>
+                      ...
+                      <option value="COMUN">COMÚN</option>form-control
+                    </select>
+                  </div>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -681,19 +888,76 @@ foreach ($aCarrito as $key => $value) {
 
       $('#btnGuardar').click(function(){
 
-        email= $('#txtEmail').val();
-        pass= $('#txtPass').val();
 
-        if($('#txtEmail').val() == ""){
+        nombre = $('#txtNombre').val();
+        apellidoP = $('#txtApellidoP').val();
+        apellidoM = $('#txtApellidoM').val();
+        calle = $('#txtCalle').val();
+        numCalle = $('#txtNumCalle').val();
+        cp = $('#txtCp').val();
+        ciudad = $('#txtCiudad').val();
+        estado = $('#txtEstado').val();
+        cel = $('#txtCel').val();
+        email= $('#txtEmail').val();
+
+        if(validar_email( email ) )
+        {
+        }
+        else
+        {
+          alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+          email = 1;
+        }
+        pass= $('#txtPass').val();
+        roll = $("#cbmRoll option:selected").val();
+
+        if(nombre == ""){
+
+          alert("Debe ingresar un nombrel...");
+        }
+        if(apellidoP == ""){
+
+          alert("Debe ingresar un apellido paterno...");
+        }if(apellidoM == ""){
+
+          alert("Debe ingresar un apellido Materno...");
+        }
+        if(calle == ""){
+
+          alert("Debe ingresar una calle...");
+        }if(numCalle == ""){
+
+          alert("Debe ingresar un número de la hubicación...");
+        }
+        if(cp == ""){
+
+          alert("Debe ingresar un código postal...");
+        }if(ciudad == ""){
+
+          alert("Debe ingresar una ciudad...");
+        }
+        if(estado == ""){
+
+          alert("Debe ingresar un estado...");
+        }
+        if(cel == ""){
+
+          alert("Debe ingresar un número de contacto...");
+        }
+        if(email == ""){
 
           alert("Debe ingresar un E-mail...");
         }
-        if($('#txtPass').val() == ""){
+        if(pass == ""){
 
           alert("Debe ingresar una contraseña...");
         }
-        if($('#txtEmail').val() != "" && $('#txtPass').val() != ""){
-          agregarUsuarios(email, pass);
+        if(roll == 0){
+
+          alert("Debe seleccionar un roll de usuario...");
+        }
+        if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
+          agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
         }
       });
 
@@ -729,7 +993,7 @@ foreach ($aCarrito as $key => $value) {
         else {
 
           if (valUser == 0) {
-            $("#ModalLogin").modal("show");
+            $("#ModalLoginVal").modal("show");
           }
           else {
             validaEnvio();
@@ -751,10 +1015,26 @@ foreach ($aCarrito as $key => $value) {
           alert("Debe ingresar una contraseña...");
         }
         if(email != "" && pass != ""){
+          login(email, pass);
+        }
+      });
+      $('#btnEntrarVal').click(function(){
+
+        email= $('#txt_EmailVal').val();
+        pass= $('#txt_PassVal').val();
+
+        if(email == ""){
+
+          alert("Debe ingresar un E-mail...");
+        }
+        if(pass == ""){
+
+          alert("Debe ingresar una contraseña...");
+        }
+        if(email != "" && pass != ""){
           loginValidaCostoEnv(email, pass);
         }
       });
-
       $('#btnLogOut').click(function(){
         vaciar = 1;
 
@@ -780,13 +1060,115 @@ foreach ($aCarrito as $key => $value) {
 
       }
 
-      <?php
-      foreach ($aCarrito as $key => $value) {
-        ?>
-        $('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>);
+      $('#btnGuardarArt').click(function(){
 
-        <?php } ?>
+        nomArt= $('#txtNameArt').val();
+        descArt= $('#txtDescArt').val();
+        barCode = $('#txtBarCode').val();
+        modelArt = $('#txtModelo').val();
+        marcaArt = $("#cbmMarca option:selected").val();
+        precioArt = $('#txtPrecio').val();
+        categoria = $("#cbmCategoria option:selected").val();
+        subCatego = $("#cbmSubcategoria option:selected").val();
+        statusArt = $("#cbmStatus option:selected").val();
+        nombreImg = $('#txtNameIMG').val();
 
-      });
 
-      </script>
+        if(nomArt == ""){
+
+          alert("Debe ingresar el nombre del artículo...");
+        }
+        if(descArt == ""){
+
+          alert("Debe ingresar la descripción del artículo...");
+        }
+        if(barCode == ""){
+
+          alert("Debe ingresar el codigo de barra del artículo...");
+        }
+        if(modelArt == ""){
+
+          alert("Debe ingresar el modelo del artículo...");
+        }
+        if(marcaArt == 0){
+
+          alert("Debe seleccionar una marca...");
+        }
+        if(precioArt == "" && precioArt !=0){
+
+          alert("Debe ingresar el precio del artículo...");
+        }
+        if(categoria == 0){
+
+          alert("Debe seleccionar una categoría...");
+        }
+        if(subCatego == 0){
+
+          alert("Debe seleccionar una subcategoría...");
+        }
+        if(statusArt == 2){
+
+          alert("Debe seleccionar un estatus del artículo...");
+        }
+
+        if (validaImg == 0) {
+
+          alert("Debe cargar la imagen del artículo...");
+        }
+
+        if (nomArt != "" && descArt != "" && barCode != "" && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
+          guardarArt(nomArt,
+            descArt,
+            barCode,
+            modelArt,
+            marcaArt,
+            precioArt,
+            categoria,
+            subCatego,
+            statusArt,
+            nameArticulo);
+            validaImg=0;
+            nameArticulo = "";
+          }
+
+        });
+        $('#upload').on('click', function() {
+
+          var file_data = $('#sortpicture').prop('files')[0];
+          var form_data = new FormData();
+          form_data.append('file', file_data);
+          $.ajax({
+            url: 'cargaIMG.php', // point to server-side PHP script
+            dataType: 'text',  // what to expect back from the PHP script, if anything
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(result){
+              if (result != "") {
+                validaImg =1;
+                nameArticulo = result;
+                document.getElementById("sortpicture").value = "";
+              }else{
+                validaImg=0;
+                document.getElementById("sortpicture").value = "";
+              }
+            }
+          });
+        });
+        function validar_email( email )
+        {
+          var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+          return regex.test(email) ? true : false;
+        }
+        <?php
+        foreach ($aCarrito as $key => $value) {
+          ?>
+          $('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>);
+
+          <?php } ?>
+
+        });
+
+        </script>
