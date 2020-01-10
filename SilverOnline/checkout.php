@@ -161,7 +161,7 @@ foreach ($aCarrito as $key => $value) {
         } ?>
       </a>
       <!-- <br/> -->
-      <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
+      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
     </div>
     <!-- Top Header Area Start -->
     <div class="top_header_area">

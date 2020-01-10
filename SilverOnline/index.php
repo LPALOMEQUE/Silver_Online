@@ -135,34 +135,54 @@ foreach ($aCarrito as $key => $value) {
   </div>
 
   <div id="wrapper">
-    <div class="right">
-      <a> <strong>Usuario:</strong> <?php
+
+    <div class="row">
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-1">
+
+      </div>
+      <div class="col-md-3 right">
+        <a> <strong>Usuario:</strong> <?php
+        if (isset($_SESSION["Email"])) {
+          echo $_SESSION["Email"];
+        }else {
+          echo $invitado = 'Invitado...';
+        } ?>
+      </a>
+    </div>
+
+    <div class="col-md-2">
+      <div class="<?php
       if (isset($_SESSION["Email"])) {
-        echo $_SESSION["Email"];
+
+        echo $mostrar = 'inline';
       }else {
-        echo $invitado = 'Invitado...';
-      } ?>
-    </a>
+        echo $ocultar = 'none';
+      } ?> right">
+      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
+    </div>
+
     <div class="<?php
     if (isset($_SESSION["Email"])) {
 
-      echo $mostrar = 'inline';
-    }else {
       echo $ocultar = 'none';
-    } ?>">
-    <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
+    }else {
+      echo $mostrar = 'inline';
+    } ?> right">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entar</button>
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
   </div>
-
-  <div class="<?php
-  if (isset($_SESSION["Email"])) {
-
-    echo $ocultar = 'none';
-  }else {
-    echo $mostrar = 'inline';
-  } ?>">
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalLogin">Entar</button>
 </div>
 </div>
+
 <!-- ****** Header Area Start ****** -->
 <header class="header_area">
   <!-- Top Header Area Start -->
@@ -184,331 +204,331 @@ foreach ($aCarrito as $key => $value) {
                 <!-- Cart List Area Start -->
                 <!-- <ul class="cart-list">
 
-                  <?php foreach ($aCarrito as $key => $value) {
+                <?php foreach ($aCarrito as $key => $value) {
 
-                    $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
-                    ?>
-                    <li>
-                      <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
-                      <div class="cart-item-desc">
-                        <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-                        <p> <?php echo $value['CANTIDAD'] ?>  x - <span class="price">$<?php echo $TotalxArt ?></span></p>
-                      </div>
-                      <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                    </li>
-                  <?php } ?>
-                  <li class="total">
-                    <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
-                    <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
-                    <a href="checkout.php" class="btn btn-sm btn-checkout">Pagar</a>
-                  </li>
-                </ul> -->
+                $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+                ?>
+                <li>
+                <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
+                <div class="cart-item-desc">
+                <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
+                <p> <?php echo $value['CANTIDAD'] ?>  x - <span class="price">$<?php echo $TotalxArt ?></span></p>
               </div>
-              <div class="header-right-side-menu ml-15">
-                <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+              <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
+            </li>
+          <?php } ?>
+          <li class="total">
+          <span class="pull-right">Total: $<?php echo $TotalxArtGlobal ?></span>
+          <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
+          <a href="checkout.php" class="btn btn-sm btn-checkout">Pagar</a>
+        </li>
+      </ul> -->
+    </div>
+    <div class="header-right-side-menu ml-15">
+      <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
     </div>
   </div>
+</div>
+</div>
 
-  <!-- Top Header Area End -->
-  <div class="main_header_area">
-    <div class="container h-100">
-      <div class="row h-100">
-        <div class="col-12 d-md-flex justify-content-between">
-          <!-- Header Social Area -->
-          <div class="header-social-area">
-            <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-          </div>
-          <!-- Modal para inicio de sesion -->
-          <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
+</div>
+</div>
+</div>
 
-                  <div class="row">
-                    <div class="col-md-12 mb-3">
-                      <label for="txtEmail">E-MaiL</label>
-                      <input type="email" class="form-control" id="txt_Email" value="" required>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 mb-3">
-                      <label for="txtPass">Contraseña</label>
-                      <input type="password" class="form-control" id="txt_Pass" value="" required>
-                    </div>
-                  </div>
-
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                  <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Menu Area -->
-          <div class="main-menu-area">
-            <nav class="navbar navbar-expand-lg align-items-start">
-
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
-
-              <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
-                <ul class="navbar-nav animated" id="nav">
-                  <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
-                    <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                      <a class="dropdown-item" href="index.php">Inicio</a>
-                      <a class="dropdown-item" href="shop.html">Compras</a>
-                      <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
-                      <a class="dropdown-item" href="cart.html">Carrito</a>
-                      <a class="dropdown-item" href="checkout.html">Resiva</a>
-                    </div>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
-                  <div class="<?php
-                  if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
-                    echo $category = 'inline';
-                  }else {
-                    echo $category = 'none';
-                  } ?>">
-                  <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
-
-                </div>
-              </ul>
-            </div>
-          </nav>
+<!-- Top Header Area End -->
+<div class="main_header_area">
+  <div class="container h-100">
+    <div class="row h-100">
+      <div class="col-12 d-md-flex justify-content-between">
+        <!-- Header Social Area -->
+        <div class="header-social-area">
+          <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
         </div>
-
-        <!-- Modal para registro de Usuarios -->
-        <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
+        <!-- Modal para inicio de sesion -->
+        <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
+          <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
+                <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <div class="row">
-                  <div class="col-md-4 mb-3">
-                    <label for="txtNombre">Nombre(s)</label>
-                    <input type="text" class="form-control" id="txtNombre" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtApellidoP">Apellido Paterno</label>
-                    <input type="text" class="form-control" id="txtApellidoP" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtApellidoM">Apellido Materno</label>
-                    <input type="text" class="form-control" id="txtApellidoM" value="" required>
-                  </div>
-                </div>
-                <h6>Datos de envío...</h6>
 
                 <div class="row">
-                  <div class="col-md-4 mb-3">
-                    <label for="txtCalle">Calle</label>
-                    <input type="text" class="form-control" id="txtCalle" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtNumCalle">Núm(#)</label>
-                    <input type="number" class="form-control" id="txtNumCalle" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtCp">C.P.</label>
-                    <input type="number" class="form-control" id="txtCp" value="" required>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-4" "mb-3">
-                    <label for="txtCiudad">Ciudad</label>
-                    <input type="text" class="form-control" id="txtCiudad" value="" required>
-                  </div>
-                  <div class="col-md-4" "mb-3">
-                    <label for="txtEstado">Estado</label>
-                    <input type="text" class="form-control" id="txtEstado" value="" required>
-                  </div>
-                  <div class="col-md-4" "mb-3">
-                    <label for="txtCel">Celular</label>
-                    <input type="number" class="form-control" id="txtCel" value="" required>
-                  </div>
-                </div>
-                <br/>
-                <h6>Datos de cuenta...</h6>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
+                  <div class="col-md-12 mb-3">
                     <label for="txtEmail">E-MaiL</label>
-                    <input type="email" class="form-control" id="txtEmail" value="" required>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="txtPass">Contraseña</label>
-                    <input type="password" class="form-control" id="txtPass" value="" required>
+                    <input type="email" class="form-control" id="txt_Email" value="" required>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12 mb-3">
-                    <label id="lbRoll" for="cbmRoll">Roll</label>
-                    <select id="cbmRoll"  class="form-control" name="state">
-                      <option value="0">Selecciona...</option>
-                      ...
-                      <option value="ADMIN">ADMINISTRADOR</option>
-                      ...
-                      <option value="COMUN">COMÚN</option>form-control
-                    </select>
+                    <label for="txtPass">Contraseña</label>
+                    <input type="password" class="form-control" id="txt_Pass" value="" required>
                   </div>
                 </div>
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
+                <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
               </div>
             </div>
           </div>
         </div>
+        <!-- Menu Area -->
+        <div class="main-menu-area">
+          <nav class="navbar navbar-expand-lg align-items-start">
 
-        <!-- Modal para registro de Articulos -->
-        <div class="modal fade bd-example-modal-lg" id="ModalArticulos" tabindex="-1" role="dialog" aria-labelledby="ModalArticulos" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="ModalArticulos">Registro de Artículos...</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
+
+            <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
+              <ul class="navbar-nav animated" id="nav">
+                <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
+                  <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                    <a class="dropdown-item" href="index.php">Inicio</a>
+                    <a class="dropdown-item" href="shop.html">Compras</a>
+                    <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
+                    <a class="dropdown-item" href="cart.html">Carrito</a>
+                    <a class="dropdown-item" href="checkout.html">Resiva</a>
+                  </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
+                <div class="<?php
+                if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+                  echo $category = 'inline';
+                }else {
+                  echo $category = 'none';
+                } ?>">
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
+
               </div>
-              <div class="modal-body">
+            </ul>
+          </div>
+        </nav>
+      </div>
 
-                <div class="row">
-                  <div class="col-md-4 mb-3">
-                    <label for="txtNameArt">Nombre</label>
-                    <input type="text" class="form-control" id="txtNameArt" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtDescArt">Descripción</label>
-                    <input type="text" class="form-control" id="txtDescArt" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtBarCode">Codigo de barra</label>
-                    <input type="text" class="form-control" id="txtBarCode" value="" required>
-                  </div>
+      <!-- Modal para registro de Usuarios -->
+      <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="txtNombre">Nombre(s)</label>
+                  <input type="text" class="form-control" id="txtNombre" value="" required>
                 </div>
-                <div class="row">
-                  <div class="col-md-4 mb-3">
-                    <label for="txtModelo">Modelo</label>
-                    <input type="text" class="form-control" id="txtModelo" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label id="lblcbmMarca" for="cbmMarca">Marca</label>
-                    <select class="form-control" id="cbmMarca" name="marca">
-                      <option value="0">Selecciona...</option>
-                      <?php
-                      require_once "php/Conexion.php";
-                      $con = conexion();
-
-                      $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
-
-                      $result = mysqli_query($con,$sql);
-                      while($marca = mysqli_fetch_row($result)){
-
-                        echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                      }
-                      ?>
-                    </select>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtPrecio">Precio</label>
-                    <input type="number" class="form-control" id="txtPrecio" value="0" required>
-                  </div>
-
+                <div class="col-md-4 mb-3">
+                  <label for="txtApellidoP">Apellido Paterno</label>
+                  <input type="text" class="form-control" id="txtApellidoP" value="" required>
                 </div>
-                <div class="row">
-                  <div class="col-md-4 mb-3">
-                    <label id="lbcategoria" for="cbmCategoria">Categoría</label>
-                    <select id="cbmCategoria"  class="form-control" name="state">
-                      <option value="0">Selecciona...</option>
-                      <?php
-                      require_once "php/Conexion.php";
-                      $con = conexion();
-
-                      $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
-
-                      $result = mysqli_query($con,$sql);
-                      while($marca = mysqli_fetch_row($result)){
-
-                        echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                      }
-                      ?>
-                    </select>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label id="lbSubcategoria" for="cbmSubcategoria">Subcategoría</label>
-                    <select id="cbmSubcategoria"  class="form-control" name="state">
-                      <option value="0">Selecciona...</option>
-                      <?php
-                      require_once "php/Conexion.php";
-                      $con = conexion();
-
-                      $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
-
-                      $result = mysqli_query($con,$sql);
-                      while($marca = mysqli_fetch_row($result)){
-
-                        echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                      }
-                      ?>
-                    </select>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label id="lbStatus" for="cbmStatus">Estatus</label>
-                    <select id="cbmStatus"  class="form-control" name="state">
-                      <option value="2">Selecciona...</option>
-                      ...
-                      <option value="1">Activo</option>
-                      ...
-                      <option value="0">Inactivo</option>form-control
-                    </select>
-                  </div>
-
-                </div>
-                <div class="row">
-                  <div class="col-md-12 mb-12">
-                    <label for="txtNameIMG">Carga de Img</label>
-                    <input id="sortpicture" type="file" class="form-control" name="sortpic" />
-                    <button id="upload" class="form-control">Upload</button>
-                  </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtApellidoM">Apellido Materno</label>
+                  <input type="text" class="form-control" id="txtApellidoM" value="" required>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="btnGuardarArt">Guardar</button>
+              <h6>Datos de envío...</h6>
+
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="txtCalle">Calle</label>
+                  <input type="text" class="form-control" id="txtCalle" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtNumCalle">Núm(#)</label>
+                  <input type="number" class="form-control" id="txtNumCalle" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtCp">C.P.</label>
+                  <input type="number" class="form-control" id="txtCp" value="" required>
+                </div>
               </div>
+
+              <div class="row">
+                <div class="col-md-4" "mb-3">
+                  <label for="txtCiudad">Ciudad</label>
+                  <input type="text" class="form-control" id="txtCiudad" value="" required>
+                </div>
+                <div class="col-md-4" "mb-3">
+                  <label for="txtEstado">Estado</label>
+                  <input type="text" class="form-control" id="txtEstado" value="" required>
+                </div>
+                <div class="col-md-4" "mb-3">
+                  <label for="txtCel">Celular</label>
+                  <input type="number" class="form-control" id="txtCel" value="" required>
+                </div>
+              </div>
+              <br/>
+              <h6>Datos de cuenta...</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="txtEmail">E-MaiL</label>
+                  <input type="email" class="form-control" id="txtEmail" value="" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="txtPass">Contraseña</label>
+                  <input type="password" class="form-control" id="txtPass" value="" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label id="lbRoll" for="cbmRoll">Roll</label>
+                  <select id="cbmRoll"  class="form-control" name="state">
+                    <option value="0">Selecciona...</option>
+                    ...
+                    <option value="ADMIN">ADMINISTRADOR</option>
+                    ...
+                    <option value="COMUN">COMÚN</option>form-control
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
             </div>
           </div>
         </div>
-        <!-- Help Line -->
-        <div class="help-line">
-          <a href="tel:921 119 77 85"><i class="ti-headphone-alt"></i> 921 119 77 85</a>
+      </div>
+
+      <!-- Modal para registro de Articulos -->
+      <div class="modal fade bd-example-modal-lg" id="ModalArticulos" tabindex="-1" role="dialog" aria-labelledby="ModalArticulos" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalArticulos">Registro de Artículos...</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="txtNameArt">Nombre</label>
+                  <input type="text" class="form-control" id="txtNameArt" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtDescArt">Descripción</label>
+                  <input type="text" class="form-control" id="txtDescArt" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtBarCode">Codigo de barra</label>
+                  <input type="text" class="form-control" id="txtBarCode" value="" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="txtModelo">Modelo</label>
+                  <input type="text" class="form-control" id="txtModelo" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label id="lblcbmMarca" for="cbmMarca">Marca</label>
+                  <select class="form-control" id="cbmMarca" name="marca">
+                    <option value="0">Selecciona...</option>
+                    <?php
+                    require_once "php/Conexion.php";
+                    $con = conexion();
+
+                    $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
+
+                    $result = mysqli_query($con,$sql);
+                    while($marca = mysqli_fetch_row($result)){
+
+                      echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtPrecio">Precio</label>
+                  <input type="number" class="form-control" id="txtPrecio" value="0" required>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label id="lbcategoria" for="cbmCategoria">Categoría</label>
+                  <select id="cbmCategoria"  class="form-control" name="state">
+                    <option value="0">Selecciona...</option>
+                    <?php
+                    require_once "php/Conexion.php";
+                    $con = conexion();
+
+                    $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
+
+                    $result = mysqli_query($con,$sql);
+                    while($marca = mysqli_fetch_row($result)){
+
+                      echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label id="lbSubcategoria" for="cbmSubcategoria">Subcategoría</label>
+                  <select id="cbmSubcategoria"  class="form-control" name="state">
+                    <option value="0">Selecciona...</option>
+                    <?php
+                    require_once "php/Conexion.php";
+                    $con = conexion();
+
+                    $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
+
+                    $result = mysqli_query($con,$sql);
+                    while($marca = mysqli_fetch_row($result)){
+
+                      echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label id="lbStatus" for="cbmStatus">Estatus</label>
+                  <select id="cbmStatus"  class="form-control" name="state">
+                    <option value="2">Selecciona...</option>
+                    ...
+                    <option value="1">Activo</option>
+                    ...
+                    <option value="0">Inactivo</option>form-control
+                  </select>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12 mb-12">
+                  <label for="txtNameIMG">Carga de Img</label>
+                  <input id="sortpicture" type="file" class="form-control" name="sortpic" />
+                  <button id="upload" class="form-control">Upload</button>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary" id="btnGuardarArt">Guardar</button>
+            </div>
+          </div>
         </div>
+      </div>
+      <!-- Help Line -->
+      <div class="help-line">
+        <a href="tel:921 119 77 85"><i class="ti-headphone-alt"></i> 921 119 77 85</a>
       </div>
     </div>
   </div>
+</div>
 </div>
 </header>
 <!-- ****** Header Area End ****** -->

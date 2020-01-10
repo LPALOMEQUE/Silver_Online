@@ -357,34 +357,52 @@ foreach ($aCarrito as $key => $value) {
   </div>
 
   <div id="wrapper">
-    <div class="right">
-      <a> <strong>Usuario:</strong> <?php
+    <div class="row">
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-1">
+
+      </div>
+      <div class="col-md-3 right">
+        <a> <strong>Usuario:</strong> <?php
+        if (isset($_SESSION["Email"])) {
+          echo $_SESSION["Email"];
+        }else {
+          echo $invitado = 'Invitado...';
+        } ?>
+      </a>
+    </div>
+
+    <div class="col-md-2">
+      <div class="<?php
       if (isset($_SESSION["Email"])) {
-        echo $_SESSION["Email"];
+
+        echo $mostrar = 'inline';
       }else {
-        echo $invitado = 'Invitado...';
-      } ?>
-    </a>
+        echo $ocultar = 'none';
+      } ?> right">
+      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
+    </div>
+
     <div class="<?php
     if (isset($_SESSION["Email"])) {
 
-      echo $mostrar = 'inline';
-    }else {
       echo $ocultar = 'none';
-    } ?>">
-    <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
-  </div>
-
-  <div class="<?php
-  if (isset($_SESSION["Email"])) {
-
-    echo $ocultar = 'none';
-  }else {
-    echo $mostrar = 'inline';
-  } ?>">
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalLogin">Entar</button>
-</div>
-</div>
+    }else {
+      echo $mostrar = 'inline';
+    } ?> right">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entar</button>
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
+    </div>
+    </div>
+    </div>
 <!-- ****** Header Area Start ****** -->
 <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
   <!-- Top Header Area Start -->
@@ -742,13 +760,13 @@ foreach ($aCarrito as $key => $value) {
             <div class="col-12 col-md-6 col-lg-4">
               <div class="coupon-code-area mt-70">
                 <div class="cart-page-heading">
-                  <h5>Cupon code</h5>
-                  <p>Enter your cupone code</p>
+                  <!-- <h5>Cupon code</h5>
+                  <p>Enter your cupone code</p> -->
                 </div>
-                <form action="#">
+                <!-- <form action="#">
                   <input type="search" name="search" placeholder="#569ab15">
                   <button type="submit">Apply</button>
-                </form>
+                </form> -->
               </div>
             </div>
             <div class="col-12 col-md-6 col-lg-4">
