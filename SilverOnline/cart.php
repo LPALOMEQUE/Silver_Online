@@ -1065,10 +1065,10 @@ foreach ($aCarrito as $key => $value) {
           precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
 
           if (precioEnvio == 'express') {
-            x = 700;
+            x = 0;
           }
           else{
-            x = 250;
+            x = 0;
           }
           pruebas(x);
         }else{
