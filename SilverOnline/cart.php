@@ -358,49 +358,49 @@ foreach ($aCarrito as $key => $value) {
 
   <div id="wrapper">
     <div class="row">
-      <div class="col-md-2">
-
-      </div>
-      <div class="col-md-2">
-
-      </div>
-      <div class="col-md-2">
-
-      </div>
-      <div class="col-md-1">
-
-      </div>
-      <div class="col-md-3 right">
-        <a> <strong>Usuario:</strong> <?php
+      <div class="col-md-3 error">
+        <a class="center"> <strong>Usuario:</strong> <?php
         if (isset($_SESSION["Email"])) {
           echo $_SESSION["Email"];
         }else {
           echo $invitado = 'Invitado...';
         } ?>
-      </a>
+        </a>
+      </div>
+      <div class="col-md-2 error">
+        <div class="<?php
+        if (isset($_SESSION["Email"])) {
+
+          echo $mostrar = 'inline';
+        }else {
+          echo $ocultar = 'none';
+        } ?> ">
+        <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
+        </div>
+
+        <div class="<?php
+        if (isset($_SESSION["Email"])) {
+
+        echo $ocultar = 'none';
+        }else {
+        echo $mostrar = 'inline';
+      } ?>">
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
+        </div>
+      </div>
+      <div class="col-md-2">
+
+      </div>
+      <!-- <div class="col-md-1">
+
+      </div> -->
+      <div class="col-md-3 right">
+
     </div>
 
     <div class="col-md-2">
-      <div class="<?php
-      if (isset($_SESSION["Email"])) {
 
-        echo $mostrar = 'inline';
-      }else {
-        echo $ocultar = 'none';
-      } ?> right">
-      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
-    </div>
-
-    <div class="<?php
-    if (isset($_SESSION["Email"])) {
-
-      echo $ocultar = 'none';
-    }else {
-      echo $mostrar = 'inline';
-    } ?> right">
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entar</button>
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
-    </div>
     </div>
     </div>
 <!-- ****** Header Area Start ****** -->

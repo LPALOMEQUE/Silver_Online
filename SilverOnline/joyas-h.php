@@ -138,51 +138,51 @@ foreach ($aCarrito as $key => $value) {
 
   <div id="wrapper">
     <div class="row">
-      <div class="col-md-2">
-
-      </div>
-      <div class="col-md-2">
-
-      </div>
-      <div class="col-md-2">
-
-      </div>
-      <div class="col-md-1">
-
-      </div>
-      <div class="col-md-3 right">
-        <a> <strong>Usuario:</strong> <?php
+      <div class="col-md-3 error">
+        <a class="center"> <strong>Usuario:</strong> <?php
         if (isset($_SESSION["Email"])) {
           echo $_SESSION["Email"];
         }else {
           echo $invitado = 'Invitado...';
         } ?>
-      </a>
+        </a>
+      </div>
+      <div class="col-md-2 error">
+        <div class="<?php
+        if (isset($_SESSION["Email"])) {
+
+          echo $mostrar = 'inline';
+        }else {
+          echo $ocultar = 'none';
+        } ?> ">
+        <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
+        </div>
+
+        <div class="<?php
+        if (isset($_SESSION["Email"])) {
+
+        echo $ocultar = 'none';
+        }else {
+        echo $mostrar = 'inline';
+      } ?>">
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
+        </div>
+      </div>
+      <div class="col-md-2">
+
+      </div>
+      <!-- <div class="col-md-1">
+
+      </div> -->
+      <div class="col-md-3 right">
+
     </div>
 
     <div class="col-md-2">
-      <div class="<?php
-      if (isset($_SESSION["Email"])) {
 
-        echo $mostrar = 'inline';
-      }else {
-        echo $ocultar = 'none';
-      } ?> right">
-      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
     </div>
-
-    <div class="<?php
-    if (isset($_SESSION["Email"])) {
-
-      echo $ocultar = 'none';
-    }else {
-      echo $mostrar = 'inline';
-    } ?> right">
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entar</button>
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
-  </div>
-</div>
-</div>
+    </div>
 <!-- ****** Header Area Start ****** -->
 <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
   <!-- Top Header Area Start -->
@@ -597,7 +597,7 @@ while($category = mysqli_fetch_row($result)){
                     <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                     <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                   </div>
-                  <div class="range-price">Price: 0 - 1350</div>
+                  <div id='divPrice' class="range-price">Price: 0 - 1350</div>
                 </div>
               </div>
             </div>
@@ -822,10 +822,9 @@ while($category = mysqli_fetch_row($result)){
 $(document).ready(function(){
 
   $('#btnEntrar').click(function(){
-
+debugger;
     email= $('#txt_Email').val();
     pass= $('#txt_Pass').val();
-
     if(email == ""){
 
       alert("Debe ingresar un E-mail...");

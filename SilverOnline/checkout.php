@@ -89,7 +89,6 @@ foreach ($aCarrito as $key => $value) {
   <link href="css/responsive.css" rel="stylesheet">
 
   <!-- scripts LFPO -->
-  <script src="js/jquery/jquery-2.2.4.min.js"></script>
   <script src="js/funciones.js"></script>
   <script src="librerias/alertify/alertify.js"></script>
   <!-- end -->
@@ -152,17 +151,42 @@ foreach ($aCarrito as $key => $value) {
 
     <!-- ****** Header Area Start ****** -->
     <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
-      <div class="right">
-        <a> <strong>Usuario:</strong> <?php
-        if (isset($_SESSION["Email"])) {
-          echo $_SESSION["Email"];
-        }else {
-          echo $invitado = 'Invitado...';
-        } ?>
-      </a>
-      <!-- <br/> -->
-      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
-    </div>
+      <div class="row">
+        <div class="col-md-3 error">
+          <a class="center"> <strong>Usuario:</strong> <?php
+          if (isset($_SESSION["Email"])) {
+            echo $_SESSION["Email"];
+          }else {
+            echo $invitado = 'Invitado...';
+          } ?>
+          </a>
+        </div>
+        <div class="col-md-2 error">
+          <div class="<?php
+          if (isset($_SESSION["Email"])) {
+
+            echo $mostrar = 'inline';
+          }else {
+            echo $ocultar = 'none';
+          } ?> ">
+          <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
+          </div>
+
+        </div>
+        <div class="col-md-2">
+
+        </div>
+        <!-- <div class="col-md-1">
+
+        </div> -->
+        <div class="col-md-3 right">
+
+      </div>
+
+      <div class="col-md-2">
+
+      </div>
+      </div>
     <!-- Top Header Area Start -->
     <div class="top_header_area">
       <div class="container h-100">
@@ -411,7 +435,7 @@ foreach ($aCarrito as $key => $value) {
                   <script src="https://www.paypalobjects.com/api/checkout.js"></script>
                   <script>
                   paypal.Button.render({
-                    env: 'production',
+                    env: 'sandbox',
                     style:{
 
                       label: 'checkout',
@@ -685,7 +709,6 @@ $('#btnActualizarDatos').click(function(){
   }
 
 });
-
 
   function validar_email( email )
   {

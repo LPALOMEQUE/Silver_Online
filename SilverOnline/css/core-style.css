@@ -2107,7 +2107,10 @@ img {
 
 .right{text-align: right;}
 
-.left{text-align: left;;}
+.left{
+  text-align: left;
+  width: auto;
+}
 
 .center{text-align: center;}
 
@@ -2123,4 +2126,9 @@ img {
 }
   .show{
     display: inline;
+}
+
+.error{
+  width : auto;
+  display: inline-block;
 }
