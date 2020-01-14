@@ -19,7 +19,7 @@ function ModDatosUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,es
 
         alert("Se actualizarón los datos de forma correcta...");
 
-        location.reload();        
+        location.reload();
       }
       else{
         alert("Error...");
@@ -30,6 +30,35 @@ function ModDatosUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,es
   });
 
 }
+
+function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email,paymentToken,paymentID){
+  debugger;
+  cadena = "NOMBRE=" +nombre +
+  "&apellidoP=" + apellidoP +
+  "&apellidoM=" +apellidoM +
+  "&CALLE=" + calle +
+  "&numCalle=" + numCalle +
+  "&CP=" + cp +
+  "&CIUDAD=" + ciudad +
+  "&ESTADO=" + estado +
+  "&CEL=" + cel +
+  "&EMAIL=" + email +
+  "&paymentToken=" +paymentToken +
+  "&paymentID=" + paymentID;
+
+  $.ajax({
+    type:"GET",
+    url: "php/verificador.php",
+    data:cadena,
+    success:function(result){
+      debugger;
+      location.href = 'php/verificador.php'
+    }
+
+  });
+
+}
+
 function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email,pass,roll){
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +

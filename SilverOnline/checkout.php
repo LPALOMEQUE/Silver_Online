@@ -11,7 +11,19 @@ $costoEnvio = 0;
 
 
 // formulario
+$nombre = '';
+$apellidoP = '';
+$apellidoM = '';
 $calle = '';
+$numCalle = '';
+$cp = '';
+$ciudad = '';
+$estado = '';
+$cel = '';
+$email = '';
+$paymentToken = '';
+$paymentID = '';
+
 if (!isset($_SESSION["ID_USER"])) {
   header('Location: index.php');
 }
@@ -206,36 +218,15 @@ foreach ($aCarrito as $key => $value) {
             <!-- Cart Area -->
             <div class="cart">
               <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
-              <!-- Cart List Area Start -->
-              <!-- <ul class="cart-list">
-              <?php foreach ($aCarrito as $key => $value) {
-              $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
-              ?>
-              <li>
-              <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
-              <div class="cart-item-desc">
-              <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-              <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo number_format($TotalxArt,2) ?></span></p>
             </div>
-            <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-          </li>
-        <?php } ?>
-        <li class="total">
-        <span class="pull-right">Total: $<?php echo number_format($TotalxArtGlobal,2) ?></span>
-        <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
-        <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
-      </li>
-    </ul> -->
+            <div class="header-right-side-menu ml-15">
+              <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="header-right-side-menu ml-15">
-    <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
-  </div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
 </div>
 
 <!-- Top Header Area End -->
@@ -325,31 +316,30 @@ foreach ($aCarrito as $key => $value) {
 
             $result = mysqli_query($con,$sql);
             while($user = mysqli_fetch_row($result)){
+              $email = $user[1];
+              $nombre = $user[2];
+              $apellidoP = $user[3];
+              $apellidoM = $user[4];
               $calle = $user[5];
+              $numCalle = $user[6];
+              $cp = $user[7];
+              $ciudad = $user[8];
+              $estado = $user[9];
+              $cel = $user[10];
               ?>
               <div class="row">
                 <div class="col-md-12 mb-3">
                   <label for="txtName">Nombre(s)<span>*</span></label>
                   <input type="text" class="form-control" id="txtName" value="<?php echo $user[2] ?>" required>
-                  <!-- <br/> -->
-                  <!-- <label for="txtApellido">Apellido Paterno <span>*</span></label>
-                  <input type="text" class="form-control" id="txtApellido" value="<?php echo $user[3]. " ". $user[4] ?>" required> -->
                 </div>
-
                 <div class="col-md-6 mb-3">
-
                   <label for="txtApellidoP">Apellido Paterno <span>*</span></label>
                   <input type="text" class="form-control" id="txtApellidoP" value="<?php echo $user[3] ?>" required>
-
                 </div>
                 <div class="col-md-6 mb-3">
-
                   <label for="txtApellidoM">Apellido Materno <span>*</span></label>
                   <input type="text" class="form-control" id="txtApellidoM" value="<?php echo $user[4] ?>" required>
-
                 </div>
-
-
                 <div class="col-6 mb-3">
                   <label for="txtCalle">Calle <span>*</span></label>
                   <input type="text" class="form-control mb-3" id="txtCalle" value="<?php echo $calle ?>">
@@ -379,137 +369,220 @@ foreach ($aCarrito as $key => $value) {
                   <input type="email" class="form-control" id="txtEmail" value="<?php echo $user[1] ?>" readonly>
                 </div>
               <?php } ?>
-              <!-- <div class="col-12">
-              <div class="custom-control custom-checkbox d-block mb-2">
-              <input type="checkbox" class="custom-control-input" id="customCheck1">
-              <label class="custom-control-label" for="customCheck1">Terminos y coniciones</label>
             </div>
-            <div class="custom-control custom-checkbox d-block mb-2">
-            <input type="checkbox" class="custom-control-input" id="customCheck2">
-            <label class="custom-control-label" for="customCheck2">Registrarse</label>
-          </div>
-        </div> -->
+            <button type="button" class="btn karl-checkout-btn" id="btnActualizarDatos">Actualizar</button>
+          </form>
+        </div>
       </div>
-      <button type="button" class="btn karl-checkout-btn" id="btnActualizarDatos">Actualizar</button>
-    </form>
-  </div>
-</div>
 
-<div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
-  <div class="order-details-confirmation">
+      <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
+        <div class="order-details-confirmation">
 
-    <div class="cart-page-heading">
-      <h5>Tu orden</h5>
-      <p>Detalles</p>
-    </div>
+          <div class="cart-page-heading">
+            <h5>Tu orden</h5>
+            <p>Detalles</p>
+          </div>
 
-    <ul class="order-details-form mb-4">
-      <li><span>Artículos</span> <span>Total</span></li>
-      <?php foreach ($aCarrito as $key => $value) {
-        $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
-        ?>
-        <li><span><?php echo $value['NOMBRE'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+          <ul class="order-details-form mb-4">
+            <li><span>Artículos</span> <span>Total</span></li>
+            <?php foreach ($aCarrito as $key => $value) {
+              $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+              ?>
+              <li><span><?php echo $value['NOMBRE'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
 
-      <?php } ?>
-      <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
-        <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
-        if (isset($_COOKIE['express'])) {
-          echo number_format($_COOKIE['express'],2);
-        }else {
-          echo $snf='0.00';
-        }
-        ?></span></span></li>
-        <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
-        </ul>
+            <?php } ?>
+            <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
+              <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
+              if (isset($_COOKIE['express'])) {
+                echo number_format($_COOKIE['express'],2);
+              }else {
+                echo $snf='0.00';
+              }
+              ?></span></span></li>
+              <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
+              </ul>
 
 
-        <div id="accordion" role="tablist" class="mb-4">
-          <div class="card">
-            <div class="card-header" role="tab" id="headingOne">
-              <h6 class="mb-0">
-                <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
-              </h6>
-            </div>
+              <div id="accordion" role="tablist" class="mb-4">
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingOne">
+                    <h6 class="mb-0">
+                      <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
+                    </h6>
+                  </div>
 
-            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-              <div class="card-body">
-                <div id="paypal-button-container"></div>
-                <div id="paypal-button"></div>
-                <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-                <script>
-                paypal.Button.render({
-                  env: 'production',
-                  style:{
+                  <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                      <div id="paypal-button-container"></div>
+                      <div id="paypal-button"></div>
+                      <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                      <script>
+                      paypal.Button.render({
+                        env: 'sandbox',
+                        style:{
 
-                    label: 'checkout',
-                    size: 'responsive',
-                    shape: 'pill',
-                    color: 'gold'
+                          label: 'checkout',
+                          size: 'responsive',
+                          shape: 'pill',
+                          color: 'gold'
 
-                  },
-                  client: {
-                    sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
-                    production: 'AWkFACdq0h4aeDpN-yfYhlk4FxnpGYbLmX6rcVA5qo3N2ErxCp3GrPyQ1sWIwCR2EH6UubCHJfNnH84I'
+                        },
+                        client: {
+                          sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
+                          production: 'AWkFACdq0h4aeDpN-yfYhlk4FxnpGYbLmX6rcVA5qo3N2ErxCp3GrPyQ1sWIwCR2EH6UubCHJfNnH84I'
 
-                  },
-                  payment: function (data, actions) {
-                    return actions.payment.create({
-                      transactions:
-                      [
-                        {
-                          amount: {total: '<?php echo $vtaTotal; ?>', currency: 'MXN'},
-                          description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
+                        },
+                        payment: function (data, actions) {
+                          return actions.payment.create({
+                            transactions:
+                            [
+                              {
+                                amount: {total: '<?php echo $vtaTotal; ?>', currency: 'MXN'},
+                                description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
+                              }
+                            ]
+                          });
+                        },
+                        onAuthorize: function (data, actions) {
+                          return actions.payment.execute().then(function () {
+                            // console.log(data);
+                            // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
+
+                            // function validar_email( email )
+                            // {
+                            //   var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                            //   return regex.test(email) ? true : false;
+                            // }
+                            // debugger;
+                            // nombre = $('#txtName').val();
+                            // apellidoP = $('#txtApellidoP').val();
+                            // apellidoM = $('#txtApellidoM').val();
+                            // calle = $('#txtCalle').val();
+                            // numCalle = $('#txtNumCalle').val();
+                            // cp = $('#txtCp').val();
+                            // ciudad = $('#txtCiudad').val();
+                            // estado = $('#txtEstado').val();
+                            // cel = $('#txtCel').val();
+                            // email= $('#txtEmail').val();
+                            // paymentToken = data.paymentToken;
+                            // paymentID=data.paymentID;
+                            // if(validar_email( email ) )
+                            // {
+                            // }
+                            // else
+                            // {
+                            //   alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+                            //   email = 1;
+                            // }
+                            //
+                            //
+                            // if(nombre == ""){
+                            //
+                            //   alert("Debe ingresar un nombre...");
+                            // }
+                            // if(apellidoP == ""){
+                            //
+                            //   alert("Debe ingresar un apellido paterno...");
+                            // }if(apellidoM == ""){
+                            //
+                            //   alert("Debe ingresar un apellido Materno...");
+                            // }
+                            // if(calle == ""){
+                            //
+                            //   alert("Debe ingresar una calle...");
+                            // }if(numCalle == ""){
+                            //
+                            //   alert("Debe ingresar un número de la hubicación...");
+                            // }
+                            // if(cp == ""){
+                            //
+                            //   alert("Debe ingresar un código postal...");
+                            // }if(ciudad == ""){
+                            //
+                            //   alert("Debe ingresar una ciudad...");
+                            // }
+                            // if(estado == ""){
+                            //
+                            //   alert("Debe ingresar un estado...");
+                            // }
+                            // if(cel == ""){
+                            //
+                            //   alert("Debe ingresar un número de contacto...");
+                            // }
+                            // if(email == ""){
+                            //
+                            //   alert("Debe ingresar un E-mail...");
+                            // }
+                            // // if(pass == ""){
+                            // //
+                            // //   alert("Debe ingresar una contraseña...");
+                            // // }
+                            // if (paymentToken =="") {
+                            //   alert("Ocurrio un problema con Paypal(paymentToken)");
+                            //
+                            // }
+                            // if (paymentID =="") {
+                            //   alert("Ocurrio un problema con Paypal(paymentID)");
+                            //
+                            // }
+                            // if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && paymentToken!="" && paymentID!=""){
+                            //   envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email,paymentToken,paymentID);
+                            // window.location="verificador.php";
+                            window.location="verificador.php?paymentToken="+ data.paymentToken +
+                            "&paymentID=" + data.paymentID +
+                            "&NOMBRE=" + '<?php echo $nombre ?>' +
+                            "&apellidoP=" + '<?php echo $apellidoP ?>' +
+                            "&apellidoM=" + '<?php echo $apellidoM ?>' +
+                            "&CALLE=" + '<?php echo $calle ?>' +
+                            "&numCalle=" + '<?php echo $numCalle ?>' +
+                            "&CP=" + '<?php echo $cp ?>' +
+                            "&CIUDAD=" + '<?php echo $ciudad ?>' +
+                            "&ESTADO=" + '<?php echo $estado ?>' +
+                            "&CEL=" + '<?php echo $cel ?>' +
+                            "&EMAIL=" + '<?php echo $email ?>';
+                            // }
+
+                          });
                         }
-                      ]
-                    });
-                  },
-                  onAuthorize: function (data, actions) {
-                    return actions.payment.execute().then(function () {
-                      console.log(data);
-                      // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
-                      window.location="verificador.php?paymentToken="+ data.paymentToken +
-                      "&paymentID="+data.paymentID;
-                    });
-                  }
-                }, '#paypal-button-container');
-                </script>
+                      }, '#paypal-button-container');
+                      </script>
 
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header" role="tab" id="headingTwo">
-              <h6 class="mb-0">
-                <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingTwo">
+                    <h6 class="mb-0">
+                      <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
+                    </h6>
+                  </div>
+                  <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="card">
+                <div class="card-header" role="tab" id="headingThree">
+                <h6 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
               </h6>
             </div>
-            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-              <div class="card-body">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
-              </div>
-            </div>
+            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
           </div>
-          <!-- <div class="card">
-          <div class="card-header" role="tab" id="headingThree">
-          <h6 class="mb-0">
-          <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
-        </h6>
-      </div>
-      <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-      <div class="card-body">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
-    </div>
+        </div>
+      </div> -->
+      <!-- <div class="card">
+      <div class="card-header" role="tab" id="headingFour">
+      <h6 class="mb-0">
+      <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
+    </h6>
   </div>
-</div> -->
-<!-- <div class="card">
-<div class="card-header" role="tab" id="headingFour">
-<h6 class="mb-0">
-<a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
-</h6>
-</div>
-<div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-<div class="card-body">
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
+  <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+  <div class="card-body">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
 </div>
 </div>
 </div> -->
