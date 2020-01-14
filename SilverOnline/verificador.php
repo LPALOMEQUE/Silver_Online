@@ -1,17 +1,21 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require_once __DIR__ . '/vendor/autoload.php';
 
-  $nombre = $_GET['NOMBRE'];
-  $apellidoP = $_GET['apellidoP'];
-  $apellidoM = $_GET['apellidoM'];
-  $calle = $_GET['CALLE'];
-  $numCalle = $_GET['numCalle'];
-  $cp = $_GET['CP'];
-  $ciudad = $_GET['CIUDAD'];
-  $estado = $_GET['ESTADO'];
-  $cel = $_GET['CEL'];
-  $emailUser = $_GET['EMAIL'];
-  $paymentToken = $_GET['paymentToken'];
-  $paymentID = $_GET['paymentID'];
+
+$nombre = $_GET['NOMBRE'];
+$apellidoP = $_GET['apellidoP'];
+$apellidoM = $_GET['apellidoM'];
+$calle = $_GET['CALLE'];
+$numCalle = $_GET['numCalle'];
+$cp = $_GET['CP'];
+$ciudad = $_GET['CIUDAD'];
+$estado = $_GET['ESTADO'];
+$cel = $_GET['CEL'];
+$emailUser = $_GET['EMAIL'];
+$paymentToken = $_GET['paymentToken'];
+$paymentID = $_GET['paymentID'];
 
 //print_r($_GET);
 
@@ -84,40 +88,49 @@ curl_close($venta);
 curl_close($login);
 
 if ($state == 'approved') {
+
+  // instanci de pdf
+  $mpdf = new \Mpdf\Mpdf();
+
+  // almacenara todo el cuerpo html
+  $dataHTML = '';
+
+  $dataHTML .= '<h1>Comprobante de Pedido</h1>';
+
+  $dataHTML .= '<strong>Vendedor</strong>' . $nombre .' '. $apellidoP .' '. $apellidoM . '<br/>';
+
+  $dataHTML .= '<br/>'.'<strong>Mensaje</strong>' . 'Su pedido: <strong>' . $idventa . '</strong> ha sido confirmado.' ;
+
+  $mpdf -> WriteHTML($dataHTML);
+
+  //output
+  $pdf = $mpdf -> Output('','S');
+
+  //obtener informacion
+  $sendData = [
+    'NOMBRE' => $nombre,
+    'apellidoP' => $apellidoP,
+    'apellidoM' => $apellidoM,
+    'CALLE' => $calle,
+    'numCalle' => $numCalle,
+    'CP' => $cp,
+    'CIUDAD' => $ciudad,
+    'ESTADO' => $estado,
+    'CEL' => $cel,
+    'EMAIL' => $emailUser,
+    'idVenta' => $idventa
+  ];
+
+  sendEmail($pdf, $sendData);
+
+
+
   echo "
-  <script src='js/jquery/jquery-2.2.4.min.js'></script>
 
-  <!-- Active js -->
-  <script src='js/active.js'></script>
-
-  <script src='https://smtpjs.com/v3/smtp.js'></script>
   <script type='text/javascript'>
+  // window.location= 'index.php?vaciar=1';
+  alert('Pago aprobado');
 
-  $(document).ready(function(){
-
-    Email.send({
-
-      Host : 'smtp.gmail.com',
-      Username : 'gerenciageneral@evolutionsilver.com',
-      Password : 'Balbucerito2016',
-      // To : 'recipient_1_email_address, recipient_2_email_address',
-      To : '$emailUser',
-      From : 'gerenciageneral@evolutionsilver.com',
-      Subject : 'Pedido #$idventa',
-      Body : '$calle,----- $nombre',
-
-      Attachments : [
-  	{
-  		name : 'PZAS.docx',
-  		path: 'https://drive.google.com/open?id=1hZ-vAKCRUrpTZtcjfiMXLUtggbP8aO4R'
-  	}]
-
-    }).then(
-      message => alert(message)
-    );
-    // window.location= 'index.php?vaciar=1';
-    alert('Pago aprobado');
-  });
 
   </script>";
 
@@ -128,5 +141,43 @@ else{
   alert('Ocurrio un error con el pago');
   </script>";
 }
+function sendEmail($pdf, $sendData){
 
+  // Instantiation and passing `true` enables exceptions
+  $mail = new PHPMailer(true);
+
+  try {
+    //Server settings
+    $mail->isSMTP();                                            // Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+    $mail->Username   = 'gerenciageneral@evolutionsilver.com';                     // SMTP username
+    $mail->Password   = 'Balbucerito2016';                               // SMTP password
+    // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+    $mail->SMTPSecure = 'tls';
+    $mail->Port  = 587;                                    // TCP port to connect to
+
+    //Recipients
+    $mail->setFrom('gerenciageneral@evolutionsilver.com');
+    // $mail->addAddress('gerenciageneral@evolutionsilver.com');     // Add a recipient
+    $mail->addAddress('fer18092105@icloud.com');               // Name is optional
+    // $mail->addReplyTo('gerenciageneral@evolutionsilver.com', 'Information');
+    // $mail->addCC('vgeneral736@gmail.com');
+    // $mail->addBCC('bcc@example.com');
+
+    // Attachments
+    $mail->addStringAttachment($pdf, $sendData['idVenta'].'.pdf');
+
+    // Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'Here is the subject';
+    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+    echo 'Message has been sent';
+  } catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: ', $mail->ErrorInfo";
+  }
+}
 ?>
