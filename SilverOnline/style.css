@@ -24,3 +24,9 @@
       text-align: right;
       /* padding: 30px; */
   }
+
+  .inputcentrado {
+   text-align: center;
+   background-color: #f4f2f8;
+   color: #FF0000;
+   }

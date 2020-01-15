@@ -3,6 +3,66 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 require_once __DIR__ . '/vendor/autoload.php';
 
+// region carrito_compra
+
+$aCarrito = array();
+$sHTML = '';
+$fPrecioTotal = 0;
+$bagNumber = 0;
+$TotalxArtGlobal = 0;
+$costoEnvio = 0;
+$totalP =0;
+$prueba = 0;
+
+//Obtenemos los productos anteriores
+if(isset($_COOKIE['carrito'])) {
+  $aCarrito = unserialize($_COOKIE['carrito']);
+}
+
+//Anyado un nuevo articulo al carrito
+if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD']) && isset($_POST['Posicion'])) {
+  foreach ($aCarrito as $key => $value) {
+
+    if ($aCarrito[$_POST['Posicion']]['ID'] == $_POST['ID'])
+    {
+      $aCarrito[$_POST['Posicion']]['ID'] = $_POST['ID'];
+      $aCarrito[$_POST['Posicion']]['NOMBRE'] = $_POST['NOMBRE'];
+      $aCarrito[$_POST['Posicion']]['PRECIO'] = $_POST['PRECIO'];
+      $aCarrito[$_POST['Posicion']]['URL'] = $_POST['URL'];
+      $aCarrito[$_POST['Posicion']]['CANTIDAD'] = $_POST['CANTIDAD'];
+    }
+
+    else {
+      $iUltimaPos = count($aCarrito);
+      $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+      $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
+      $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+      $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
+      $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+    }
+
+  }
+}
+
+//Creamos la cookie (serializamos)
+$iTemCad = time() + (60 * 60);
+setcookie('carrito', serialize($aCarrito), $iTemCad);
+
+if (isset($_POST['MONTO'])) {
+  setcookie('express',$_POST['MONTO'],$iTemCad);
+  $costoEnvio = $_COOKIE['express'];
+}
+
+//Imprimimos el contenido del array
+foreach ($aCarrito as $key => $value) {
+  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+  $fPrecioTotal += $value['PRECIO'];
+  $bagNumber = count($aCarrito);
+  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+}
+
+// endRegion carrito_compra
+
 
 $nombre = $_GET['NOMBRE'];
 $apellidoP = $_GET['apellidoP'];
@@ -93,13 +153,51 @@ if ($state == 'approved') {
   $mpdf = new \Mpdf\Mpdf();
 
   // almacenara todo el cuerpo html
-  $dataHTML = '';
+  $dataHTML = '<link rel="stylesheet" href="style.css">';
+  $fecha = "  " .date("d") . "/" . date("m") . "/" . date("Y");
 
-  $dataHTML .= '<h1>Comprobante de Pedido</h1>';
+  $dataHTML .= '<img src="img/core-img/silverEvolution.png"><br/><br/>';
 
-  $dataHTML .= '<strong>Vendedor</strong>' . $nombre .' '. $apellidoP .' '. $apellidoM . '<br/>';
+  $dataHTML .= '<h1>Comprobante de Pedido</h1><br/><br/><br/><br/>';
 
-  $dataHTML .= '<br/>'.'<strong>Mensaje</strong>' . 'Su pedido: <strong>' . $idventa . '</strong> ha sido confirmado.' ;
+  $dataHTML .= '<strong>Vendedor:</strong></center> <br/>';
+  $dataHTML .= '' .$nombre .' '. $apellidoP .' '. $apellidoM . '<br/>';
+
+  $dataHTML .= '<br/>'.'<strong>Información:</strong> <br/>';
+  $dataHTML .= '<P ALIGN="justify">Su pedido ha sido confirmado,';
+  $dataHTML .= 'en breve nos pondremos en contacto con usted.<br/><br/>';
+
+  $dataHTML .= '<strong>Folio de pedido: </strong>#' . $idventa . '<br/>' ;
+  $dataHTML .= '<strong>Fecha del pedido:</strong> '. $fecha . '<br/><br/><br/>';
+
+  $dataHTML .= '
+  <input type="text" class="inputcentrado" color="red" value="Artículo" size="50">
+  <input type="text" class="inputcentrado" color="red" value="Precio Unitario" size="30">
+  <input type="text" class="inputcentrado" color="red" value="Cantidad" size="30">
+  <input type="text" class="inputcentrado" color="red" value="Precio x artículo" size="30">
+  <br/>
+  ';
+
+  foreach ($aCarrito as $key => $value) {
+    $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+    $dataHTML .=
+    '
+
+    <input type="text" name="txtNombre" value=" '.$value['NOMBRE'] .'" size="50">
+    <input type="text" name="txtPRECIO" value=" $'. number_format($value['PRECIO'],2) .'" size="30">
+    <input type="text" name="txtCANTIDAD" value=" '.$value['CANTIDAD'] .'" size="30">
+    <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArt,2) .'" size="30">
+    <br/>
+    ';
+  }
+
+  $dataHTML .= '
+  <input type="text" value="----------------------------------------------------------------------" size="50">
+  <input type="text" value="--------------------------------" size="30">
+  <input type="text" value="--------------------------------" size="30">
+  <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArtGlobal,2) .'" size="30">
+  ';
+
 
   $mpdf -> WriteHTML($dataHTML);
 
@@ -121,9 +219,7 @@ if ($state == 'approved') {
     'idVenta' => $idventa
   ];
 
-  sendEmail($pdf, $sendData);
-
-
+  // sendEmail($pdf, $sendData);
 
   echo "
 
@@ -131,16 +227,16 @@ if ($state == 'approved') {
   // window.location= 'index.php?vaciar=1';
   alert('Pago aprobado');
 
-
   </script>";
-
 }
+
 else{
   echo "<script>
   // window.location= 'index.php';
   alert('Ocurrio un error con el pago');
   </script>";
 }
+
 function sendEmail($pdf, $sendData){
 
   // Instantiation and passing `true` enables exceptions
@@ -152,17 +248,18 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'gerenciageneral@evolutionsilver.com';                     // SMTP username
-    $mail->Password   = '++++++++++';                               // SMTP password
-    // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+    $mail->Password   = '******';                               // SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
 
     //Recipients
     $mail->setFrom('gerenciageneral@evolutionsilver.com');
     // $mail->addAddress('gerenciageneral@evolutionsilver.com');     // Add a recipient
-    $mail->addAddress('fer18092105@icloud.com');               // Name is optional
+    $mail->addAddress($sendData['EMAIL']);               // Name is optional
     // $mail->addReplyTo('gerenciageneral@evolutionsilver.com', 'Information');
     $mail->addCC('vgeneral736@gmail.com');
+    // $mail->addCC('sistemas@evolutionsilver.com');
     // $mail->addBCC('bcc@example.com');
 
     // Attachments
@@ -170,8 +267,8 @@ function sendEmail($pdf, $sendData){
 
     // Content
     $mail->isHTML(true);                                  // Set email format to HTML
-    $mail->Subject = 'Here is the subject';
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+    $mail->Subject = 'Pedido: '. $sendData['idVenta'];
+    $mail->Body    = 'Su pedido ha sido recibio, en breve nos pondremos en contacto para la validación de existencia.';
     $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
@@ -181,3 +278,30 @@ function sendEmail($pdf, $sendData){
   }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <!-- Title  -->
+  <title>Siler - Evolution | Email</title>
+
+  <!-- Favicon  -->
+  <link rel="icon" href="img/core-img/favicon.ico">
+
+
+  <!-- scripts LFPO -->
+  <script src="js/jquery/jquery-2.2.4.min.js"></script>
+  <script src="js/funciones.js"></script>
+  <script src="librerias/alertify/alertify.js"></script>
+</head>
+<body>
+  <?php echo $dataHTML ?>
+
+</body>
+</html>
