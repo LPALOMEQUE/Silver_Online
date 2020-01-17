@@ -25,7 +25,7 @@ if(isset($_GET['vaciar'])) {
 if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
   foreach ($ID_ARTICLES as $key => $item) {
 
-  unset($ID_ARTICLES[$_POST['Posicion']]['id']);
+  unset($_SESSION['ID_ARTICLES'][$_POST['Posicion']]);
 }
   // unset($aCarrito[$_POST['Posicion']]);
   // setcookie('carrito', serialize($aCarrito));
