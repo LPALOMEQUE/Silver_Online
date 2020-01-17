@@ -1,21 +1,30 @@
 <?php
-
+session_start();
+require_once "php/Conexion.php";
+$con = conexion();
 $aCarrito = array();
+// $arrayCart = array();
 $sHTML = '';
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $cantidad = 0;
-//Vaciamos el carrito
 
-if(isset($_POST['vaciar'])) {
-  unset($_COOKIE['carrito']);
+
+if (isset($_SESSION['ID_ARTICLES'])) {
+  $bagNumber = count($_SESSION['ID_ARTICLES']);
+  $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
+
+//Vaciamos el carrito
+// if(isset($_POST['vaciar'])) {
+//   unset($_COOKIE['carrito']);
+// }
 
 //Obtenemos los productos anteriores
 
-if(isset($_COOKIE['carrito'])) {
-  $aCarrito = unserialize($_COOKIE['carrito']);
-}
+// if(isset($_COOKIE['carrito'])) {
+//   $aCarrito = unserialize($_COOKIE['carrito']);
+// }
 
 //Anyado un nuevo articulo al carrito
 
@@ -27,27 +36,34 @@ if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && 
   $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
   $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
 
+  $arrayCart = array($_POST['ID'],$_POST['CANTIDAD']);
+  $_SESSION['ID_ARTICLES'][]=$arrayCart;
+
 }
 
 //Creamos la cookie (serializamos)
 
-$iTemCad = time() + (60 * 60);
-setcookie('carrito', serialize($aCarrito), $iTemCad);
-
-
+// $iTemCad = time() + (60 * 60);
+// setcookie('carrito', serialize($aCarrito), $iTemCad);
 
 //Imprimimos el contenido del array
 
-foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  $bagNumber = count($aCarrito);
-  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+// foreach ($aCarrito as $key => $value) {
+//   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+//   // $bagNumber = count($aCarrito);
+//   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+// }
+if (isset($_SESSION['ID_ARTICLES'])) {
+
+  foreach($ID_ARTICLES as $item){
+
+    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$item[0]'";
+    $result = mysqli_query($con,$sql);
+    while($arti = mysqli_fetch_row($result)){
+      $TotalxArtGlobal += $arti[0] * $item[1];
+    }
+  }
 }
-
-//Imprimimos el precio total
-
-// $sHTML .= '<br>------------------<br>Precio total: ' . $fPrecioTotal;
-
 ?>
 
 <!DOCTYPE html>
@@ -273,11 +289,6 @@ foreach ($aCarrito as $key => $value) {
         <h6>USE CODE: Colorlib</h6>
       </div>
     </section>
-
-    <?php
-    require_once "php/Conexion.php";
-    $con = conexion();
-    ?>
 
     <?php
     $sql = "SELECT " .
@@ -539,13 +550,6 @@ foreach ($aCarrito as $key => $value) {
                   </div>
                 </div>
               </div>
-              <?php
-
-              require_once "php/Conexion.php";
-              $con = conexion();
-
-              ?>
-
               <div class="col-12 col-md-8 col-lg-9">
                 <div class="shop_grid_product_area">
                   <div class="row">

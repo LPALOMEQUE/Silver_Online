@@ -205,25 +205,40 @@ function logOut(vaciar){
   });
 }
 
-function cartModPrice(id, nombre, precio, url, cantidad, posicion){
-
-  cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad + "&Posicion=" + posicion;
+// function cartModPrice(id, nombre, precio, url, cantidad, posicion){
+//
+//   cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad + "&Posicion=" + posicion;
+//
+//   $.ajax({
+//     type:"POST",
+//     url: "cart.php",
+//     data:cadena,
+//     success:function(result){
+//
+//       location.reload();
+//     }
+//
+//   });
+//
+// }
+function cartModPrice(id, cantidad, posicion){
+debugger;
+  cadena = "ID=" + id + "&CANTIDAD=" + cantidad + "&Posicion=" + posicion;
 
   $.ajax({
     type:"POST",
     url: "cart.php",
     data:cadena,
     success:function(result){
-
+debugger;
       location.reload();
     }
 
   });
 
 }
-
 function eliminarArticulo(id, posicion, valida){
-
+debugger;
   cadena = "ID=" + id + "&Posicion=" + posicion + "&DelArt=" + valida;
 
   $.ajax({
@@ -231,6 +246,7 @@ function eliminarArticulo(id, posicion, valida){
     url: "cart.php",
     data:cadena,
     success:function(result){
+      debugger;
       // location.href="cart.php";
       location.reload();
     }

@@ -5,6 +5,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // region carrito_compra
 
+session_start();
+require_once "php/Conexion.php";
+$con = conexion();
 $aCarrito = array();
 $sHTML = '';
 $fPrecioTotal = 0;
@@ -14,39 +17,76 @@ $costoEnvio = 0;
 $totalP =0;
 $prueba = 0;
 
-//Obtenemos los productos anteriores
-if(isset($_COOKIE['carrito'])) {
-  $aCarrito = unserialize($_COOKIE['carrito']);
+if (isset($_POST['VACIAR'])) {
+  unset($_SESSION['ID_USER']);
+  unset($_SESSION['Email']);
+  session_destroy();
 }
 
+//Vaciamos el carrito
+if(isset($_GET['vaciar'])) {
+  unset($_COOKIE['carrito']);
+}
+
+if (isset($_SESSION['ID_ARTICLES'])) {
+  $bagNumber = count($_SESSION['ID_ARTICLES']);
+  $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
+}
+//Obtenemos los productos anteriores
+// if(isset($_COOKIE['carrito'])) {
+//   $aCarrito = unserialize($_COOKIE['carrito']);
+// }
+
+//Eliminamos articulos del carrito
+// if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
+//
+//   unset($aCarrito[$_POST['Posicion']]);
+//   setcookie('carrito', serialize($aCarrito));
+//   // echo ("posicion: ".$_POST['Posicion']);
+//   // echo "   -----------------   ";
+//   unserialize(urldecode($_COOKIE['carrito']));
+//   // echo $_COOKIE['carrito'];
+// }
+
 //Anyado un nuevo articulo al carrito
-if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD']) && isset($_POST['Posicion'])) {
-  foreach ($aCarrito as $key => $value) {
+// if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD']) && isset($_POST['Posicion'])) {
+//   foreach ($aCarrito as $key => $value) {
+//
+//     if ($aCarrito[$_POST['Posicion']]['ID'] == $_POST['ID'])
+//     {
+//       $aCarrito[$_POST['Posicion']]['ID'] = $_POST['ID'];
+//       $aCarrito[$_POST['Posicion']]['NOMBRE'] = $_POST['NOMBRE'];
+//       $aCarrito[$_POST['Posicion']]['PRECIO'] = $_POST['PRECIO'];
+//       $aCarrito[$_POST['Posicion']]['URL'] = $_POST['URL'];
+//       $aCarrito[$_POST['Posicion']]['CANTIDAD'] = $_POST['CANTIDAD'];
+//     }
+//
+//     else {
+//       $iUltimaPos = count($aCarrito);
+//       $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+//       $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
+//       $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+//       $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
+//       $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+//     }
+//
+//   }
+// }
+if (isset($_SESSION['ID_ARTICLES'])) {
 
-    if ($aCarrito[$_POST['Posicion']]['ID'] == $_POST['ID'])
-    {
-      $aCarrito[$_POST['Posicion']]['ID'] = $_POST['ID'];
-      $aCarrito[$_POST['Posicion']]['NOMBRE'] = $_POST['NOMBRE'];
-      $aCarrito[$_POST['Posicion']]['PRECIO'] = $_POST['PRECIO'];
-      $aCarrito[$_POST['Posicion']]['URL'] = $_POST['URL'];
-      $aCarrito[$_POST['Posicion']]['CANTIDAD'] = $_POST['CANTIDAD'];
+  foreach($ID_ARTICLES as $item){
+
+    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$item[0]'";
+    $result = mysqli_query($con,$sql);
+    while($arti = mysqli_fetch_row($result)){
+      $TotalxArtGlobal += $arti[0] * $item[1];
     }
-
-    else {
-      $iUltimaPos = count($aCarrito);
-      $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
-      $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
-      $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
-      $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-      $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
-    }
-
   }
 }
 
 //Creamos la cookie (serializamos)
 $iTemCad = time() + (60 * 60);
-setcookie('carrito', serialize($aCarrito), $iTemCad);
+// setcookie('carrito', serialize($aCarrito), $iTemCad);
 
 if (isset($_POST['MONTO'])) {
   setcookie('express',$_POST['MONTO'],$iTemCad);
@@ -54,12 +94,13 @@ if (isset($_POST['MONTO'])) {
 }
 
 //Imprimimos el contenido del array
-foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  $fPrecioTotal += $value['PRECIO'];
-  $bagNumber = count($aCarrito);
-  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-}
+// foreach ($aCarrito as $key => $value) {
+//   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+//   $fPrecioTotal += $value['PRECIO'];
+//   $bagNumber = count($aCarrito);
+//   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+// }
+
 
 // endRegion carrito_compra
 
@@ -151,14 +192,32 @@ if ($state == 'approved') {
 
   // instanci de pdf
   $mpdf = new \Mpdf\Mpdf();
+  $fecha = "  " .date("d") . "/" . date("m") . "/" . date("Y");
+
+  //cabecera del pdf
+  $mpdf->SetHTMLHeader('
+  <div style="text-align: right; font-weight: bold;">
+      ATREVETE A GANAR MAS...
+  </div>');
+
+  //pie del pdf
+  $mpdf->SetHTMLFooter('
+  <table width="100%">
+      <tr>
+          <td width="33%">{DATE j-m-Y}</td>
+          <td width="33%" align="center">{PAGENO}/{nbpg}</td>
+          <td width="33%" style="text-align: right;">'.$idventa.'</td>
+      </tr>
+  </table>');
+
+
 
   // almacenara todo el cuerpo html
   $dataHTML = '<link rel="stylesheet" href="style.css">';
-  $fecha = "  " .date("d") . "/" . date("m") . "/" . date("Y");
 
   $dataHTML .= '<img src="img/core-img/silverEvolution.png"><br/><br/>';
 
-  $dataHTML .= '<h1>Comprobante de Pedido</h1><br/><br/><br/><br/>';
+  $dataHTML .= '<h1>Comprobante de Pedido</h1><br/><br/>';
 
   $dataHTML .= '<strong>Vendedor:</strong></center> <br/>';
   $dataHTML .= '' .$nombre .' '. $apellidoP .' '. $apellidoM . '<br/>';
@@ -171,30 +230,36 @@ if ($state == 'approved') {
   $dataHTML .= '<strong>Fecha del pedido:</strong> '. $fecha . '<br/><br/><br/>';
 
   $dataHTML .= '
-  <input type="text" class="inputcentrado" color="red" value="Artículo" size="50">
+  <input type="text" class="inputcentrado" color="red" value="Artículo" size="60">
   <input type="text" class="inputcentrado" color="red" value="Precio Unitario" size="30">
   <input type="text" class="inputcentrado" color="red" value="Cantidad" size="30">
   <input type="text" class="inputcentrado" color="red" value="Precio x artículo" size="30">
   <br/>
   ';
 
-  foreach ($aCarrito as $key => $value) {
-    $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+  foreach($ID_ARTICLES as $item){
+
+    $sql = "SELECT NAME_ART,URL_IMAGE,PRICE FROM articles where ID_ARTICLES='$item[0]'";
+
+    $result = mysqli_query($con,$sql);
+    while($arti = mysqli_fetch_row($result)){
+      $TotalxArt = $arti[2] * $item[1];
     $dataHTML .=
     '
 
-    <input type="text" name="txtNombre" value=" '.$value['NOMBRE'] .'" size="50">
-    <input type="text" name="txtPRECIO" value=" $'. number_format($value['PRECIO'],2) .'" size="30">
-    <input type="text" name="txtCANTIDAD" value=" '.$value['CANTIDAD'] .'" size="30">
+    <input type="text" name="txtNombre" value=" '.$arti[0] .'" size="60">
+    <input type="text" name="txtPRECIO" value=" $'. number_format($arti[2],2) .'" size="30">
+    <input type="text" name="txtCANTIDAD" value=" '.$item[1] .'" size="30">
     <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArt,2) .'" size="30">
     <br/>
     ';
   }
+}
 
   $dataHTML .= '
-  <input type="text" value="----------------------------------------------------------------------" size="50">
+  <input type="text" value="----------------------------------------------------------------------" size="60">
   <input type="text" value="--------------------------------" size="30">
-  <input type="text" value="--------------------------------" size="30">
+  <input type="text" value="TOTAL" size="30">
   <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArtGlobal,2) .'" size="30">
   ';
 
@@ -219,7 +284,7 @@ if ($state == 'approved') {
     'idVenta' => $idventa
   ];
 
-  // sendEmail($pdf, $sendData);
+  sendEmail($pdf, $sendData);
 
   echo "
 
@@ -248,7 +313,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'gerenciageneral@evolutionsilver.com';                     // SMTP username
-    $mail->Password   = '******';                               // SMTP password
+    $mail->Password   = 'Balbucerito2016';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to

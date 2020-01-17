@@ -1,81 +1,89 @@
 <?php
 session_start();
+require_once "php/Conexion.php";
+$con = conexion();
 $aCarrito = array();
+// $arrayCart = array();
 $sHTML = '';
-$fPrecioTotal = 0;
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
-$costoEnvio = 0;
-$totalP =0;
-$prueba = 0;
+$cantidad = 0;
 
-if (isset($_POST['VACIAR'])) {
-  unset($_SESSION['ID_USER']);
-  unset($_SESSION['Email']);
-  session_destroy();
+
+if (isset($_SESSION['ID_ARTICLES'])) {
+  $bagNumber = count($_SESSION['ID_ARTICLES']);
+  $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
 
-//Vaciamos el carrito
+// Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
-  unset($_COOKIE['carrito']);
-}
-
-//Obtenemos los productos anteriores
-if(isset($_COOKIE['carrito'])) {
-  $aCarrito = unserialize($_COOKIE['carrito']);
+  // unset($_SESSION['ID_ARTICLES']);
+  session_destroy();
 }
 
 //Eliminamos articulos del carrito
 if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
+  foreach ($ID_ARTICLES as $key => $item) {
 
-  unset($aCarrito[$_POST['Posicion']]);
-  setcookie('carrito', serialize($aCarrito));
-  // echo ("posicion: ".$_POST['Posicion']);
-  // echo "   -----------------   ";
-  unserialize(urldecode($_COOKIE['carrito']));
+  unset($ID_ARTICLES[$_POST['Posicion']]['id']);
+}
+  // unset($aCarrito[$_POST['Posicion']]);
+  // setcookie('carrito', serialize($aCarrito));
+  // // echo ("posicion: ".$_POST['Posicion']);
+  // // echo "   -----------------   ";
+  // unserialize(urldecode($_COOKIE['carrito']));
   // echo $_COOKIE['carrito'];
 }
+//Obtenemos los productos anteriores
+
+// if(isset($_COOKIE['carrito'])) {
+//   $aCarrito = unserialize($_COOKIE['carrito']);
+// }
 
 //Anyado un nuevo articulo al carrito
-if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD']) && isset($_POST['Posicion'])) {
-  foreach ($aCarrito as $key => $value) {
 
-    if ($aCarrito[$_POST['Posicion']]['ID'] == $_POST['ID'])
-    {
-      $aCarrito[$_POST['Posicion']]['ID'] = $_POST['ID'];
-      $aCarrito[$_POST['Posicion']]['NOMBRE'] = $_POST['NOMBRE'];
-      $aCarrito[$_POST['Posicion']]['PRECIO'] = $_POST['PRECIO'];
-      $aCarrito[$_POST['Posicion']]['URL'] = $_POST['URL'];
-      $aCarrito[$_POST['Posicion']]['CANTIDAD'] = $_POST['CANTIDAD'];
+if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])) {
+
+  foreach ($ID_ARTICLES as $key => $item) {
+    if (  $ID_ARTICLES[$_POST['Posicion']]['id'] == $_POST['ID']) {
+
+      // $ultimaPos = count($_SESSION['ID_ARTICLES']);
+      $_SESSION['ID_ARTICLES'][$_POST['Posicion']]=
+      array(
+        "id" => $_POST['ID'],
+        "cantidad" => $_POST['CANTIDAD']);
+      // $ID_ARTICLES[$_POST['Posicion']]['id'] = $_POST['ID'];
+      // $ID_ARTICLES[$_POST['Posicion']]['cantidad'] = $_POST['CANTIDAD'];
+
+      print_r('existe el articulo'. ' '. $ID_ARTICLES[$_POST['Posicion']]['id']);
+      var_dump($ID_ARTICLES);
     }
-
-    else {
-      $iUltimaPos = count($aCarrito);
-      $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
-      $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
-      $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
-      $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-      $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
-    }
-
   }
+
 }
 
 //Creamos la cookie (serializamos)
-$iTemCad = time() + (60 * 60);
-setcookie('carrito', serialize($aCarrito), $iTemCad);
 
-if (isset($_POST['MONTO'])) {
-  setcookie('express',$_POST['MONTO'],$iTemCad);
-  $costoEnvio = $_COOKIE['express'];
-}
+// $iTemCad = time() + (60 * 60);
+// setcookie('carrito', serialize($aCarrito), $iTemCad);
 
 //Imprimimos el contenido del array
-foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  $fPrecioTotal += $value['PRECIO'];
-  $bagNumber = count($aCarrito);
-  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+
+// foreach ($aCarrito as $key => $value) {
+//   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+//   // $bagNumber = count($aCarrito);
+//   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+// }
+if (isset($_SESSION['ID_ARTICLES'])) {
+
+  foreach($ID_ARTICLES as $item){
+    $id = $item['id'];
+    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
+    $result = mysqli_query($con,$sql);
+    while($arti = mysqli_fetch_row($result)){
+      $TotalxArtGlobal += $arti[0] * $item['cantidad'];
+    }
+  }
 }
 
 ?>
@@ -152,8 +160,6 @@ foreach ($aCarrito as $key => $value) {
               <select class="form-control" id="cbmMarca" name="marca">
                 <option value="0">Selecciona...</option>
                 <?php
-                require_once "php/Conexion.php";
-                $con = conexion();
 
                 $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
 
@@ -177,9 +183,6 @@ foreach ($aCarrito as $key => $value) {
               <select id="cbmCategoria"  class="form-control" name="state">
                 <option value="0">Selecciona...</option>
                 <?php
-                require_once "php/Conexion.php";
-                $con = conexion();
-
                 $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
 
                 $result = mysqli_query($con,$sql);
@@ -195,8 +198,6 @@ foreach ($aCarrito as $key => $value) {
               <select id="cbmSubcategoria"  class="form-control" name="state">
                 <option value="0">Selecciona...</option>
                 <?php
-                require_once "php/Conexion.php";
-                $con = conexion();
 
                 $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
 
@@ -365,44 +366,46 @@ foreach ($aCarrito as $key => $value) {
         }else {
           echo $invitado = 'Invitado...';
         } ?>
-        </a>
-      </div>
-      <div class="col-md-2 error">
-        <div class="<?php
-        if (isset($_SESSION["Email"])) {
+      </a>
+    </div>
+    <div class="col-md-2 error">
+      <div class="<?php
+      if (isset($_SESSION["Email"])) {
 
-          echo $mostrar = 'inline';
-        }else {
-          echo $ocultar = 'none';
-        } ?> ">
-        <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
-        </div>
-
-        <div class="<?php
-        if (isset($_SESSION["Email"])) {
-
-        echo $ocultar = 'none';
-        }else {
         echo $mostrar = 'inline';
-      } ?>">
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
-        </div>
-      </div>
-      <div class="col-md-2">
-
-      </div>
-      <!-- <div class="col-md-1">
-
-      </div> -->
-      <div class="col-md-3 right">
-
+      }else {
+        echo $ocultar = 'none';
+      } ?> ">
+      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
     </div>
 
-    <div class="col-md-2">
+    <div class="<?php
+    if (isset($_SESSION["Email"])) {
 
-    </div>
-    </div>
+      echo $ocultar = 'none';
+    }else {
+      echo $mostrar = 'inline';
+    } ?>">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
+  </div>
+</div>
+<div class="col-md-2">
+
+</div>
+<!-- <div class="col-md-1">
+
+</div> -->
+<div class="col-md-3 right">
+
+</div>
+
+<div class="col-md-2">
+
+</div>
+</div>
+<P><?php   var_dump($_SESSION['ID_ARTICLES']); ?></P>
+
 <!-- ****** Header Area Start ****** -->
 <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
   <!-- Top Header Area Start -->
@@ -423,176 +426,176 @@ foreach ($aCarrito as $key => $value) {
                 <a href="#"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
                 <!-- Cart List Area Start -->
                 <!-- <ul class="cart-list">
-                  <?php foreach ($aCarrito as $key => $value) {
-                    $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
-                    ?>
-                    <li>
-                      <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
-                      <div class="cart-item-desc">
-                        <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
-                        <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo number_format($TotalxArt,2) ?></span></p>
-                      </div>
-                      <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
-                    </li>
-                  <?php } ?>
-                  <li class="total">
-                    <span class="pull-right">Total: $<?php echo number_format($TotalxArtGlobal,2) ?></span>
-                    <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
-                    <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
-                  </li>
-                </ul> -->
+                <?php foreach ($aCarrito as $key => $value) {
+                $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+                ?>
+                <li>
+                <a href="#" class="image"><img src="<?php echo $value['URL'] ?>" class="cart-thumb" alt=""></a>
+                <div class="cart-item-desc">
+                <h6><a href="#"><?php echo $value['NOMBRE'] ?></a></h6>
+                <p> <?php echo $value['CANTIDAD'] ?>x - <span class="price">$<?php echo number_format($TotalxArt,2) ?></span></p>
               </div>
-              <div class="header-right-side-menu ml-15">
-                <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
+              <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
+            </li>
+          <?php } ?>
+          <li class="total">
+          <span class="pull-right">Total: $<?php echo number_format($TotalxArtGlobal,2) ?></span>
+          <a href="cart.php" class="btn btn-sm btn-cart">Carrito</a>
+          <a href="checkout-1.html" class="btn btn-sm btn-checkout">Checkout</a>
+        </li>
+      </ul> -->
+    </div>
+    <div class="header-right-side-menu ml-15">
+      <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- Top Header Area End -->
+<div class="main_header_area">
+  <div class="container h-100">
+    <div class="row h-100">
+      <div class="col-12 d-md-flex justify-content-between">
+        <!-- Header Social Area -->
+        <div class="header-social-area">
+          <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+        </div>
+        <!-- Menu Area -->
+        <div class="main-menu-area">
+          <nav class="navbar navbar-expand-lg align-items-start">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
+
+            <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
+              <ul class="navbar-nav animated" id="nav">
+                <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
+                  <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                    <a class="dropdown-item" href="index.php">Inicio</a>
+                    <a class="dropdown-item" href="shop.html">Compras</a>
+                    <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
+                    <a class="dropdown-item" href="cart.html">Carrito</a>
+                    <a class="dropdown-item" href="checkout.html">Resiva</a>
+                  </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
+                <div class="<?php
+                if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+                  echo $category = 'inline';
+                }else {
+                  echo $category = 'none';
+                } ?>">
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
               </div>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Modal para registro de Usuarios -->
+      <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="txtNombre">Nombre(s)</label>
+                  <input type="text" class="form-control" id="txtNombre" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtApellidoP">Apellido Paterno</label>
+                  <input type="text" class="form-control" id="txtApellidoP" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtApellidoM">Apellido Materno</label>
+                  <input type="text" class="form-control" id="txtApellidoM" value="" required>
+                </div>
+              </div>
+              <h6>Datos de envío...</h6>
+
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="txtCalle">Calle</label>
+                  <input type="text" class="form-control" id="txtCalle" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtNumCalle">Núm(#)</label>
+                  <input type="number" class="form-control" id="txtNumCalle" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtCp">C.P.</label>
+                  <input type="number" class="form-control" id="txtCp" value="" required>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4" "mb-3">
+                  <label for="txtCiudad">Ciudad</label>
+                  <input type="text" class="form-control" id="txtCiudad" value="" required>
+                </div>
+                <div class="col-md-4" "mb-3">
+                  <label for="txtEstado">Estado</label>
+                  <input type="text" class="form-control" id="txtEstado" value="" required>
+                </div>
+                <div class="col-md-4" "mb-3">
+                  <label for="txtCel">Celular</label>
+                  <input type="number" class="form-control" id="txtCel" value="" required>
+                </div>
+              </div>
+              <br/>
+              <h6>Datos de cuenta...</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="txtEmail">E-MaiL</label>
+                  <input type="email" class="form-control" id="txtEmail" value="" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="txtPass">Contraseña</label>
+                  <input type="password" class="form-control" id="txtPass" value="" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label id="lbRoll" for="cbmRoll">Roll</label>
+                  <select id="cbmRoll"  class="form-control" name="state">
+                    <option value="0">Selecciona...</option>
+                    ...
+                    <option value="ADMIN">ADMINISTRADOR</option>
+                    ...
+                    <option value="COMUN">COMÚN</option>form-control
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
             </div>
           </div>
         </div>
-
+      </div>
+      <!-- Help Line -->
+      <div class="help-line">
+        <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
       </div>
     </div>
   </div>
-
-  <!-- Top Header Area End -->
-  <div class="main_header_area">
-    <div class="container h-100">
-      <div class="row h-100">
-        <div class="col-12 d-md-flex justify-content-between">
-          <!-- Header Social Area -->
-          <div class="header-social-area">
-            <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-          </div>
-          <!-- Menu Area -->
-          <div class="main-menu-area">
-            <nav class="navbar navbar-expand-lg align-items-start">
-
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
-
-              <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
-                <ul class="navbar-nav animated" id="nav">
-                  <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
-                    <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                      <a class="dropdown-item" href="index.php">Inicio</a>
-                      <a class="dropdown-item" href="shop.html">Compras</a>
-                      <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
-                      <a class="dropdown-item" href="cart.html">Carrito</a>
-                      <a class="dropdown-item" href="checkout.html">Resiva</a>
-                    </div>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
-                  <div class="<?php
-                  if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
-                    echo $category = 'inline';
-                  }else {
-                    echo $category = 'none';
-                  } ?>">
-                  <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
-                </div>
-              </ul>
-            </div>
-          </nav>
-        </div>
-
-        <!-- Modal para registro de Usuarios -->
-        <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-md-4 mb-3">
-                    <label for="txtNombre">Nombre(s)</label>
-                    <input type="text" class="form-control" id="txtNombre" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtApellidoP">Apellido Paterno</label>
-                    <input type="text" class="form-control" id="txtApellidoP" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtApellidoM">Apellido Materno</label>
-                    <input type="text" class="form-control" id="txtApellidoM" value="" required>
-                  </div>
-                </div>
-                <h6>Datos de envío...</h6>
-
-                <div class="row">
-                  <div class="col-md-4 mb-3">
-                    <label for="txtCalle">Calle</label>
-                    <input type="text" class="form-control" id="txtCalle" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtNumCalle">Núm(#)</label>
-                    <input type="number" class="form-control" id="txtNumCalle" value="" required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="txtCp">C.P.</label>
-                    <input type="number" class="form-control" id="txtCp" value="" required>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-4" "mb-3">
-                    <label for="txtCiudad">Ciudad</label>
-                    <input type="text" class="form-control" id="txtCiudad" value="" required>
-                  </div>
-                  <div class="col-md-4" "mb-3">
-                    <label for="txtEstado">Estado</label>
-                    <input type="text" class="form-control" id="txtEstado" value="" required>
-                  </div>
-                  <div class="col-md-4" "mb-3">
-                    <label for="txtCel">Celular</label>
-                    <input type="number" class="form-control" id="txtCel" value="" required>
-                  </div>
-                </div>
-                <br/>
-                <h6>Datos de cuenta...</h6>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="txtEmail">E-MaiL</label>
-                    <input type="email" class="form-control" id="txtEmail" value="" required>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="txtPass">Contraseña</label>
-                    <input type="password" class="form-control" id="txtPass" value="" required>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 mb-3">
-                    <label id="lbRoll" for="cbmRoll">Roll</label>
-                    <select id="cbmRoll"  class="form-control" name="state">
-                      <option value="0">Selecciona...</option>
-                      ...
-                      <option value="ADMIN">ADMINISTRADOR</option>
-                      ...
-                      <option value="COMUN">COMÚN</option>form-control
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Help Line -->
-        <div class="help-line">
-          <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
 </div>
 </header>
 <!-- ****** Header Area End ****** -->
@@ -635,109 +638,98 @@ foreach ($aCarrito as $key => $value) {
             </thead>
             <tbody>
               <?php
+              $i=0;
+              foreach ($ID_ARTICLES as $key => $item) {
+                $id= $item['id'];
+                $sql = "SELECT NAME_ART,URL_IMAGE,PRICE FROM articles where ID_ARTICLES='$id'";
 
-              foreach ($aCarrito as $key => $value) {
+                $result = mysqli_query($con,$sql);
+                while($arti = mysqli_fetch_row($result)){
+                  $TotalxArt = $arti[2] * $item['cantidad'];
 
-                $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
+                  ?>
+                  <tr>
+                    <td class="cart_product_img d-flex align-items-center">
+                      <a href="#"><img src="<?php echo $arti[1] ?>" alt="Product"></a>
+                      <h6 id="h6Nombre<?php echo $id ?>"><?php echo $arti[0] ?></h6>
+                    </td>
+                    <td class="price">$<?php echo number_format($arti[2],2) ?></span></td>
+                    <td class="qty">
+                      <div class="quantity">
+                        <button type="button" class="qty-minus" id="btnMenos<?php echo $id ?>">-</button>
+                        <input type="number" class="qty-text" id="qty<?php echo $id ?>" name="CANTIDAD">
+                        <button type="button" class="qty-minus" id="btnMas<?php echo $id ?>">+</button>
 
-                ?>
-                <tr>
-                  <td class="cart_product_img d-flex align-items-center">
-                    <a href="#"><img src="<?php echo $value['URL'] ?>" alt="Product"></a>
-                    <h6 id="h6Nombre<?php echo $value['ID'] ?>"><?php echo $value['NOMBRE'] ?></h6>
-                  </td>
-                  <td class="price">$<?php echo number_format($value['PRECIO'],2) ?></span></td>
-                  <td class="qty">
-                    <div class="quantity">
-                      <button type="button" class="qty-minus" id="btnMenos<?php echo $value['ID'] ?>">-</button>
-                      <input type="number" class="qty-text" id="qty<?php echo $value['ID'] ?>" name="CANTIDAD">
-                      <button type="button" class="qty-minus" id="btnMas<?php echo $value['ID'] ?>">+</button>
+                      </div>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-danger" id="btnDel<?php echo $id ?>">X</button>
+                    </td>
+                    <td >
+                      <input type="text" class="sinborde" id="txtTotalxArt<?php echo $id ?>" name="CANTIDAD" value="$<?php echo number_format($TotalxArt,2) ?>" readonly="readonly">
+                    </td>
+                  </tr>
 
-                    </div>
-                  </td>
-                  <td>
-                    <button type="button" class="btn btn-danger" id="btnDel<?php echo $value['ID'] ?>">X</button>
-                  </td>
-                  <td >
-                    <input type="text" class="sinborde" id="txtTotalxArt<?php echo $value['ID'] ?>" name="CANTIDAD" value="$<?php echo number_format($TotalxArt,2) ?>" readonly="readonly">
-                  </td>
-                </tr>
-
-                <script type="text/javascript">
-                $(document).ready(function(){
-
-                  $('#btnMenos<?php echo $value['ID'] ?>').click(function(){
-                    valor = document.getElementById("qty<?php echo $value['ID'] ?>");
-                    valor.value --;
-                    id = <?php echo $value['ID'] ?>;
-                    nombre = '<?php echo $value['NOMBRE'] ?>';
-                    precio = <?php echo $value['PRECIO'] ?>;
-                    url = '<?php echo $value['URL'] ?>';
-                    cantidad=$('#qty<?php echo $value['ID'] ?>').val();
-                    posicion = <?php echo $key ?>;
-                    cartModPrice(id,
-                      nombre,
-                      precio,
-                      url,
-                      cantidad,
-                      posicion);
-
-                    });
-                    $('#btnMas<?php echo $value['ID'] ?>').click(function(){
-                      valor = document.getElementById("qty<?php echo $value['ID'] ?>");
-                      valor.value ++;
-                      id = <?php echo $value['ID'] ?>;
-                      nombre = '<?php echo $value['NOMBRE'] ?>';
-                      precio = <?php echo $value['PRECIO'] ?>;
-                      url = '<?php echo $value['URL'] ?>';
-                      cantidad=$('#qty<?php echo $value['ID'] ?>').val();
-                      posicion = <?php echo $key ?>;
+                  <script type="text/javascript">
+                  $(document).ready(function(){
+                    var i = 0;
+                    $('#btnMenos<?php echo $id ?>').click(function(){
+                      valor = document.getElementById("qty<?php echo $id ?>");
+                      valor.value --;
+                      id = <?php echo $id ?>;
+                      cantidad=$('#qty<?php echo $id ?>').val();
+                      debugger;
+                      posicion = <?php echo $i ?>;
                       cartModPrice(id,
-                        nombre,
-                        precio,
-                        url,
                         cantidad,
                         posicion);
 
                       });
+                      $('#btnMas<?php echo $id ?>').click(function(){
+                        valor = document.getElementById("qty<?php echo $id ?>");
+                        valor.value ++;
+                        id = <?php echo $id ?>;
+                        cantidad=$('#qty<?php echo $id ?>').val();
+                        debugger;
+                        posicion = <?php echo $i ?>;
+                        cartModPrice(id,
+                          cantidad,
+                          posicion);
 
-                      $('#btnDel<?php echo $value['ID'] ?>').click(function(){
-
-                        id = <?php echo $value['ID'] ?>;
-                        posicion = <?php echo $key ?>;
-                        valida = 1;
-                        eliminarArticulo(id, posicion, valida);
-
-                      });
-
-                      var input = document.getElementById("qty<?php echo $value['ID'] ?>");
-                      // Execute a function when the user releases a key on the keyboard
-                      input.addEventListener("keyup", function(event) {
-                        // Number 13 is the "Enter" key on the keyboard
-                        if (event.keyCode === 13) {
-                          // Cancel the default action, if needed
-                          event.preventDefault();
-                          // Trigger the button element with a click
-                          valor = document.getElementById("qty<?php echo $value['ID'] ?>");
-                          // valor.value ++;
-                          id = <?php echo $value['ID'] ?>;
-                          nombre = '<?php echo $value['NOMBRE'] ?>';
-                          precio = <?php echo $value['PRECIO'] ?>;
-                          url = '<?php echo $value['URL'] ?>';
-                          cantidad=$('#qty<?php echo $value['ID'] ?>').val();
-                          posicion = <?php echo $key ?>;
-                          cartModPrice(id,
-                            nombre,
-                            precio,
-                            url,
-                            cantidad,
-                            posicion);
-                          }
                         });
-                      });
-                      </script>
-                      <?php
 
+                        $('#btnDel<?php echo $id ?>').click(function(){
+                          debugger;
+                          id = <?php echo $id ?>;
+                          posicion = <?php echo $i ?>;
+                          valida = 1;
+                          eliminarArticulo(id, posicion, valida);
+
+                        });
+
+                        var input = document.getElementById("qty<?php echo $id ?>");
+                        // Execute a function when the user releases a key on the keyboard
+                        input.addEventListener("keyup", function(event) {
+                          // Number 13 is the "Enter" key on the keyboard
+                          if (event.keyCode === 13) {
+                            // Cancel the default action, if needed
+                            event.preventDefault();
+                            // Trigger the button element with a click
+                            valor = document.getElementById("qty<?php echo $id ?>");
+                            // valor.value ++;
+                            id = <?php echo $id ?>;
+                            cantidad=$('#qty<?php echo $id ?>').val();
+                            posicion = <?php echo $i ?>;
+                            cartModPrice(id,
+                              cantidad,
+                              posicion);
+                            }
+                          });
+                        });
+                        </script>
+                        <?php
+                      }
+                      $i++;
                     }
                     ?>
                   </tbody>
@@ -764,428 +756,430 @@ foreach ($aCarrito as $key => $value) {
                   <p>Enter your cupone code</p> -->
                 </div>
                 <!-- <form action="#">
-                  <input type="search" name="search" placeholder="#569ab15">
-                  <button type="submit">Apply</button>
-                </form> -->
+                <input type="search" name="search" placeholder="#569ab15">
+                <button type="submit">Apply</button>
+              </form> -->
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="shipping-method-area mt-70">
+              <div class="cart-page-heading">
+                <h5>Metodo de envío</h5>
+                <p>Selecciona el tipo de envío</p>
+              </div>
+              <div class="custom-control custom-radio mb-30">
+                <input type="radio" id="customRadio1" name="rbDelivery" class="custom-control-input" value="express">
+                <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Día siguiente</span><span>$700.00</span></label>
+              </div>
+
+              <div class="custom-control custom-radio mb-30">
+                <input type="radio" id="customRadio2" name="rbDelivery" class="custom-control-input" value="normal">
+                <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Entrega estandar</span><span>$250.00</span></label>
               </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-4">
-              <div class="shipping-method-area mt-70">
-                <div class="cart-page-heading">
-                  <h5>Metodo de envío</h5>
-                  <p>Selecciona el tipo de envío</p>
-                </div>
-                <div class="custom-control custom-radio mb-30">
-                  <input type="radio" id="customRadio1" name="rbDelivery" class="custom-control-input" value="express">
-                  <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio1"><span>Día siguiente</span><span>$700.00</span></label>
-                </div>
-
-                <div class="custom-control custom-radio mb-30">
-                  <input type="radio" id="customRadio2" name="rbDelivery" class="custom-control-input" value="normal">
-                  <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Entrega estandar</span><span>$250.00</span></label>
-                </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="cart-total-area mt-70">
+              <div class="cart-page-heading">
+                <h5>Total del Carrito</h5>
+                <p>Información Final</p>
               </div>
-            </div>
-            <div class="col-12 col-lg-4">
-              <div class="cart-total-area mt-70">
-                <div class="cart-page-heading">
-                  <h5>Total del Carrito</h5>
-                  <p>Información Final</p>
-                </div>
 
-                <ul class="cart-total-chart">
-                  <li><span>Subtotal</span> <span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></li>
+              <ul class="cart-total-chart">
+                <li><span>Subtotal</span> <span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></li>
 
-                  <li><span>Envío</span> <span><input type="text" class="styleGrey" name="cost" value="$0" readonly id="txtcost"></span></li>
-                  <li><span><strong>Total</strong></span> <span><strong><input type="text" class="styleGrey" name="total" value="$0" readonly id="txtcostT"></strong></span></li>
-                </ul>
-                <!-- <button type="button" href="checkout.php" class="btn karl-checkout-btn" id="btnPay">X</button> -->
-                <button type="button" href="checkout.php" class="btn karl-checkout-btn" id="btnPay2">Proceder al pago</button>
-              </div>
+                <li><span>Envío</span> <span><input type="text" class="styleGrey" name="cost" value="$0" readonly id="txtcost"></span></li>
+                <li><span><strong>Total</strong></span> <span><strong><input type="text" class="styleGrey" name="total" value="$0" readonly id="txtcostT"></strong></span></li>
+              </ul>
+              <!-- <button type="button" href="checkout.php" class="btn karl-checkout-btn" id="btnPay">X</button> -->
+              <button type="button" href="checkout.php" class="btn karl-checkout-btn" id="btnPay2">Proceder al pago</button>
             </div>
           </div>
         </div>
       </div>
-      <!-- ****** Cart Area End ****** -->
+    </div>
+    <!-- ****** Cart Area End ****** -->
 
-      <!-- ****** Footer Area Start ****** -->
-      <footer class="footer_area">
-        <div class="container">
-          <div class="row">
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-md-6 col-lg-3">
-              <div class="single_footer_area">
-                <div class="footer-logo">
-                  <img src="img/core-img/logo.png" alt="">
-                </div>
-                <div class="copywrite_text d-flex align-items-center">
-                  <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                  </div>
-                </div>
+    <!-- ****** Footer Area Start ****** -->
+    <footer class="footer_area">
+      <div class="container">
+        <div class="row">
+          <!-- Single Footer Area Start -->
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="single_footer_area">
+              <div class="footer-logo">
+                <img src="img/core-img/logo.png" alt="">
               </div>
-              <!-- Single Footer Area Start -->
-              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-                <div class="single_footer_area">
-                  <ul class="footer_widget_menu">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Faq</a></li>
-                    <li><a href="#">Returns</a></li>
-                    <li><a href="#">Contact</a></li>
-                  </ul>
-                </div>
-              </div>
-              <!-- Single Footer Area Start -->
-              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-                <div class="single_footer_area">
-                  <ul class="footer_widget_menu">
-                    <li><a href="#">My Account</a></li>
-                    <li><a href="#">Shipping</a></li>
-                    <li><a href="#">Our Policies</a></li>
-                    <li><a href="#">Afiliates</a></li>
-                  </ul>
-                </div>
-              </div>
-              <!-- Single Footer Area Start -->
-              <div class="col-12 col-lg-5">
-                <div class="single_footer_area">
-                  <div class="footer_heading mb-30">
-                    <h6>Subscribe to our newsletter</h6>
-                  </div>
-                  <div class="subscribtion_form">
-                    <form action="#" method="post">
-                      <input type="email" name="mail" class="mail" placeholder="Your email here">
-                      <button type="submit" class="submit">Subscribe</button>
-                    </form>
-                  </div>
+              <div class="copywrite_text d-flex align-items-center">
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                 </div>
               </div>
             </div>
-            <div class="line"></div>
-
-            <!-- Footer Bottom Area Start -->
-            <div class="footer_bottom_area">
-              <div class="row">
-                <div class="col-12">
-                  <div class="footer_social_area text-center">
-                    <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                  </div>
+            <!-- Single Footer Area Start -->
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+              <div class="single_footer_area">
+                <ul class="footer_widget_menu">
+                  <li><a href="#">About</a></li>
+                  <li><a href="#">Blog</a></li>
+                  <li><a href="#">Faq</a></li>
+                  <li><a href="#">Returns</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- Single Footer Area Start -->
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+              <div class="single_footer_area">
+                <ul class="footer_widget_menu">
+                  <li><a href="#">My Account</a></li>
+                  <li><a href="#">Shipping</a></li>
+                  <li><a href="#">Our Policies</a></li>
+                  <li><a href="#">Afiliates</a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- Single Footer Area Start -->
+            <div class="col-12 col-lg-5">
+              <div class="single_footer_area">
+                <div class="footer_heading mb-30">
+                  <h6>Subscribe to our newsletter</h6>
+                </div>
+                <div class="subscribtion_form">
+                  <form action="#" method="post">
+                    <input type="email" name="mail" class="mail" placeholder="Your email here">
+                    <button type="submit" class="submit">Subscribe</button>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
-        </footer>
-        <!-- ****** Footer Area End ****** -->
-      </div>
-      <!-- /.wrapper end -->
+          <div class="line"></div>
 
-      <!-- jQuery (Necessary for All JavaScript Plugins) -->
-      <script src="js/jquery/jquery-2.2.4.min.js"></script>
-      <!-- Popper js -->
-      <script src="js/popper.min.js"></script>
-      <!-- Bootstrap js -->
-      <script src="js/bootstrap.min.js"></script>
-      <!-- Plugins js -->
-      <script src="js/plugins.js"></script>
-      <!-- Active js -->
-      <script src="js/active.js"></script>
+          <!-- Footer Bottom Area Start -->
+          <div class="footer_bottom_area">
+            <div class="row">
+              <div class="col-12">
+                <div class="footer_social_area text-center">
+                  <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                  <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                  <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                  <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- ****** Footer Area End ****** -->
+    </div>
+    <!-- /.wrapper end -->
 
-    </body>
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="js/plugins.js"></script>
+    <!-- Active js -->
+    <script src="js/active.js"></script>
 
-    </html>
+  </body>
 
-    <script type="text/javascript">
+  </html>
 
-    $(document).ready(function(){
+  <script type="text/javascript">
 
-      $('#btnGuardar').click(function(){
+  $(document).ready(function(){
+
+    $('#btnGuardar').click(function(){
 
 
-        nombre = $('#txtNombre').val();
-        apellidoP = $('#txtApellidoP').val();
-        apellidoM = $('#txtApellidoM').val();
-        calle = $('#txtCalle').val();
-        numCalle = $('#txtNumCalle').val();
-        cp = $('#txtCp').val();
-        ciudad = $('#txtCiudad').val();
-        estado = $('#txtEstado').val();
-        cel = $('#txtCel').val();
-        email= $('#txtEmail').val();
+      nombre = $('#txtNombre').val();
+      apellidoP = $('#txtApellidoP').val();
+      apellidoM = $('#txtApellidoM').val();
+      calle = $('#txtCalle').val();
+      numCalle = $('#txtNumCalle').val();
+      cp = $('#txtCp').val();
+      ciudad = $('#txtCiudad').val();
+      estado = $('#txtEstado').val();
+      cel = $('#txtCel').val();
+      email= $('#txtEmail').val();
 
-        if(validar_email( email ) )
-        {
+      if(validar_email( email ) )
+      {
+      }
+      else
+      {
+        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        email = 1;
+      }
+      pass= $('#txtPass').val();
+      roll = $("#cbmRoll option:selected").val();
+
+      if(nombre == ""){
+
+        alert("Debe ingresar un nombrel...");
+      }
+      if(apellidoP == ""){
+
+        alert("Debe ingresar un apellido paterno...");
+      }if(apellidoM == ""){
+
+        alert("Debe ingresar un apellido Materno...");
+      }
+      if(calle == ""){
+
+        alert("Debe ingresar una calle...");
+      }if(numCalle == ""){
+
+        alert("Debe ingresar un número de la hubicación...");
+      }
+      if(cp == ""){
+
+        alert("Debe ingresar un código postal...");
+      }if(ciudad == ""){
+
+        alert("Debe ingresar una ciudad...");
+      }
+      if(estado == ""){
+
+        alert("Debe ingresar un estado...");
+      }
+      if(cel == ""){
+
+        alert("Debe ingresar un número de contacto...");
+      }
+      if(email == ""){
+
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
+
+        alert("Debe ingresar una contraseña...");
+      }
+      if(roll == 0){
+
+        alert("Debe seleccionar un roll de usuario...");
+      }
+      if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
+        agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
+      }
+    });
+
+    $("input[name=rbDelivery]").change(function () {
+      precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+
+      if (precioEnvio == 'express') {
+
+        x = 700;
+      }
+      else{
+        x = 250;
+      }
+      z = <?php echo $TotalxArtGlobal ?>;
+      total = x + z;
+      getPriceDeli(x,total);
+
+    });
+
+    $('#btnPay2').click(function(){
+      valUser =<?php
+      if (isset($_SESSION["ID_USER"])) {
+        echo $_SESSION["ID_USER"];
+      }else {
+        echo $valida = 0;
+      } ?>;
+
+      valTotal = <?php echo $TotalxArtGlobal ?>;
+
+      if (valTotal == 0) {
+        alert('No puede continuar ya que no cuenta con artículos en el carrito.');
+      }
+      else {
+
+        if (valUser == 0) {
+          $("#ModalLoginVal").modal("show");
         }
-        else
-        {
-          alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-          email = 1;
+        else {
+          validaEnvio();
         }
-        pass= $('#txtPass').val();
-        roll = $("#cbmRoll option:selected").val();
+      }
+    });
 
-        if(nombre == ""){
+    $('#btnEntrar').click(function(){
 
-          alert("Debe ingresar un nombrel...");
-        }
-        if(apellidoP == ""){
+      email= $('#txt_Email').val();
+      pass= $('#txt_Pass').val();
 
-          alert("Debe ingresar un apellido paterno...");
-        }if(apellidoM == ""){
+      if(email == ""){
 
-          alert("Debe ingresar un apellido Materno...");
-        }
-        if(calle == ""){
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
 
-          alert("Debe ingresar una calle...");
-        }if(numCalle == ""){
+        alert("Debe ingresar una contraseña...");
+      }
+      if(email != "" && pass != ""){
+        login(email, pass);
+      }
+    });
+    $('#btnEntrarVal').click(function(){
 
-          alert("Debe ingresar un número de la hubicación...");
-        }
-        if(cp == ""){
+      email= $('#txt_EmailVal').val();
+      pass= $('#txt_PassVal').val();
 
-          alert("Debe ingresar un código postal...");
-        }if(ciudad == ""){
+      if(email == ""){
 
-          alert("Debe ingresar una ciudad...");
-        }
-        if(estado == ""){
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
 
-          alert("Debe ingresar un estado...");
-        }
-        if(cel == ""){
+        alert("Debe ingresar una contraseña...");
+      }
+      if(email != "" && pass != ""){
+        loginValidaCostoEnv(email, pass);
+      }
+    });
+    $('#btnLogOut').click(function(){
+      vaciar = 1;
 
-          alert("Debe ingresar un número de contacto...");
-        }
-        if(email == ""){
+      logOut(vaciar);
 
-          alert("Debe ingresar un E-mail...");
-        }
-        if(pass == ""){
+    });
 
-          alert("Debe ingresar una contraseña...");
-        }
-        if(roll == 0){
+    function validaEnvio(){
+      if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
 
-          alert("Debe seleccionar un roll de usuario...");
-        }
-        if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
-          agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
-        }
-      });
-
-      $("input[name=rbDelivery]").change(function () {
         precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
 
         if (precioEnvio == 'express') {
-
           x = 700;
         }
         else{
           x = 250;
         }
-        z = <?php echo $TotalxArtGlobal ?>;
-        total = x + z;
-        getPriceDeli(x,total);
-
-      });
-
-      $('#btnPay2').click(function(){
-        valUser =<?php
-        if (isset($_SESSION["ID_USER"])) {
-          echo $_SESSION["ID_USER"];
-        }else {
-          echo $valida = 0;
-        } ?>;
-
-        valTotal = <?php echo $TotalxArtGlobal ?>;
-
-        if (valTotal == 0) {
-          alert('No puede continuar ya que no cuenta con artículos en el carrito.');
-        }
-        else {
-
-          if (valUser == 0) {
-            $("#ModalLoginVal").modal("show");
-          }
-          else {
-            validaEnvio();
-          }
-        }
-      });
-
-      $('#btnEntrar').click(function(){
-
-        email= $('#txt_Email').val();
-        pass= $('#txt_Pass').val();
-
-        if(email == ""){
-
-          alert("Debe ingresar un E-mail...");
-        }
-        if(pass == ""){
-
-          alert("Debe ingresar una contraseña...");
-        }
-        if(email != "" && pass != ""){
-          login(email, pass);
-        }
-      });
-      $('#btnEntrarVal').click(function(){
-
-        email= $('#txt_EmailVal').val();
-        pass= $('#txt_PassVal').val();
-
-        if(email == ""){
-
-          alert("Debe ingresar un E-mail...");
-        }
-        if(pass == ""){
-
-          alert("Debe ingresar una contraseña...");
-        }
-        if(email != "" && pass != ""){
-          loginValidaCostoEnv(email, pass);
-        }
-      });
-      $('#btnLogOut').click(function(){
-        vaciar = 1;
-
-        logOut(vaciar);
-
-      });
-
-      function validaEnvio(){
-        if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
-
-          precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
-
-          if (precioEnvio == 'express') {
-            x = 0;
-          }
-          else{
-            x = 0;
-          }
-          pruebas(x);
-        }else{
-          alert('Debe seleccionar un metodo de envío.');
-        }
-
+        pruebas(x);
+      }else{
+        alert('Debe seleccionar un metodo de envío.');
       }
 
-      $('#btnGuardarArt').click(function(){
+    }
 
-        nomArt= $('#txtNameArt').val();
-        descArt= $('#txtDescArt').val();
-        barCode = $('#txtBarCode').val();
-        modelArt = $('#txtModelo').val();
-        marcaArt = $("#cbmMarca option:selected").val();
-        precioArt = $('#txtPrecio').val();
-        categoria = $("#cbmCategoria option:selected").val();
-        subCatego = $("#cbmSubcategoria option:selected").val();
-        statusArt = $("#cbmStatus option:selected").val();
-        nombreImg = $('#txtNameIMG').val();
+    $('#btnGuardarArt').click(function(){
+
+      nomArt= $('#txtNameArt').val();
+      descArt= $('#txtDescArt').val();
+      barCode = $('#txtBarCode').val();
+      modelArt = $('#txtModelo').val();
+      marcaArt = $("#cbmMarca option:selected").val();
+      precioArt = $('#txtPrecio').val();
+      categoria = $("#cbmCategoria option:selected").val();
+      subCatego = $("#cbmSubcategoria option:selected").val();
+      statusArt = $("#cbmStatus option:selected").val();
+      nombreImg = $('#txtNameIMG').val();
 
 
-        if(nomArt == ""){
+      if(nomArt == ""){
 
-          alert("Debe ingresar el nombre del artículo...");
+        alert("Debe ingresar el nombre del artículo...");
+      }
+      if(descArt == ""){
+
+        alert("Debe ingresar la descripción del artículo...");
+      }
+      if(barCode == ""){
+
+        alert("Debe ingresar el codigo de barra del artículo...");
+      }
+      if(modelArt == ""){
+
+        alert("Debe ingresar el modelo del artículo...");
+      }
+      if(marcaArt == 0){
+
+        alert("Debe seleccionar una marca...");
+      }
+      if(precioArt == "" && precioArt !=0){
+
+        alert("Debe ingresar el precio del artículo...");
+      }
+      if(categoria == 0){
+
+        alert("Debe seleccionar una categoría...");
+      }
+      if(subCatego == 0){
+
+        alert("Debe seleccionar una subcategoría...");
+      }
+      if(statusArt == 2){
+
+        alert("Debe seleccionar un estatus del artículo...");
+      }
+
+      if (validaImg == 0) {
+
+        alert("Debe cargar la imagen del artículo...");
+      }
+
+      if (nomArt != "" && descArt != "" && barCode != "" && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
+        guardarArt(nomArt,
+          descArt,
+          barCode,
+          modelArt,
+          marcaArt,
+          precioArt,
+          categoria,
+          subCatego,
+          statusArt,
+          nameArticulo);
+          validaImg=0;
+          nameArticulo = "";
         }
-        if(descArt == ""){
 
-          alert("Debe ingresar la descripción del artículo...");
-        }
-        if(barCode == ""){
+      });
+      $('#upload').on('click', function() {
 
-          alert("Debe ingresar el codigo de barra del artículo...");
-        }
-        if(modelArt == ""){
-
-          alert("Debe ingresar el modelo del artículo...");
-        }
-        if(marcaArt == 0){
-
-          alert("Debe seleccionar una marca...");
-        }
-        if(precioArt == "" && precioArt !=0){
-
-          alert("Debe ingresar el precio del artículo...");
-        }
-        if(categoria == 0){
-
-          alert("Debe seleccionar una categoría...");
-        }
-        if(subCatego == 0){
-
-          alert("Debe seleccionar una subcategoría...");
-        }
-        if(statusArt == 2){
-
-          alert("Debe seleccionar un estatus del artículo...");
-        }
-
-        if (validaImg == 0) {
-
-          alert("Debe cargar la imagen del artículo...");
-        }
-
-        if (nomArt != "" && descArt != "" && barCode != "" && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
-          guardarArt(nomArt,
-            descArt,
-            barCode,
-            modelArt,
-            marcaArt,
-            precioArt,
-            categoria,
-            subCatego,
-            statusArt,
-            nameArticulo);
-            validaImg=0;
-            nameArticulo = "";
-          }
-
-        });
-        $('#upload').on('click', function() {
-
-          var file_data = $('#sortpicture').prop('files')[0];
-          var form_data = new FormData();
-          form_data.append('file', file_data);
-          $.ajax({
-            url: 'cargaIMG.php', // point to server-side PHP script
-            dataType: 'text',  // what to expect back from the PHP script, if anything
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_data,
-            type: 'post',
-            success: function(result){
-              if (result != "") {
-                validaImg =1;
-                nameArticulo = result;
-                document.getElementById("sortpicture").value = "";
-              }else{
-                validaImg=0;
-                document.getElementById("sortpicture").value = "";
-              }
+        var file_data = $('#sortpicture').prop('files')[0];
+        var form_data = new FormData();
+        form_data.append('file', file_data);
+        $.ajax({
+          url: 'cargaIMG.php', // point to server-side PHP script
+          dataType: 'text',  // what to expect back from the PHP script, if anything
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          type: 'post',
+          success: function(result){
+            if (result != "") {
+              validaImg =1;
+              nameArticulo = result;
+              document.getElementById("sortpicture").value = "";
+            }else{
+              validaImg=0;
+              document.getElementById("sortpicture").value = "";
             }
-          });
+          }
         });
-        function validar_email( email )
-        {
-          var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-          return regex.test(email) ? true : false;
-        }
-        <?php
-        foreach ($aCarrito as $key => $value) {
-          ?>
-          $('#qty<?php echo $value['ID'] ?> ').val(<?php echo $value['CANTIDAD'] ?>);
+      });
+      function validar_email( email )
+      {
+        var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email) ? true : false;
+      }
+      <?php
+      $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
+      foreach ($ID_ARTICLES as $key => $item) {
+        $id = $item['id'];
+        ?>
+        $('#qty<?php echo $id ?> ').val(<?php echo $item['cantidad'] ?>);
 
-          <?php } ?>
+        <?php } ?>
 
-        });
+      });
 
-        </script>
+      </script>

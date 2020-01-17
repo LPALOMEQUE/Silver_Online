@@ -1,9 +1,12 @@
 <?php
 session_start();
+require_once "php/Conexion.php";
+$con = conexion();
 $aCarrito = array();
 $sHTML = '';
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
+$TotalxArt =0;
 $cantidad = 0;
 $totalP =0;
 $vtaTotal = 0;
@@ -27,7 +30,10 @@ $paymentID = '';
 if (!isset($_SESSION["ID_USER"])) {
   header('Location: index.php');
 }
-
+if (isset($_SESSION['ID_ARTICLES'])) {
+  $bagNumber = count($_SESSION['ID_ARTICLES']);
+  $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
+}
 //Vaciamos el la session
 if (isset($_POST['VACIAR'])) {
   unset($_SESSION['ID_USER']);
@@ -37,46 +43,59 @@ if (isset($_POST['VACIAR'])) {
 
 //Vaciamos el carrito
 if(isset($_POST['vaciar'])) {
-  unset($_COOKIE['carrito']);
+  // unset($_COOKIE['carrito']);
   unset($_COOKIE['express']);
 }
 
 //Obtenemos los productos anteriores
 
-if(isset($_COOKIE['carrito'])) {
-  $aCarrito = unserialize($_COOKIE['carrito']);
-}
+// if(isset($_COOKIE['carrito'])) {
+//   $aCarrito = unserialize($_COOKIE['carrito']);
+// }
 
 //Anyado un nuevo articulo al carrito
 
-if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
-  $iUltimaPos = count($aCarrito);
-  $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
-  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
-  $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
-  $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-  $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
-
-}
+// if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
+//   $iUltimaPos = count($aCarrito);
+//   $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
+//   $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
+//   $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
+//   $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
+//   $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+//
+// }
 
 //Creamos la cookie (serializamos)
 
 $iTemCad = time() + (60 * 60);
-setcookie('carrito', serialize($aCarrito), $iTemCad);
+// setcookie('carrito', serialize($aCarrito), $iTemCad);
 
 if (isset($_POST['MONTO'])) {
   setcookie('express',$_POST['MONTO'],$iTemCad);
   $costoEnvio = $_COOKIE['express'];
 }
 
+if (isset($_SESSION['ID_ARTICLES'])) {
+
+  foreach($ID_ARTICLES as $item){
+
+    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$item[0]'";
+    $result = mysqli_query($con,$sql);
+    while($arti = mysqli_fetch_row($result)){
+      $TotalxArtGlobal += $arti[0] * $item[1];
+      $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
+    }
+  }
+}
+
 //Imprimimos el contenido del array
 
-foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  $bagNumber = count($aCarrito);
-  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-  $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
-}
+// foreach ($aCarrito as $key => $value) {
+//   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+//   $bagNumber = count($aCarrito);
+//   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+//   $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
+// }
 
 ?>
 
@@ -385,12 +404,17 @@ foreach ($aCarrito as $key => $value) {
 
           <ul class="order-details-form mb-4">
             <li><span>Artículos</span> <span>Total</span></li>
-            <?php foreach ($aCarrito as $key => $value) {
-              $TotalxArt = $value['PRECIO'] * $value['CANTIDAD'];
-              ?>
-              <li><span><?php echo $value['NOMBRE'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+            <?php foreach($ID_ARTICLES as $item){
 
-            <?php } ?>
+              $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$item[0]'";
+              $result = mysqli_query($con,$sql);
+              while($arti = mysqli_fetch_row($result)){
+                $TotalxArt += $arti[0] * $item[1];
+              ?>
+              <li><span><?php echo $arti[0] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+
+            <?php }
+          }?>
             <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
               <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
               if (isset($_COOKIE['express'])) {

@@ -1,190 +1,231 @@
 <?php
 session_start();
+require_once "php/Conexion.php";
+$con = conexion();
 $aCarrito = array();
+$arrayCart = array();
 $sHTML = '';
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $cantidad = 0;
-//Vaciamos el carrito
 
-if(isset($_POST['vaciar'])) {
-  unset($_COOKIE['carrito']);
+
+if (isset($_SESSION['ID_ARTICLES'])) {
+  $bagNumber = count($_SESSION['ID_ARTICLES']);
+  $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
+
+//Vaciamos el carrito
+// if(isset($_POST['vaciar'])) {
+//   unset($_COOKIE['carrito']);
+// }
 
 //Obtenemos los productos anteriores
 
-if(isset($_COOKIE['carrito'])) {
-  $aCarrito = unserialize($_COOKIE['carrito']);
-}
+// if(isset($_COOKIE['carrito'])) {
+//   $aCarrito = unserialize($_COOKIE['carrito']);
+// }
 
 //Anyado un nuevo articulo al carrito
 
-if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
-  $iUltimaPos = count($aCarrito);
-  $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
-  $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
-  $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
-  $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-  $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
+if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
 
-}
+  // $arrayCart = array($_POST['ID'],$_POST['CANTIDAD']);
 
-//Creamos la cookie (serializamos)
+  $ultimaPos = count($_SESSION['ID_ARTICLES']);
+  $_SESSION['ID_ARTICLES'][$ultimaPos]=
+  array(
+    "id" => $_POST['ID'],
+    "cantidad" => $_POST['CANTIDAD']);
 
-$iTemCad = time() + (60 * 60);
-setcookie('carrito', serialize($aCarrito), $iTemCad);
 
-//Imprimimos el contenido del array
+    // --------
+    // $arrayCart['id'] = $_POST['ID'];
+    // $arrayCart['cantidad'] = $_POST['CANTIDAD'];
 
-foreach ($aCarrito as $key => $value) {
-  $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  $bagNumber = count($aCarrito);
-  $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-}
+    // $ID_ARTICLES[$key][0] = '2105';
 
-?>
+    //   $arrayCart = array(
+    //     'id' => $_POST['ID'],
+    //  'cantidad' => $_POST['CANTIDAD']);
+    // $_SESSION['ID_ARTICLES']=$arrayCart;
 
-<!DOCTYPE html>
-<html lang="en">
+  }
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="description" content="">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  //Creamos la cookie (serializamos)
 
-  <!-- Title  -->
-  <title>Silver - Evolution | Joyas - Hombre</title>
+  // $iTemCad = time() + (60 * 60);
+  // setcookie('carrito', serialize($aCarrito), $iTemCad);
 
-  <!-- Favicon  -->
-  <link rel="icon" href="img/core-img/favicon.ico">
+  //Imprimimos el contenido del array
 
-  <!-- Core Style CSS -->
-  <link rel="stylesheet" href="css/core-style.css">
-  <link rel="stylesheet" href="style.css">
+  // foreach ($aCarrito as $key => $value) {
+  //   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+  //   // $bagNumber = count($aCarrito);
+  //   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+  // }
+  if (isset($_SESSION['ID_ARTICLES'])) {
 
-  <!-- Responsive CSS -->
-  <link href="css/responsive.css" rel="stylesheet">
+    foreach($ID_ARTICLES as $key => $item){
 
-  <!-- css LFPO -->
-  <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
-  <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
-  <!-- end -->
+      $id = $item['id'];
+      $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
+      $result = mysqli_query($con,$sql);
 
-  <!-- scripts LFPO -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      while($arti = mysqli_fetch_row($result)){
+        $TotalxArtGlobal += $arti[0] * $item['cantidad'];
+      }
+      // $ID_ARTICLES[$key][0] = '2105';
+      // $p =   $ID_ARTICLES[$key]['cantidad'];
+    }
+  }
+  $p =   $ID_ARTICLES[0]['id'];
+  ?>
 
-  <script src="js/jquery/jquery-2.2.4.min.js"></script>
-  <script src="js/funciones.js"></script>
-  <script src="librerias/alertify/alertify.js"></script>
-  <!-- end -->
+  <!DOCTYPE html>
+  <html lang="en">
 
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-<body>
-  <div class="catagories-side-menu">
-    <!-- Close Icon -->
-    <div id="sideMenuClose">
-      <i class="ti-close"></i>
-    </div>
-    <!--  Side Nav  -->
-    <div class="nav-side-menu">
-      <div class="menu-list">
-        <h6>Categorías</h6>
-        <ul id="menu-content" class="menu-content collapse out">
+    <!-- Title  -->
+    <title>Silver - Evolution | Joyas - Hombre</title>
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
-            <a href="#">Joyas<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="joyas">
-              <li><a href="joyas-h.php">Hombre</a></li>
-              <li><a href="joyas-m.php">Mujer</a></li>
-            </ul>
-          </li>
+    <!-- Favicon  -->
+    <link rel="icon" href="img/core-img/favicon.ico">
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
-            <a href="#">Bolsas<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="bolsas">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-            </ul>
-          </li>
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="css/core-style.css">
+    <link rel="stylesheet" href="style.css">
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
-            <a href="#">Perfumes<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="perfumes">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-            </ul>
-          </li>
+    <!-- Responsive CSS -->
+    <link href="css/responsive.css" rel="stylesheet">
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
-            <a href="#">Ropa<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="ropa">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-              <li><a href="#">Niño</a></li>
-              <li><a href="#">Niña</a></li>
-            </ul>
-          </li>
-        </ul>
+    <!-- css LFPO -->
+    <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
+    <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
+    <!-- end -->
+
+    <!-- scripts LFPO -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="js/funciones.js"></script>
+    <script src="librerias/alertify/alertify.js"></script>
+    <!-- end -->
+
+  </head>
+
+  <body>
+    <div class="catagories-side-menu">
+      <!-- Close Icon -->
+      <div id="sideMenuClose">
+        <i class="ti-close"></i>
+      </div>
+      <!--  Side Nav  -->
+      <div class="nav-side-menu">
+        <div class="menu-list">
+          <h6>Categorías</h6>
+          <ul id="menu-content" class="menu-content collapse out">
+
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
+              <a href="#">Joyas<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="joyas">
+                <li><a href="joyas-h.php">Hombre</a></li>
+                <li><a href="joyas-m.php">Mujer</a></li>
+              </ul>
+            </li>
+
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
+              <a href="#">Bolsas<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="bolsas">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+              </ul>
+            </li>
+
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
+              <a href="#">Perfumes<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="perfumes">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+              </ul>
+            </li>
+
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
+              <a href="#">Ropa<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="ropa">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+                <li><a href="#">Niño</a></li>
+                <li><a href="#">Niña</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="wrapper">
-    <div class="row">
-      <div class="col-md-3 error">
-        <a class="center"> <strong>Usuario:</strong> <?php
-        if (isset($_SESSION["Email"])) {
-          echo $_SESSION["Email"];
-        }else {
-          echo $invitado = 'Invitado...';
-        } ?>
-        </a>
-      </div>
-      <div class="col-md-2 error">
-        <div class="<?php
-        if (isset($_SESSION["Email"])) {
+    <div id="wrapper">
+      <div class="row">
+        <div class="col-md-3 error">
 
-          echo $mostrar = 'inline';
-        }else {
-          echo $ocultar = 'none';
-        } ?> ">
-        <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
+          <a class="center"> <?php var_dump($p) ?><strong>Usuario:</strong>
+            <?php
+            if (isset($_SESSION["Email"])) {
+              echo $_SESSION["Email"];
+            }else {
+              echo $invitado = 'Invitado...';
+            } ?>
+          </a>
+        </div>
+        <div class="col-md-2 error">
+          <div class="<?php
+          if (isset($_SESSION["Email"])) {
+
+            echo $mostrar = 'inline';
+          }else {
+            echo $ocultar = 'none';
+          } ?> ">
+          <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
         </div>
 
         <div class="<?php
         if (isset($_SESSION["Email"])) {
 
-        echo $ocultar = 'none';
+          echo $ocultar = 'none';
         }else {
-        echo $mostrar = 'inline';
-      } ?>">
+          echo $mostrar = 'inline';
+        } ?>">
         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
-        </div>
       </div>
-      <div class="col-md-2">
-
-      </div>
-      <!-- <div class="col-md-1">
-
-      </div> -->
-      <div class="col-md-3 right">
-
     </div>
-
     <div class="col-md-2">
 
     </div>
-    </div>
+    <!-- <div class="col-md-1">
+
+  </div> -->
+  <div class="col-md-3 right">
+
+  </div>
+
+  <div class="col-md-2">
+
+  </div>
+</div>
 <!-- ****** Header Area Start ****** -->
 <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
+
   <!-- Top Header Area Start -->
   <div class="top_header_area">
     <div class="container h-100">
@@ -383,7 +424,7 @@ foreach ($aCarrito as $key => $value) {
   </div>
 </header>
 <!-- ****** Header Area End ****** -->
-
+<P><?php   var_dump($_SESSION['ID_ARTICLES']); ?></P>
 <section class="top-discount-area d-md-flex align-items-center">
   <!-- Single Discount Area -->
   <div class="single-discount-area">
@@ -403,20 +444,15 @@ foreach ($aCarrito as $key => $value) {
 </section>
 
 <?php
-require_once "php/Conexion.php";
-$con = conexion();
-?>
-
-<?php
 $sql = "SELECT " .
 "art.ID_ARTICLES, ".
 "art.NAME_ART, " .
 "art.PRICE, " .
 "art.URL_IMAGE, " .
-"art.Description, ".
-"br.NAME_BRAND ".
+"art.Description ".
+// "br.NAME_BRAND ".
 "FROM articles art " .
-"INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+// "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
 "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1";
 
 $result = mysqli_query($con,$sql);
@@ -453,7 +489,7 @@ while($category = mysqli_fetch_row($result)){
                       <i class="fa fa-star" aria-hidden="true"></i>
                     </div>
                     <h5 class="price">$<?php echo number_format($category[2],2) ?> <span>$624</span></h5>
-                    <p>Marca: <?php echo $category[5] ?></p>
+                    <p>Marca: -</p>
                     <p><?php echo $category[4] ?></p>
                   </div>
                   <div class="row">
@@ -668,13 +704,6 @@ while($category = mysqli_fetch_row($result)){
             </div>
           </div>
         </div>
-        <?php
-
-        require_once "php/Conexion.php";
-        $con = conexion();
-
-        ?>
-
         <div class="col-12 col-md-8 col-lg-9">
           <div class="shop_grid_product_area">
             <div class="row">
@@ -822,7 +851,7 @@ while($category = mysqli_fetch_row($result)){
 $(document).ready(function(){
 
   $('#btnEntrar').click(function(){
-debugger;
+    debugger;
     email= $('#txt_Email').val();
     pass= $('#txt_Pass').val();
     if(email == ""){
