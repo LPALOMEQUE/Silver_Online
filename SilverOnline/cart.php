@@ -13,42 +13,58 @@ $cantidad = 0;
 if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
+  // $ss_tmp=$_SESSION['tmp'];
 }
 
 // Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
-  // unset($_SESSION['ID_ARTICLES']);
-  session_destroy();
+  unset($_SESSION['ID_ARTICLES']);
+  isset($_SESSION['tmp']);
+  // session_destroy();
 }
 
 //Eliminamos articulos del carrito
 if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
-  foreach ($ID_ARTICLES as $key => $item) {
+  echo ("posicion: ".$_POST['Posicion']);
 
   unset($_SESSION['ID_ARTICLES'][$_POST['Posicion']]);
-}
-  // unset($aCarrito[$_POST['Posicion']]);
-  // setcookie('carrito', serialize($aCarrito));
-  // // echo ("posicion: ".$_POST['Posicion']);
-  // // echo "   -----------------   ";
+    // $arratTmp = $_SESSION['ID_ARTICLES'];
+
+    // foreach ($ID_ARTICLES as $key => $item) {
+    //
+    //       // $arratTmp = array(
+    //       //   "id" => $item['id'],
+    //       //   "cantidad" => $item['cantidad']);
+    //
+    //       $ultimaPos = count($_SESSION['tmp']);
+    //
+    //       $_SESSION['tmp'][$ultimaPos]=
+    //       array(
+    //         "id" => $item['id'],
+    //         "cantidad" => $item['cantidad']);
+    //
+    // }
+
+    // unset($_SESSION['ID_ARTICLES']);
+    // // $ultimaPos = count($arratTmp);
+    // $_SESSION['ID_ARTICLES'] = $_SESSION['tmp'];
+
+  // echo ("posicion: ".$_POST['Posicion']);
+  // var_dump($_SESSION['tmp']);
+  echo "   -----------------   ";
   // unserialize(urldecode($_COOKIE['carrito']));
-  // echo $_COOKIE['carrito'];
+  array_values($_SESSION['ID_ARTICLES']);
+
 }
-//Obtenemos los productos anteriores
 
-// if(isset($_COOKIE['carrito'])) {
-//   $aCarrito = unserialize($_COOKIE['carrito']);
-// }
-
-//Anyado un nuevo articulo al carrito
+//Actualizando un articulo al carrito
 
 if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])) {
 
   foreach ($ID_ARTICLES as $key => $item) {
     if (  $ID_ARTICLES[$_POST['Posicion']]['id'] == $_POST['ID']) {
 
-      // $ultimaPos = count($_SESSION['ID_ARTICLES']);
-      $_SESSION['ID_ARTICLES'][$_POST['Posicion']]=
+    $_SESSION['ID_ARTICLES'][$_POST['Posicion']]=
       array(
         "id" => $_POST['ID'],
         "cantidad" => $_POST['CANTIDAD']);
@@ -56,6 +72,8 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
       // $ID_ARTICLES[$_POST['Posicion']]['cantidad'] = $_POST['CANTIDAD'];
 
       print_r('existe el articulo'. ' '. $ID_ARTICLES[$_POST['Posicion']]['id']);
+      echo ("posicion: ".$_POST['Posicion']);
+
       var_dump($ID_ARTICLES);
     }
   }
@@ -76,7 +94,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
 // }
 if (isset($_SESSION['ID_ARTICLES'])) {
 
-  foreach($ID_ARTICLES as $item){
+  foreach ($ID_ARTICLES as $key => $item) {
     $id = $item['id'];
     $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
     $result = mysqli_query($con,$sql);
@@ -679,7 +697,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                       id = <?php echo $id ?>;
                       cantidad=$('#qty<?php echo $id ?>').val();
                       debugger;
-                      posicion = <?php echo $i ?>;
+                      posicion = <?php echo $key ?>;
                       cartModPrice(id,
                         cantidad,
                         posicion);
@@ -691,7 +709,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                         id = <?php echo $id ?>;
                         cantidad=$('#qty<?php echo $id ?>').val();
                         debugger;
-                        posicion = <?php echo $i ?>;
+                        posicion = <?php echo $key ?>;
                         cartModPrice(id,
                           cantidad,
                           posicion);
@@ -701,7 +719,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                         $('#btnDel<?php echo $id ?>').click(function(){
                           debugger;
                           id = <?php echo $id ?>;
-                          posicion = <?php echo $i ?>;
+                          posicion = <?php echo $key ?>;
                           valida = 1;
                           eliminarArticulo(id, posicion, valida);
 
@@ -719,7 +737,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                             // valor.value ++;
                             id = <?php echo $id ?>;
                             cantidad=$('#qty<?php echo $id ?>').val();
-                            posicion = <?php echo $i ?>;
+                            posicion = <?php echo $key ?>;
                             cartModPrice(id,
                               cantidad,
                               posicion);

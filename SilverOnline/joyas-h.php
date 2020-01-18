@@ -15,28 +15,37 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
 
-//Vaciamos el carrito
-// if(isset($_POST['vaciar'])) {
-//   unset($_COOKIE['carrito']);
-// }
-
-//Obtenemos los productos anteriores
-
-// if(isset($_COOKIE['carrito'])) {
-//   $aCarrito = unserialize($_COOKIE['carrito']);
-// }
-
 //Anyado un nuevo articulo al carrito
+if (isset($_SESSION['ID_ARTICLES'])) {
+
+  foreach($ID_ARTICLES as $key => $item){
+
+    $id = $item['id'];
+    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
+    $result = mysqli_query($con,$sql);
+
+    while($arti = mysqli_fetch_row($result)){
+      $TotalxArtGlobal += $arti[0] * $item['cantidad'];
+    }
+    // $ID_ARTICLES[$key][0] = '2105';
+    // $p =   $ID_ARTICLES[$key]['cantidad'];
+  }
+}
+
+$p =   $key+1;
 
 if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
 
   // $arrayCart = array($_POST['ID'],$_POST['CANTIDAD']);
+    $ultimaPos = count($_SESSION['ID_ARTICLES']);
 
-  $ultimaPos = count($_SESSION['ID_ARTICLES']);
-  $_SESSION['ID_ARTICLES'][$ultimaPos]=
-  array(
-    "id" => $_POST['ID'],
-    "cantidad" => $_POST['CANTIDAD']);
+    $_SESSION['ID_ARTICLES'][$p]=
+    array(
+      "id" => $_POST['ID'],
+      "cantidad" => $_POST['CANTIDAD']);
+
+
+
 
 
     // --------
@@ -64,22 +73,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
   //   // $bagNumber = count($aCarrito);
   //   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
   // }
-  if (isset($_SESSION['ID_ARTICLES'])) {
 
-    foreach($ID_ARTICLES as $key => $item){
-
-      $id = $item['id'];
-      $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
-      $result = mysqli_query($con,$sql);
-
-      while($arti = mysqli_fetch_row($result)){
-        $TotalxArtGlobal += $arti[0] * $item['cantidad'];
-      }
-      // $ID_ARTICLES[$key][0] = '2105';
-      // $p =   $ID_ARTICLES[$key]['cantidad'];
-    }
-  }
-  $p =   $ID_ARTICLES[0]['id'];
   ?>
 
   <!DOCTYPE html>
@@ -178,7 +172,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
       <div class="row">
         <div class="col-md-3 error">
 
-          <a class="center"> <?php var_dump($p) ?><strong>Usuario:</strong>
+          <a class="center"><?php echo $p ?><strong>Usuario:</strong>
             <?php
             if (isset($_SESSION["Email"])) {
               echo $_SESSION["Email"];
@@ -449,10 +443,10 @@ $sql = "SELECT " .
 "art.NAME_ART, " .
 "art.PRICE, " .
 "art.URL_IMAGE, " .
-"art.Description ".
-// "br.NAME_BRAND ".
+"art.Description, ".
+"br.NAME_BRAND ".
 "FROM articles art " .
-// "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+"INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
 "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1";
 
 $result = mysqli_query($con,$sql);
