@@ -3,7 +3,6 @@ session_start();
 require_once "php/Conexion.php";
 $con = conexion();
 $aCarrito = array();
-// $arrayCart = array();
 $sHTML = '';
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
@@ -13,9 +12,9 @@ $cantidad = 0;
 if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
-  // $ss_tmp=$_SESSION['tmp'];
 }
 
+//Salimos del usuario que inicio sesion
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
@@ -37,37 +36,12 @@ if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) 
   echo ("posicion: ".$_POST['Posicion']);
 
   unset($_SESSION['ID_ARTICLES'][$_POST['Posicion']]);
-  // $arratTmp = $_SESSION['ID_ARTICLES'];
 
-  // foreach ($ID_ARTICLES as $key => $item) {
-  //
-  //       // $arratTmp = array(
-  //       //   "id" => $item['id'],
-  //       //   "cantidad" => $item['cantidad']);
-  //
-  //       $ultimaPos = count($_SESSION['tmp']);
-  //
-  //       $_SESSION['tmp'][$ultimaPos]=
-  //       array(
-  //         "id" => $item['id'],
-  //         "cantidad" => $item['cantidad']);
-  //
-  // }
-
-  // unset($_SESSION['ID_ARTICLES']);
-  // // $ultimaPos = count($arratTmp);
-  // $_SESSION['ID_ARTICLES'] = $_SESSION['tmp'];
-
-  // echo ("posicion: ".$_POST['Posicion']);
-  // var_dump($_SESSION['tmp']);
-  echo "   -----------------   ";
-  // unserialize(urldecode($_COOKIE['carrito']));
   array_values($_SESSION['ID_ARTICLES']);
 
 }
 
-//Actualizando un articulo al carrito
-
+//Actualizando un articulo del carrito
 if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])) {
 
   foreach ($ID_ARTICLES as $key => $item) {
@@ -77,8 +51,6 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
       array(
         "id" => $_POST['ID'],
         "cantidad" => $_POST['CANTIDAD']);
-        // $ID_ARTICLES[$_POST['Posicion']]['id'] = $_POST['ID'];
-        // $ID_ARTICLES[$_POST['Posicion']]['cantidad'] = $_POST['CANTIDAD'];
 
         print_r('existe el articulo'. ' '. $ID_ARTICLES[$_POST['Posicion']]['id']);
         echo ("posicion: ".$_POST['Posicion']);
@@ -86,21 +58,9 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
         var_dump($ID_ARTICLES);
       }
     }
-
   }
 
-  //Creamos la cookie (serializamos)
-
-  // $iTemCad = time() + (60 * 60);
-  // setcookie('carrito', serialize($aCarrito), $iTemCad);
-
-  //Imprimimos el contenido del array
-
-  // foreach ($aCarrito as $key => $value) {
-  //   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  //   // $bagNumber = count($aCarrito);
-  //   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-  // }
+//Imprimimos datos globales del carrito
   if (isset($_SESSION['ID_ARTICLES'])) {
 
     foreach ($ID_ARTICLES as $key => $item) {
@@ -705,7 +665,6 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                       valor.value --;
                       id = <?php echo $id ?>;
                       cantidad=$('#qty<?php echo $id ?>').val();
-                      debugger;
                       posicion = <?php echo $key ?>;
                       cartModPrice(id,
                         cantidad,
@@ -717,7 +676,6 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                         valor.value ++;
                         id = <?php echo $id ?>;
                         cantidad=$('#qty<?php echo $id ?>').val();
-                        debugger;
                         posicion = <?php echo $key ?>;
                         cartModPrice(id,
                           cantidad,
@@ -726,7 +684,6 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                         });
 
                         $('#btnDel<?php echo $id ?>').click(function(){
-                          debugger;
                           id = <?php echo $id ?>;
                           posicion = <?php echo $key ?>;
                           valida = 1;

@@ -20,7 +20,7 @@ if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['Email']);
 }
 
-//Anyado un nuevo articulo al carrito
+//Imprimiendo datos globales del carrito
 if (isset($_SESSION['ID_ARTICLES'])) {
 
   foreach($ID_ARTICLES as $key => $item){
@@ -32,53 +32,18 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     while($arti = mysqli_fetch_row($result)){
       $TotalxArtGlobal += $arti[0] * $item['cantidad'];
     }
-    // $ID_ARTICLES[$key][0] = '2105';
-    // $p =   $ID_ARTICLES[$key]['cantidad'];
   }
 }
-// if (isset($_SESSION['ID_ARTICLES'])) {
 $p =   $key+1;
-// }
+
+// anydando articulos al carrito
 if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
-
-  // $arrayCart = array($_POST['ID'],$_POST['CANTIDAD']);
   $ultimaPos = count($_SESSION['ID_ARTICLES']);
-
   $_SESSION['ID_ARTICLES'][$p]=
   array(
     "id" => $_POST['ID'],
     "cantidad" => $_POST['CANTIDAD']);
-
-
-
-
-
-    // --------
-    // $arrayCart['id'] = $_POST['ID'];
-    // $arrayCart['cantidad'] = $_POST['CANTIDAD'];
-
-    // $ID_ARTICLES[$key][0] = '2105';
-
-    //   $arrayCart = array(
-    //     'id' => $_POST['ID'],
-    //  'cantidad' => $_POST['CANTIDAD']);
-    // $_SESSION['ID_ARTICLES']=$arrayCart;
-
   }
-
-  //Creamos la cookie (serializamos)
-
-  // $iTemCad = time() + (60 * 60);
-  // setcookie('carrito', serialize($aCarrito), $iTemCad);
-
-  //Imprimimos el contenido del array
-
-  // foreach ($aCarrito as $key => $value) {
-  //   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  //   // $bagNumber = count($aCarrito);
-  //   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-  // }
-
   ?>
 
   <!DOCTYPE html>
@@ -708,12 +673,12 @@ while($category = mysqli_fetch_row($result)){
             <div class="row">
               <?php
               $sql = "SELECT " .
-                   "art.ID_ARTICLES, ".
-                   "art.NAME_ART, " .
-                   "art.PRICE, " .
-                   "art.URL_IMAGE " .
-                   "FROM articles art " .
-                   "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2";
+              "art.ID_ARTICLES, ".
+              "art.NAME_ART, " .
+              "art.PRICE, " .
+              "art.URL_IMAGE " .
+              "FROM articles art " .
+              "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2";
 
               $result = mysqli_query($con,$sql);
               while($category = mysqli_fetch_row($result)){
@@ -850,7 +815,6 @@ while($category = mysqli_fetch_row($result)){
 $(document).ready(function(){
 
   $('#btnEntrar').click(function(){
-    debugger;
     email= $('#txt_Email').val();
     pass= $('#txt_Pass').val();
     if(email == ""){

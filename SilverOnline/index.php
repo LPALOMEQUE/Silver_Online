@@ -17,6 +17,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
 if(isset($_GET['vaciar'])) {
   unset($_SESSION['ID_ARTICLES']);
+  unset($_COOKIE['express']);
   echo "
   <script type='text/javascript'>
   window.location= 'index.php';

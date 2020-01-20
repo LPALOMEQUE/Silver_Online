@@ -32,7 +32,6 @@ function ModDatosUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,es
 }
 
 function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email,paymentToken,paymentID){
-  debugger;
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +
   "&apellidoM=" +apellidoM +
@@ -51,7 +50,6 @@ function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
     url: "php/verificador.php",
     data:cadena,
     success:function(result){
-      debugger;
       location.href = 'php/verificador.php'
     }
 
@@ -222,7 +220,6 @@ function logOut(vaciar){
 //
 // }
 function cartModPrice(id, cantidad, posicion){
-debugger;
   cadena = "ID=" + id + "&CANTIDAD=" + cantidad + "&Posicion=" + posicion;
 
   $.ajax({
@@ -230,7 +227,6 @@ debugger;
     url: "cart.php",
     data:cadena,
     success:function(result){
-debugger;
       location.reload();
     }
 
@@ -238,7 +234,6 @@ debugger;
 
 }
 function eliminarArticulo(id, posicion, valida){
-debugger;
   cadena = "ID=" + id + "&Posicion=" + posicion + "&DelArt=" + valida;
 
   $.ajax({
@@ -246,7 +241,6 @@ debugger;
     url: "cart.php",
     data:cadena,
     success:function(result){
-      debugger;
       // location.href="cart.php";
       location.reload();
     }

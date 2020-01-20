@@ -34,49 +34,27 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
+
 //Vaciamos el la session
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
-  // session_destroy();
 }
 
 //Vaciamos el carrito
 if(isset($_POST['vaciar'])) {
-  // unset($_COOKIE['carrito']);
   unset($_COOKIE['express']);
 }
 
-//Obtenemos los productos anteriores
-
-// if(isset($_COOKIE['carrito'])) {
-//   $aCarrito = unserialize($_COOKIE['carrito']);
-// }
-
-//Anyado un nuevo articulo al carrito
-
-// if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD'])) {
-//   $iUltimaPos = count($aCarrito);
-//   $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
-//   $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
-//   $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
-//   $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-//   $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
-//
-// }
-
-//Creamos la cookie (serializamos)
-
 $iTemCad = time() + (60 * 60);
-// setcookie('carrito', serialize($aCarrito), $iTemCad);
 
 if (isset($_POST['MONTO'])) {
   setcookie('express',$_POST['MONTO'],$iTemCad);
   $costoEnvio = $_COOKIE['express'];
 }
 
+//Imprimimos datos globales del carrito
 if (isset($_SESSION['ID_ARTICLES'])) {
-
   foreach ($ID_ARTICLES as $key => $item) {
     $id = $item['id'];
     $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
@@ -87,15 +65,6 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     }
   }
 }
-
-//Imprimimos el contenido del array
-
-// foreach ($aCarrito as $key => $value) {
-//   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-//   $bagNumber = count($aCarrito);
-//   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-//   $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
-// }
 
 ?>
 
@@ -403,16 +372,16 @@ if (isset($_SESSION['ID_ARTICLES'])) {
           <ul class="order-details-form mb-4">
             <li><span>Artículos</span> <span>Total</span></li>
             <?php   foreach ($ID_ARTICLES as $key => $item) {
-                $id = $item['id'];
+              $id = $item['id'];
               $sql = "SELECT PRICE,NAME_ART FROM articles where ID_ARTICLES='$id'";
               $result = mysqli_query($con,$sql);
               while($arti = mysqli_fetch_row($result)){
                 $TotalxArt += $arti[0] * $item['cantidad'];
-              ?>
-              <li><span><?php echo $arti[1] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+                ?>
+                <li><span><?php echo $arti[1] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
 
-            <?php }
-          }?>
+              <?php }
+            }?>
             <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
               <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
               if (isset($_COOKIE['express'])) {
@@ -468,93 +437,9 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                         onAuthorize: function (data, actions) {
                           return actions.payment.execute().then(function () {
                             // console.log(data);
-                            // LINA APARA IDENTIFICAR A LA PERSONA QUE PAGA.
-
-                            // function validar_email( email )
-                            // {
-                            //   var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                            //   return regex.test(email) ? true : false;
-                            // }
-                            // debugger;
-                            // nombre = $('#txtName').val();
-                            // apellidoP = $('#txtApellidoP').val();
-                            // apellidoM = $('#txtApellidoM').val();
-                            // calle = $('#txtCalle').val();
-                            // numCalle = $('#txtNumCalle').val();
-                            // cp = $('#txtCp').val();
-                            // ciudad = $('#txtCiudad').val();
-                            // estado = $('#txtEstado').val();
-                            // cel = $('#txtCel').val();
-                            // email= $('#txtEmail').val();
-                            // paymentToken = data.paymentToken;
-                            // paymentID=data.paymentID;
-                            // if(validar_email( email ) )
-                            // {
-                            // }
-                            // else
-                            // {
-                            //   alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-                            //   email = 1;
-                            // }
-                            //
-                            //
-                            // if(nombre == ""){
-                            //
-                            //   alert("Debe ingresar un nombre...");
-                            // }
-                            // if(apellidoP == ""){
-                            //
-                            //   alert("Debe ingresar un apellido paterno...");
-                            // }if(apellidoM == ""){
-                            //
-                            //   alert("Debe ingresar un apellido Materno...");
-                            // }
-                            // if(calle == ""){
-                            //
-                            //   alert("Debe ingresar una calle...");
-                            // }if(numCalle == ""){
-                            //
-                            //   alert("Debe ingresar un número de la hubicación...");
-                            // }
-                            // if(cp == ""){
-                            //
-                            //   alert("Debe ingresar un código postal...");
-                            // }if(ciudad == ""){
-                            //
-                            //   alert("Debe ingresar una ciudad...");
-                            // }
-                            // if(estado == ""){
-                            //
-                            //   alert("Debe ingresar un estado...");
-                            // }
-                            // if(cel == ""){
-                            //
-                            //   alert("Debe ingresar un número de contacto...");
-                            // }
-                            // if(email == ""){
-                            //
-                            //   alert("Debe ingresar un E-mail...");
-                            // }
-                            // // if(pass == ""){
-                            // //
-                            // //   alert("Debe ingresar una contraseña...");
-                            // // }
-                            // if (paymentToken =="") {
-                            //   alert("Ocurrio un problema con Paypal(paymentToken)");
-                            //
-                            // }
-                            // if (paymentID =="") {
-                            //   alert("Ocurrio un problema con Paypal(paymentID)");
-                            //
-                            // }
-                            // if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && paymentToken!="" && paymentID!=""){
-                            //   envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email,paymentToken,paymentID);
-                            // window.location="verificador.php";
                             window.location="verificador.php?paymentToken="+ data.paymentToken +
                             "&paymentID=" + data.paymentID +
                             "&EMAIL=" + '<?php echo $email ?>';
-                            // }
-
                           });
                         }
                       }, '#paypal-button-container');
@@ -563,46 +448,23 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                     </div>
                   </div>
                 </div>
-                <div class="card">
-                  <div class="card-header" role="tab" id="headingTwo">
-                    <h6 class="mb-0">
-                      <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
-                    </h6>
-                  </div>
-                  <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
-                    </div>
-                  </div>
-                </div>
                 <!-- <div class="card">
-                <div class="card-header" role="tab" id="headingThree">
+                <div class="card-header" role="tab" id="headingTwo">
                 <h6 class="mb-0">
-                <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
+                <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
               </h6>
             </div>
-            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
             <div class="card-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
           </div>
         </div>
       </div> -->
-      <!-- <div class="card">
-      <div class="card-header" role="tab" id="headingFour">
-      <h6 class="mb-0">
-      <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
-    </h6>
-  </div>
-  <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-  <div class="card-body">
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
-</div>
-</div>
-</div> -->
-</div>
 
-<!-- <a href="#" class="btn karl-checkout-btn">Place Order</a> -->
-</div>
+    </div>
+
+    <!-- <a href="#" class="btn karl-checkout-btn">Place Order</a> -->
+  </div>
 </div>
 
 </div>
