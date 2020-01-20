@@ -192,7 +192,7 @@ function AddCart(id, nombre, precio, url, cantidad){
 
 function logOut(vaciar){
 
-  cadena = "VACIAR=" + vaciar;
+  cadena = "VACIAR_LOGIN=" + vaciar;
 
   $.ajax({
 

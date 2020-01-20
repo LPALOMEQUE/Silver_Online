@@ -15,105 +15,56 @@ $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $costoEnvio = 0;
 $totalP =0;
-$prueba = 0;
+$vtaTotal = 0;
 
-if (isset($_POST['VACIAR'])) {
+if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
-  session_destroy();
-}
-
-//Vaciamos el carrito
-if(isset($_GET['vaciar'])) {
-  unset($_COOKIE['carrito']);
+  // session_destroy();
 }
 
 if (isset($_SESSION['ID_ARTICLES'])) {
-  $bagNumber = count($_SESSION['ID_ARTICLES']);
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
-//Obtenemos los productos anteriores
-// if(isset($_COOKIE['carrito'])) {
-//   $aCarrito = unserialize($_COOKIE['carrito']);
-// }
 
-//Eliminamos articulos del carrito
-// if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
-//
-//   unset($aCarrito[$_POST['Posicion']]);
-//   setcookie('carrito', serialize($aCarrito));
-//   // echo ("posicion: ".$_POST['Posicion']);
-//   // echo "   -----------------   ";
-//   unserialize(urldecode($_COOKIE['carrito']));
-//   // echo $_COOKIE['carrito'];
-// }
-
-//Anyado un nuevo articulo al carrito
-// if(isset($_POST['ID']) && isset($_POST['NOMBRE']) && isset($_POST['PRECIO']) && isset($_POST['URL']) && isset($_POST['CANTIDAD']) && isset($_POST['Posicion'])) {
-//   foreach ($aCarrito as $key => $value) {
-//
-//     if ($aCarrito[$_POST['Posicion']]['ID'] == $_POST['ID'])
-//     {
-//       $aCarrito[$_POST['Posicion']]['ID'] = $_POST['ID'];
-//       $aCarrito[$_POST['Posicion']]['NOMBRE'] = $_POST['NOMBRE'];
-//       $aCarrito[$_POST['Posicion']]['PRECIO'] = $_POST['PRECIO'];
-//       $aCarrito[$_POST['Posicion']]['URL'] = $_POST['URL'];
-//       $aCarrito[$_POST['Posicion']]['CANTIDAD'] = $_POST['CANTIDAD'];
-//     }
-//
-//     else {
-//       $iUltimaPos = count($aCarrito);
-//       $aCarrito[$iUltimaPos]['ID'] = $_POST['ID'];
-//       $aCarrito[$iUltimaPos]['NOMBRE'] = $_POST['NOMBRE'];
-//       $aCarrito[$iUltimaPos]['PRECIO'] = $_POST['PRECIO'];
-//       $aCarrito[$iUltimaPos]['URL'] = $_POST['URL'];
-//       $aCarrito[$iUltimaPos]['CANTIDAD'] = $_POST['CANTIDAD'];
-//     }
-//
-//   }
-// }
 if (isset($_SESSION['ID_ARTICLES'])) {
 
-  foreach($ID_ARTICLES as $item){
-
-    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$item[0]'";
+  foreach ($ID_ARTICLES as $key => $item) {
+    $id = $item['id'];
+    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
     $result = mysqli_query($con,$sql);
     while($arti = mysqli_fetch_row($result)){
-      $TotalxArtGlobal += $arti[0] * $item[1];
+      $TotalxArtGlobal += $arti[0] * $item['cantidad'];
+      $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
     }
   }
 }
 
-//Creamos la cookie (serializamos)
-$iTemCad = time() + (60 * 60);
-// setcookie('carrito', serialize($aCarrito), $iTemCad);
 
 if (isset($_POST['MONTO'])) {
   setcookie('express',$_POST['MONTO'],$iTemCad);
   $costoEnvio = $_COOKIE['express'];
 }
 
-//Imprimimos el contenido del array
-// foreach ($aCarrito as $key => $value) {
-//   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-//   $fPrecioTotal += $value['PRECIO'];
-//   $bagNumber = count($aCarrito);
-//   $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-// }
+$ID = $_SESSION['ID_USER'];
+$MAIL = $_SESSION['Email'];
+$sql = "SELECT * FROM user WHERE ID_USER='$ID' AND Email='$MAIL'";
 
-
+$result = mysqli_query($con,$sql);
+while($user = mysqli_fetch_row($result)){
+  $email = $user[1];
+  $nombre = $user[2];
+  $apellidoP = $user[3];
+  $apellidoM = $user[4];
+  $calle = $user[5];
+  $numCalle = $user[6];
+  $cp = $user[7];
+  $ciudad = $user[8];
+  $estado = $user[9];
+  $cel = $user[10];
+}
 // endRegion carrito_compra
 
-
-$nombre = $_GET['NOMBRE'];
-$apellidoP = $_GET['apellidoP'];
-$apellidoM = $_GET['apellidoM'];
-$calle = $_GET['CALLE'];
-$numCalle = $_GET['numCalle'];
-$cp = $_GET['CP'];
-$ciudad = $_GET['CIUDAD'];
-$estado = $_GET['ESTADO'];
-$cel = $_GET['CEL'];
 $emailUser = $_GET['EMAIL'];
 $paymentToken = $_GET['paymentToken'];
 $paymentID = $_GET['paymentID'];
@@ -178,13 +129,6 @@ $total = $objDatosTransaccion->transactions[0]->amount->total;
 $currrency = $objDatosTransaccion->transactions[0]->amount->currency;
 $idventa = $objDatosTransaccion->transactions[0]->related_resources[0]->sale->id;
 
-// $custom = $objDatosTransaccion->transactions[0]->custom;
-
-// echo $total;
-// echo " , ";
-// echo $state;
-// echo $idventa;
-
 curl_close($venta);
 curl_close($login);
 
@@ -197,17 +141,17 @@ if ($state == 'approved') {
   //cabecera del pdf
   $mpdf->SetHTMLHeader('
   <div style="text-align: right; font-weight: bold;">
-      ATREVETE A GANAR MAS...
+  ATREVETE A GANAR MAS...
   </div>');
 
   //pie del pdf
   $mpdf->SetHTMLFooter('
   <table width="100%">
-      <tr>
-          <td width="33%">{DATE j-m-Y}</td>
-          <td width="33%" align="center">{PAGENO}/{nbpg}</td>
-          <td width="33%" style="text-align: right;">'.$idventa.'</td>
-      </tr>
+  <tr>
+  <td width="33%">{DATE j-m-Y}</td>
+  <td width="33%" align="center">{PAGENO}/{nbpg}</td>
+  <td width="33%" style="text-align: right;">'.$idventa.'</td>
+  </tr>
   </table>');
 
 
@@ -217,50 +161,115 @@ if ($state == 'approved') {
 
   $dataHTML .= '<img src="img/core-img/silverEvolution.png"><br/><br/>';
 
-  $dataHTML .= '<h1>Comprobante de Pedido</h1><br/><br/>';
+  $dataHTML .= '<h1>Comprobante de Pedido</h1>';
 
-  $dataHTML .= '<strong>Vendedor:</strong></center> <br/>';
+  $dataHTML .= '<br/>'.'<h3><i><strong>Vendedor:</strong></i></h3>';
   $dataHTML .= '' .$nombre .' '. $apellidoP .' '. $apellidoM . '<br/>';
 
-  $dataHTML .= '<br/>'.'<strong>Información:</strong> <br/>';
-  $dataHTML .= '<P ALIGN="justify">Su pedido ha sido confirmado,';
-  $dataHTML .= 'en breve nos pondremos en contacto con usted.<br/><br/>';
+  $dataHTML .= '<br/>'.'<h3><i><strong>Información de envío...</strong></i></h3>';
+  // $dataHTML .= '<input type="text" style="border-color:green" value="Calle:   ' . $calle . '" size="30" readonly> ' ;
+
+  // $dataHTML .= ' ' . '<label>Calle: ' . $calle . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label>';
+  // $dataHTML .= '<label>Número: #' . $numCalle . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label>';
+  // $dataHTML .= '<label> Código Postal: ' . $cp . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label><br/><br/>';
+
+$dataHTML .= '
+<table style="width:100%">
+
+  <tr>
+    <td width="5%">Calle: ' . $calle . '</td>
+    <td width="5%">Número: #' . $numCalle . '</td>
+    <td width="5%">Código Postal: ' . $cp . '</td>
+
+  </tr>
+  <tr>
+  <td width="5%">Ciudad: ' . $ciudad . '</td>
+  <td width="5%">Estado: ' . $estado . '</td>
+  </tr>
+</table>
+';
+
+  // $dataHTML .= '<input type="text" value="Número:   #' . $numCalle . '" class="sinborde" size="30" readonly> ' ;
+  // $dataHTML .= '<input type="text" value="Código Postal:   ' . $cp . '" class="sinborde" size="30" readonly> <br/><br/>' ;
+
+  // $dataHTML .= ' ' . '<label>Ciudad: ' . $ciudad . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label>';
+  // $dataHTML .= ' ' . '<label>Estado: ' . $estado . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label>';
+
+  $dataHTML .= '<br/>'.'<h3><i><strong>Información de contacto...</strong></i></h3>';
+  $dataHTML .= '
+  <table style="width:100%">
+
+    <tr>
+    <td width="5%">Correo: ' . $emailUser . '</td>
+    </tr>
+    <tr>
+    <td width="5%">Celular: ' . $cel . '</td>
+    </tr>
+  </table>
+  ';
+
+
+  // $dataHTML .= '<input type="text" value="Celular: ' . $cel . '" class="sinborde" size="30" readonly> ' ;
+  // $dataHTML .= '<input type="text" value="Correo: ' . $emailUser . '" class="sinborde" size="30" readonly> <br/><br/>' ;
+
+
+  $dataHTML .= '<h3><i><strong>Información del pedido...</strong></i></h3>';
+  // $dataHTML .= '<P ALIGN="justify">Su pedido ha sido confirmado,';
+  // $dataHTML .= 'en breve nos pondremos en contacto con usted.<br/><br/>';
 
   $dataHTML .= '<strong>Folio de pedido: </strong>#' . $idventa . '<br/>' ;
   $dataHTML .= '<strong>Fecha del pedido:</strong> '. $fecha . '<br/><br/><br/>';
 
   $dataHTML .= '
-  <input type="text" class="inputcentrado" color="red" value="Artículo" size="60">
-  <input type="text" class="inputcentrado" color="red" value="Precio Unitario" size="30">
-  <input type="text" class="inputcentrado" color="red" value="Cantidad" size="30">
-  <input type="text" class="inputcentrado" color="red" value="Precio x artículo" size="30">
+  <input type="text" class="inputcentrado" color="red" value="Artículo" size="85">
+  <input type="text" class="inputcentrado" color="red" value="Precio Unitario" size="24">
+  <input type="text" class="inputcentrado" color="red" value="Cantidad" size="17">
+  <input type="text" class="inputcentrado" color="red" value="Precio x artículo" size="24">
   <br/>
   ';
 
-  foreach($ID_ARTICLES as $item){
-
-    $sql = "SELECT NAME_ART,URL_IMAGE,PRICE FROM articles where ID_ARTICLES='$item[0]'";
+  foreach ($ID_ARTICLES as $key => $item) {
+    $id = $item['id'];
+    $sql = "SELECT NAME_ART,URL_IMAGE,PRICE FROM articles where ID_ARTICLES='$id'";
 
     $result = mysqli_query($con,$sql);
     while($arti = mysqli_fetch_row($result)){
-      $TotalxArt = $arti[2] * $item[1];
-    $dataHTML .=
-    '
-
-    <input type="text" name="txtNombre" value=" '.$arti[0] .'" size="60">
-    <input type="text" name="txtPRECIO" value=" $'. number_format($arti[2],2) .'" size="30">
-    <input type="text" name="txtCANTIDAD" value=" '.$item[1] .'" size="30">
-    <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArt,2) .'" size="30">
-    <br/>
-    ';
+      $TotalxArt = $arti[2] * $item['cantidad'];
+      $dataHTML .=
+      '
+      <input type="text" name="txtNombre" value=" '.$arti[0] .'" size="85">
+      <input type="text" name="txtPRECIO" value=" $'. number_format($arti[2],2) .'" size="24">
+      <input type="text" name="txtCANTIDAD" value=" '.$item['cantidad'] .'" size="17">
+      <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArt,2) .'" size="24">
+      <br/>
+      ';
+    }
   }
-}
 
   $dataHTML .= '
-  <input type="text" value="----------------------------------------------------------------------" size="60">
-  <input type="text" value="--------------------------------" size="30">
-  <input type="text" value="TOTAL" size="30">
-  <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArtGlobal,2) .'" size="30">
+
+  <input type="text" value="" size="85">
+  <input type="text" value="" size="24">
+  <input type="text" value="SUBTOTAL" size="17">
+  <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArtGlobal,2) .'" size="24">
+  <br/>
+  ';
+
+  $dataHTML .= '
+
+  <input type="text" value="" size="85">
+  <input type="text" value="" size="24">
+  <input type="text" value="ENVÍO" size="17">
+  <input type="text" name="txtTotalArt" value=" $'. number_format($_COOKIE['express'],2) .'" size="24">
+  <br/>
+  ';
+
+  $dataHTML .= '
+
+  <input type="text" value="" size="85">
+  <input type="text" value="" size="24">
+  <input type="text" value="TOTAL" size="17">
+  <input type="text" name="txtTotalArt" value=" $'. number_format($vtaTotal,2) .'" size="24">
   ';
 
 
@@ -271,15 +280,6 @@ if ($state == 'approved') {
 
   //obtener informacion
   $sendData = [
-    'NOMBRE' => $nombre,
-    'apellidoP' => $apellidoP,
-    'apellidoM' => $apellidoM,
-    'CALLE' => $calle,
-    'numCalle' => $numCalle,
-    'CP' => $cp,
-    'CIUDAD' => $ciudad,
-    'ESTADO' => $estado,
-    'CEL' => $cel,
     'EMAIL' => $emailUser,
     'idVenta' => $idventa
   ];
@@ -313,7 +313,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'gerenciageneral@evolutionsilver.com';                     // SMTP username
-    $mail->Password   = '********';                               // SMTP password
+    $mail->Password   = 'Balbucerito2016';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to

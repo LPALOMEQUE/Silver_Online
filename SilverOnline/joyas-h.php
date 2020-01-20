@@ -15,6 +15,11 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
 
+if (isset($_POST['VACIAR_LOGIN'])) {
+  unset($_SESSION['ID_USER']);
+  unset($_SESSION['Email']);
+}
+
 //Anyado un nuevo articulo al carrito
 if (isset($_SESSION['ID_ARTICLES'])) {
 
@@ -37,12 +42,12 @@ $p =   $key+1;
 if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
 
   // $arrayCart = array($_POST['ID'],$_POST['CANTIDAD']);
-    $ultimaPos = count($_SESSION['ID_ARTICLES']);
+  $ultimaPos = count($_SESSION['ID_ARTICLES']);
 
-    $_SESSION['ID_ARTICLES'][$p]=
-    array(
-      "id" => $_POST['ID'],
-      "cantidad" => $_POST['CANTIDAD']);
+  $_SESSION['ID_ARTICLES'][$p]=
+  array(
+    "id" => $_POST['ID'],
+    "cantidad" => $_POST['CANTIDAD']);
 
 
 
@@ -418,7 +423,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
   </div>
 </header>
 <!-- ****** Header Area End ****** -->
-<P><?php   var_dump($_SESSION['ID_ARTICLES']); ?></P>
+<!-- <P><?php   var_dump($_SESSION['ID_ARTICLES']); ?></P> -->
 <section class="top-discount-area d-md-flex align-items-center">
   <!-- Single Discount Area -->
   <div class="single-discount-area">

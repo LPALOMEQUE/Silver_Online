@@ -16,6 +16,11 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   // $ss_tmp=$_SESSION['tmp'];
 }
 
+if (isset($_POST['VACIAR_LOGIN'])) {
+  unset($_SESSION['ID_USER']);
+  unset($_SESSION['Email']);
+}
+
 // Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
   unset($_SESSION['ID_ARTICLES']);
@@ -32,26 +37,26 @@ if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) 
   echo ("posicion: ".$_POST['Posicion']);
 
   unset($_SESSION['ID_ARTICLES'][$_POST['Posicion']]);
-    // $arratTmp = $_SESSION['ID_ARTICLES'];
+  // $arratTmp = $_SESSION['ID_ARTICLES'];
 
-    // foreach ($ID_ARTICLES as $key => $item) {
-    //
-    //       // $arratTmp = array(
-    //       //   "id" => $item['id'],
-    //       //   "cantidad" => $item['cantidad']);
-    //
-    //       $ultimaPos = count($_SESSION['tmp']);
-    //
-    //       $_SESSION['tmp'][$ultimaPos]=
-    //       array(
-    //         "id" => $item['id'],
-    //         "cantidad" => $item['cantidad']);
-    //
-    // }
+  // foreach ($ID_ARTICLES as $key => $item) {
+  //
+  //       // $arratTmp = array(
+  //       //   "id" => $item['id'],
+  //       //   "cantidad" => $item['cantidad']);
+  //
+  //       $ultimaPos = count($_SESSION['tmp']);
+  //
+  //       $_SESSION['tmp'][$ultimaPos]=
+  //       array(
+  //         "id" => $item['id'],
+  //         "cantidad" => $item['cantidad']);
+  //
+  // }
 
-    // unset($_SESSION['ID_ARTICLES']);
-    // // $ultimaPos = count($arratTmp);
-    // $_SESSION['ID_ARTICLES'] = $_SESSION['tmp'];
+  // unset($_SESSION['ID_ARTICLES']);
+  // // $ultimaPos = count($arratTmp);
+  // $_SESSION['ID_ARTICLES'] = $_SESSION['tmp'];
 
   // echo ("posicion: ".$_POST['Posicion']);
   // var_dump($_SESSION['tmp']);
@@ -68,354 +73,354 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
   foreach ($ID_ARTICLES as $key => $item) {
     if (  $ID_ARTICLES[$_POST['Posicion']]['id'] == $_POST['ID']) {
 
-    $_SESSION['ID_ARTICLES'][$_POST['Posicion']]=
+      $_SESSION['ID_ARTICLES'][$_POST['Posicion']]=
       array(
         "id" => $_POST['ID'],
         "cantidad" => $_POST['CANTIDAD']);
-      // $ID_ARTICLES[$_POST['Posicion']]['id'] = $_POST['ID'];
-      // $ID_ARTICLES[$_POST['Posicion']]['cantidad'] = $_POST['CANTIDAD'];
+        // $ID_ARTICLES[$_POST['Posicion']]['id'] = $_POST['ID'];
+        // $ID_ARTICLES[$_POST['Posicion']]['cantidad'] = $_POST['CANTIDAD'];
 
-      print_r('existe el articulo'. ' '. $ID_ARTICLES[$_POST['Posicion']]['id']);
-      echo ("posicion: ".$_POST['Posicion']);
+        print_r('existe el articulo'. ' '. $ID_ARTICLES[$_POST['Posicion']]['id']);
+        echo ("posicion: ".$_POST['Posicion']);
 
-      var_dump($ID_ARTICLES);
+        var_dump($ID_ARTICLES);
+      }
+    }
+
+  }
+
+  //Creamos la cookie (serializamos)
+
+  // $iTemCad = time() + (60 * 60);
+  // setcookie('carrito', serialize($aCarrito), $iTemCad);
+
+  //Imprimimos el contenido del array
+
+  // foreach ($aCarrito as $key => $value) {
+  //   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
+  //   // $bagNumber = count($aCarrito);
+  //   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
+  // }
+  if (isset($_SESSION['ID_ARTICLES'])) {
+
+    foreach ($ID_ARTICLES as $key => $item) {
+      $id = $item['id'];
+      $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
+      $result = mysqli_query($con,$sql);
+      while($arti = mysqli_fetch_row($result)){
+        $TotalxArtGlobal += $arti[0] * $item['cantidad'];
+      }
     }
   }
 
-}
+  ?>
+  <!DOCTYPE html>
+  <html lang="en">
 
-//Creamos la cookie (serializamos)
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-// $iTemCad = time() + (60 * 60);
-// setcookie('carrito', serialize($aCarrito), $iTemCad);
+    <!-- Title  -->
+    <title>Siler - Evolution | Carrito</title>
 
-//Imprimimos el contenido del array
+    <!-- Favicon  -->
+    <link rel="icon" href="img/core-img/favicon.ico">
 
-// foreach ($aCarrito as $key => $value) {
-//   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-//   // $bagNumber = count($aCarrito);
-//   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-// }
-if (isset($_SESSION['ID_ARTICLES'])) {
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="css/core-style.css">
+    <link rel="stylesheet" href="style.css">
 
-  foreach ($ID_ARTICLES as $key => $item) {
-    $id = $item['id'];
-    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
-    $result = mysqli_query($con,$sql);
-    while($arti = mysqli_fetch_row($result)){
-      $TotalxArtGlobal += $arti[0] * $item['cantidad'];
-    }
-  }
-}
+    <!-- Responsive CSS -->
+    <link href="css/responsive.css" rel="stylesheet">
 
-?>
-<!DOCTYPE html>
-<html lang="en">
+    <!-- css LFPO -->
+    <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
+    <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
+    <!-- end -->
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="description" content="">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- scripts LFPO -->
+    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="js/funciones.js"></script>
+    <script src="librerias/alertify/alertify.js"></script>
+    <!-- end -->
 
-  <!-- Title  -->
-  <title>Siler - Evolution | Carrito</title>
+  </head>
 
-  <!-- Favicon  -->
-  <link rel="icon" href="img/core-img/favicon.ico">
+  <body>
+    <!-- Modal para registro de Articulos -->
+    <div class="modal fade bd-example-modal-lg" id="ModalArticulos" tabindex="-1" role="dialog" aria-labelledby="ModalArticulos" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalArticulos">Registro de Artículos...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
 
-  <!-- Core Style CSS -->
-  <link rel="stylesheet" href="css/core-style.css">
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Responsive CSS -->
-  <link href="css/responsive.css" rel="stylesheet">
-
-  <!-- css LFPO -->
-  <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
-  <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
-  <!-- end -->
-
-  <!-- scripts LFPO -->
-  <script src="js/jquery/jquery-2.2.4.min.js"></script>
-  <script src="js/funciones.js"></script>
-  <script src="librerias/alertify/alertify.js"></script>
-  <!-- end -->
-
-</head>
-
-<body>
-  <!-- Modal para registro de Articulos -->
-  <div class="modal fade bd-example-modal-lg" id="ModalArticulos" tabindex="-1" role="dialog" aria-labelledby="ModalArticulos" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalArticulos">Registro de Artículos...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="txtNameArt">Nombre</label>
-              <input type="text" class="form-control" id="txtNameArt" value="" required>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtNameArt">Nombre</label>
+                <input type="text" class="form-control" id="txtNameArt" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtDescArt">Descripción</label>
+                <input type="text" class="form-control" id="txtDescArt" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtBarCode">Codigo de barra</label>
+                <input type="text" class="form-control" id="txtBarCode" value="" required>
+              </div>
             </div>
-            <div class="col-md-4 mb-3">
-              <label for="txtDescArt">Descripción</label>
-              <input type="text" class="form-control" id="txtDescArt" value="" required>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtModelo">Modelo</label>
+                <input type="text" class="form-control" id="txtModelo" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label id="lblcbmMarca" for="cbmMarca">Marca</label>
+                <select class="form-control" id="cbmMarca" name="marca">
+                  <option value="0">Selecciona...</option>
+                  <?php
+
+                  $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
+
+                  $result = mysqli_query($con,$sql);
+                  while($marca = mysqli_fetch_row($result)){
+
+                    echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                  }
+                  ?>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtPrecio">Precio</label>
+                <input type="number" class="form-control" id="txtPrecio" value="0" required>
+              </div>
+
             </div>
-            <div class="col-md-4 mb-3">
-              <label for="txtBarCode">Codigo de barra</label>
-              <input type="text" class="form-control" id="txtBarCode" value="" required>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label id="lbcategoria" for="cbmCategoria">Categoría</label>
+                <select id="cbmCategoria"  class="form-control" name="state">
+                  <option value="0">Selecciona...</option>
+                  <?php
+                  $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
+
+                  $result = mysqli_query($con,$sql);
+                  while($marca = mysqli_fetch_row($result)){
+
+                    echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                  }
+                  ?>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label id="lbSubcategoria" for="cbmSubcategoria">Subcategoría</label>
+                <select id="cbmSubcategoria"  class="form-control" name="state">
+                  <option value="0">Selecciona...</option>
+                  <?php
+
+                  $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
+
+                  $result = mysqli_query($con,$sql);
+                  while($marca = mysqli_fetch_row($result)){
+
+                    echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+                  }
+                  ?>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label id="lbStatus" for="cbmStatus">Estatus</label>
+                <select id="cbmStatus"  class="form-control" name="state">
+                  <option value="2">Selecciona...</option>
+                  ...
+                  <option value="1">Activo</option>
+                  ...
+                  <option value="0">Inactivo</option>form-control
+                </select>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-12">
+                <label for="txtNameIMG">Carga de Img</label>
+                <input id="sortpicture" type="file" class="form-control" name="sortpic" />
+                <button id="upload" class="form-control">Upload</button>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="txtModelo">Modelo</label>
-              <input type="text" class="form-control" id="txtModelo" value="" required>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label id="lblcbmMarca" for="cbmMarca">Marca</label>
-              <select class="form-control" id="cbmMarca" name="marca">
-                <option value="0">Selecciona...</option>
-                <?php
-
-                $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
-
-                $result = mysqli_query($con,$sql);
-                while($marca = mysqli_fetch_row($result)){
-
-                  echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                }
-                ?>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="txtPrecio">Precio</label>
-              <input type="number" class="form-control" id="txtPrecio" value="0" required>
-            </div>
-
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnGuardarArt">Guardar</button>
           </div>
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label id="lbcategoria" for="cbmCategoria">Categoría</label>
-              <select id="cbmCategoria"  class="form-control" name="state">
-                <option value="0">Selecciona...</option>
-                <?php
-                $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
-
-                $result = mysqli_query($con,$sql);
-                while($marca = mysqli_fetch_row($result)){
-
-                  echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                }
-                ?>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label id="lbSubcategoria" for="cbmSubcategoria">Subcategoría</label>
-              <select id="cbmSubcategoria"  class="form-control" name="state">
-                <option value="0">Selecciona...</option>
-                <?php
-
-                $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
-
-                $result = mysqli_query($con,$sql);
-                while($marca = mysqli_fetch_row($result)){
-
-                  echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                }
-                ?>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label id="lbStatus" for="cbmStatus">Estatus</label>
-              <select id="cbmStatus"  class="form-control" name="state">
-                <option value="2">Selecciona...</option>
-                ...
-                <option value="1">Activo</option>
-                ...
-                <option value="0">Inactivo</option>form-control
-              </select>
-            </div>
-
-          </div>
-          <div class="row">
-            <div class="col-md-12 mb-12">
-              <label for="txtNameIMG">Carga de Img</label>
-              <input id="sortpicture" type="file" class="form-control" name="sortpic" />
-              <button id="upload" class="form-control">Upload</button>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="btnGuardarArt">Guardar</button>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Modal para inicio de sesion -->
-  <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label for="txtEmail">E-MaiL</label>
-              <input type="email" class="form-control" id="txt_Email" value="" required>
-            </div>
+    <!-- Modal para inicio de sesion -->
+    <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label for="txtPass">Contraseña</label>
-              <input type="password" class="form-control" id="txt_Pass" value="" required>
-            </div>
-          </div>
+          <div class="modal-body">
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="txtEmail">E-MaiL</label>
+                <input type="email" class="form-control" id="txt_Email" value="" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="txtPass">Contraseña</label>
+                <input type="password" class="form-control" id="txt_Pass" value="" required>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal para inicio de sesion valida envio y location a checkout.php -->
-  <div class="modal fade" id="ModalLoginVal" tabindex="-1" role="dialog" aria-labelledby="ModalLoginVal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalLoginVal">Inicio de sesión...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label for="txtEmailVal">E-MaiL</label>
-              <input type="email" class="form-control" id="txt_EmailVal" value="" required>
-            </div>
+    <!-- Modal para inicio de sesion valida envio y location a checkout.php -->
+    <div class="modal fade" id="ModalLoginVal" tabindex="-1" role="dialog" aria-labelledby="ModalLoginVal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalLoginVal">Inicio de sesión...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label for="txtPassVal">Contraseña</label>
-              <input type="password" class="form-control" id="txt_PassVal" value="" required>
-            </div>
-          </div>
+          <div class="modal-body">
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="btnEntrarVal">Entrar</button>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="txtEmailVal">E-MaiL</label>
+                <input type="email" class="form-control" id="txt_EmailVal" value="" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="txtPassVal">Contraseña</label>
+                <input type="password" class="form-control" id="txt_PassVal" value="" required>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnEntrarVal">Entrar</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="catagories-side-menu">
-    <!-- Close Icon -->
-    <div id="sideMenuClose">
-      <i class="ti-close"></i>
-    </div>
-    <!--  Side Nav  -->
-    <div class="nav-side-menu">
-      <div class="menu-list">
-        <h6>Categorías</h6>
-        <ul id="menu-content" class="menu-content collapse out">
+    <div class="catagories-side-menu">
+      <!-- Close Icon -->
+      <div id="sideMenuClose">
+        <i class="ti-close"></i>
+      </div>
+      <!--  Side Nav  -->
+      <div class="nav-side-menu">
+        <div class="menu-list">
+          <h6>Categorías</h6>
+          <ul id="menu-content" class="menu-content collapse out">
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
-            <a href="#">Joyas<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="joyas">
-              <li><a href="joyas-h.php">Hombre</a></li>
-              <li><a href="joyas-m.php">Mujer</a></li>
-            </ul>
-          </li>
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
+              <a href="#">Joyas<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="joyas">
+                <li><a href="joyas-h.php">Hombre</a></li>
+                <li><a href="joyas-m.php">Mujer</a></li>
+              </ul>
+            </li>
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
-            <a href="#">Bolsas<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="bolsas">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-            </ul>
-          </li>
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
+              <a href="#">Bolsas<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="bolsas">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+              </ul>
+            </li>
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
-            <a href="#">Perfumes<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="perfumes">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-            </ul>
-          </li>
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
+              <a href="#">Perfumes<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="perfumes">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+              </ul>
+            </li>
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
-            <a href="#">Ropa<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="ropa">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-              <li><a href="#">Niño</a></li>
-              <li><a href="#">Niña</a></li>
-            </ul>
-          </li>
-        </ul>
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
+              <a href="#">Ropa<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="ropa">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+                <li><a href="#">Niño</a></li>
+                <li><a href="#">Niña</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="wrapper">
-    <div class="row">
-      <div class="col-md-3 error">
-        <a class="center"> <strong>Usuario:</strong> <?php
+    <div id="wrapper">
+      <div class="row">
+        <div class="col-md-3 error">
+          <a class="center"> <strong>Usuario:</strong> <?php
+          if (isset($_SESSION["Email"])) {
+            echo $_SESSION["Email"];
+          }else {
+            echo $invitado = 'Invitado...';
+          } ?>
+        </a>
+      </div>
+      <div class="col-md-2 error">
+        <div class="<?php
         if (isset($_SESSION["Email"])) {
-          echo $_SESSION["Email"];
+
+          echo $mostrar = 'inline';
         }else {
-          echo $invitado = 'Invitado...';
-        } ?>
-      </a>
-    </div>
-    <div class="col-md-2 error">
+          echo $ocultar = 'none';
+        } ?> ">
+        <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
+      </div>
+
       <div class="<?php
       if (isset($_SESSION["Email"])) {
 
-        echo $mostrar = 'inline';
-      }else {
         echo $ocultar = 'none';
-      } ?> ">
-      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
+      }else {
+        echo $mostrar = 'inline';
+      } ?>">
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
     </div>
-
-    <div class="<?php
-    if (isset($_SESSION["Email"])) {
-
-      echo $ocultar = 'none';
-    }else {
-      echo $mostrar = 'inline';
-    } ?>">
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
   </div>
-</div>
-<div class="col-md-2">
+  <div class="col-md-2">
 
-</div>
-<!-- <div class="col-md-1">
+  </div>
+  <!-- <div class="col-md-1">
 
 </div> -->
 <div class="col-md-3 right">
@@ -426,7 +431,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
 </div>
 </div>
-<P><?php   var_dump($_SESSION['ID_ARTICLES']); ?></P>
+<!-- <P><?php   var_dump($_SESSION['ID_ARTICLES']); ?></P> -->
 
 <!-- ****** Header Area Start ****** -->
 <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
@@ -660,7 +665,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
             </thead>
             <tbody>
               <?php
-              $i=0;
+              if (isset($_SESSION['ID_ARTICLES'])) {
               foreach ($ID_ARTICLES as $key => $item) {
                 $id= $item['id'];
                 $sql = "SELECT NAME_ART,URL_IMAGE,PRICE FROM articles where ID_ARTICLES='$id'";
@@ -751,8 +756,8 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                         </script>
                         <?php
                       }
-                      $i++;
                     }
+                  }
                     ?>
                   </tbody>
                 </table>
@@ -919,7 +924,6 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
     $('#btnGuardar').click(function(){
 
-
       nombre = $('#txtNombre').val();
       apellidoP = $('#txtApellidoP').val();
       apellidoM = $('#txtApellidoM').val();
@@ -1019,7 +1023,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
       valTotal = <?php echo $TotalxArtGlobal ?>;
 
       if (valTotal == 0) {
-        alert('No puede continuar ya que no cuenta con artículos en el carrito.');
+        alert('No cuenta con artículos en el carrito.');
       }
       else {
 
@@ -1194,13 +1198,16 @@ if (isset($_SESSION['ID_ARTICLES'])) {
         return regex.test(email) ? true : false;
       }
       <?php
-      $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
-      foreach ($ID_ARTICLES as $key => $item) {
-        $id = $item['id'];
-        ?>
-        $('#qty<?php echo $id ?> ').val(<?php echo $item['cantidad'] ?>);
+      if (isset($_SESSION['ID_ARTICLES'])) {
+        $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
+        foreach ($ID_ARTICLES as $key => $item) {
+          $id = $item['id'];
+          ?>
+          $('#qty<?php echo $id ?> ').val(<?php echo $item['cantidad'] ?>);
 
-        <?php } ?>
+          <?php }
+        }
+        ?>
 
       });
 

@@ -35,10 +35,10 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
 //Vaciamos el la session
-if (isset($_POST['VACIAR'])) {
+if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
-  session_destroy();
+  // session_destroy();
 }
 
 //Vaciamos el carrito
@@ -77,12 +77,12 @@ if (isset($_POST['MONTO'])) {
 
 if (isset($_SESSION['ID_ARTICLES'])) {
 
-  foreach($ID_ARTICLES as $item){
-
-    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$item[0]'";
+  foreach ($ID_ARTICLES as $key => $item) {
+    $id = $item['id'];
+    $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
     $result = mysqli_query($con,$sql);
     while($arti = mysqli_fetch_row($result)){
-      $TotalxArtGlobal += $arti[0] * $item[1];
+      $TotalxArtGlobal += $arti[0] * $item['cantidad'];
       $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
     }
   }
@@ -327,8 +327,6 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
           <form action="#" method="post">
             <?php
-            require_once "php/Conexion.php";
-            $con = conexion();
             $ID = $_SESSION['ID_USER'];
             $MAIL = $_SESSION['Email'];
             $sql = "SELECT * FROM user WHERE ID_USER='$ID' AND Email='$MAIL'";
@@ -404,14 +402,14 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
           <ul class="order-details-form mb-4">
             <li><span>Artículos</span> <span>Total</span></li>
-            <?php foreach($ID_ARTICLES as $item){
-
-              $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$item[0]'";
+            <?php   foreach ($ID_ARTICLES as $key => $item) {
+                $id = $item['id'];
+              $sql = "SELECT PRICE,NAME_ART FROM articles where ID_ARTICLES='$id'";
               $result = mysqli_query($con,$sql);
               while($arti = mysqli_fetch_row($result)){
-                $TotalxArt += $arti[0] * $item[1];
+                $TotalxArt += $arti[0] * $item['cantidad'];
               ?>
-              <li><span><?php echo $arti[0] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+              <li><span><?php echo $arti[1] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
 
             <?php }
           }?>
@@ -554,15 +552,6 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                             // window.location="verificador.php";
                             window.location="verificador.php?paymentToken="+ data.paymentToken +
                             "&paymentID=" + data.paymentID +
-                            "&NOMBRE=" + '<?php echo $nombre ?>' +
-                            "&apellidoP=" + '<?php echo $apellidoP ?>' +
-                            "&apellidoM=" + '<?php echo $apellidoM ?>' +
-                            "&CALLE=" + '<?php echo $calle ?>' +
-                            "&numCalle=" + '<?php echo $numCalle ?>' +
-                            "&CP=" + '<?php echo $cp ?>' +
-                            "&CIUDAD=" + '<?php echo $ciudad ?>' +
-                            "&ESTADO=" + '<?php echo $estado ?>' +
-                            "&CEL=" + '<?php echo $cel ?>' +
                             "&EMAIL=" + '<?php echo $email ?>';
                             // }
 
