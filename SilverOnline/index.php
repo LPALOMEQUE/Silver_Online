@@ -15,6 +15,14 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
 
+if(isset($_GET['vaciar'])) {
+  unset($_SESSION['ID_ARTICLES']);
+  echo "
+  <script type='text/javascript'>
+  window.location= 'index.php';
+  </script>";
+}
+
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
@@ -32,52 +40,19 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     while($arti = mysqli_fetch_row($result)){
       $TotalxArtGlobal += $arti[0] * $item['cantidad'];
     }
-    // $ID_ARTICLES[$key][0] = '2105';
-    // $p =   $ID_ARTICLES[$key]['cantidad'];
+
   }
 }
-// if (isset($_SESSION['ID_ARTICLES'])) {
 $p =   $key+1;
-// }
-if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
 
-  // $arrayCart = array($_POST['ID'],$_POST['CANTIDAD']);
+if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
   $ultimaPos = count($_SESSION['ID_ARTICLES']);
 
   $_SESSION['ID_ARTICLES'][$p]=
   array(
     "id" => $_POST['ID'],
     "cantidad" => $_POST['CANTIDAD']);
-
-
-
-
-
-    // --------
-    // $arrayCart['id'] = $_POST['ID'];
-    // $arrayCart['cantidad'] = $_POST['CANTIDAD'];
-
-    // $ID_ARTICLES[$key][0] = '2105';
-
-    //   $arrayCart = array(
-    //     'id' => $_POST['ID'],
-    //  'cantidad' => $_POST['CANTIDAD']);
-    // $_SESSION['ID_ARTICLES']=$arrayCart;
-
   }
-
-  //Creamos la cookie (serializamos)
-
-  // $iTemCad = time() + (60 * 60);
-  // setcookie('carrito', serialize($aCarrito), $iTemCad);
-
-  //Imprimimos el contenido del array
-
-  // foreach ($aCarrito as $key => $value) {
-  //   $sHTML .= '-> ' . $value['ID'] . ' ' . $value['NOMBRE'] . ' ' . $value['PRECIO'] . ' ' . $value['URL'] . ' ' . $value['CANTIDAD'] . ' <br>';
-  //   // $bagNumber = count($aCarrito);
-  //   // $TotalxArtGlobal += $value['PRECIO'] * $value['CANTIDAD'];
-  // }
 
   ?>
 

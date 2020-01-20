@@ -167,65 +167,50 @@ if ($state == 'approved') {
   $dataHTML .= '' .$nombre .' '. $apellidoP .' '. $apellidoM . '<br/>';
 
   $dataHTML .= '<br/>'.'<h3><i><strong>Información de envío...</strong></i></h3>';
-  // $dataHTML .= '<input type="text" style="border-color:green" value="Calle:   ' . $calle . '" size="30" readonly> ' ;
-
-  // $dataHTML .= ' ' . '<label>Calle: ' . $calle . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label>';
-  // $dataHTML .= '<label>Número: #' . $numCalle . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label>';
-  // $dataHTML .= '<label> Código Postal: ' . $cp . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label><br/><br/>';
-
-$dataHTML .= '
-<table style="width:100%">
+  $dataHTML .= '
+  <table style="width:100%">
 
   <tr>
-    <td width="5%">Calle: ' . $calle . '</td>
-    <td width="5%">Número: #' . $numCalle . '</td>
-    <td width="5%">Código Postal: ' . $cp . '</td>
+  <td width="5%">Calle: ' . $calle . '</td>
+  <td width="5%">Número: #' . $numCalle . '</td>
+  <td width="5%">Código Postal: ' . $cp . '</td>
 
   </tr>
   <tr>
   <td width="5%">Ciudad: ' . $ciudad . '</td>
   <td width="5%">Estado: ' . $estado . '</td>
   </tr>
-</table>
-';
-
-  // $dataHTML .= '<input type="text" value="Número:   #' . $numCalle . '" class="sinborde" size="30" readonly> ' ;
-  // $dataHTML .= '<input type="text" value="Código Postal:   ' . $cp . '" class="sinborde" size="30" readonly> <br/><br/>' ;
-
-  // $dataHTML .= ' ' . '<label>Ciudad: ' . $ciudad . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label>';
-  // $dataHTML .= ' ' . '<label>Estado: ' . $estado . '&nbsp &nbsp &nbsp &nbsp'. '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </label>';
+  </table>
+  ';
 
   $dataHTML .= '<br/>'.'<h3><i><strong>Información de contacto...</strong></i></h3>';
   $dataHTML .= '
   <table style="width:100%">
 
-    <tr>
-    <td width="5%">Correo: ' . $emailUser . '</td>
-    </tr>
-    <tr>
-    <td width="5%">Celular: ' . $cel . '</td>
-    </tr>
+  <tr>
+  <td width="5%">Correo: ' . $emailUser . '</td>
+  </tr>
+  <tr>
+  <td width="5%">Celular: ' . $cel . '</td>
+  </tr>
   </table>
   ';
 
 
-  // $dataHTML .= '<input type="text" value="Celular: ' . $cel . '" class="sinborde" size="30" readonly> ' ;
-  // $dataHTML .= '<input type="text" value="Correo: ' . $emailUser . '" class="sinborde" size="30" readonly> <br/><br/>' ;
-
-
   $dataHTML .= '<h3><i><strong>Información del pedido...</strong></i></h3>';
-  // $dataHTML .= '<P ALIGN="justify">Su pedido ha sido confirmado,';
-  // $dataHTML .= 'en breve nos pondremos en contacto con usted.<br/><br/>';
 
   $dataHTML .= '<strong>Folio de pedido: </strong>#' . $idventa . '<br/>' ;
   $dataHTML .= '<strong>Fecha del pedido:</strong> '. $fecha . '<br/><br/><br/>';
 
-  $dataHTML .= '
-  <input type="text" class="inputcentrado" color="red" value="Artículo" size="85">
-  <input type="text" class="inputcentrado" color="red" value="Precio Unitario" size="24">
-  <input type="text" class="inputcentrado" color="red" value="Cantidad" size="17">
-  <input type="text" class="inputcentrado" color="red" value="Precio x artículo" size="24">
-  <br/>
+  $dataHTML .= '<br/><br/>
+  <table style="width:100%">
+
+  <tr>
+  <td width="52%"><h3>Artículo</h3></td>
+  <td width="15%"><h3>P.U.</h3></td>
+  <td width="15%"><h3>Cantidad</h3></td>
+  <td width="18%"><h3>Precio x Art</h3></td>
+  </tr>
   ';
 
   foreach ($ID_ARTICLES as $key => $item) {
@@ -235,42 +220,56 @@ $dataHTML .= '
     $result = mysqli_query($con,$sql);
     while($arti = mysqli_fetch_row($result)){
       $TotalxArt = $arti[2] * $item['cantidad'];
-      $dataHTML .=
-      '
-      <input type="text" name="txtNombre" value=" '.$arti[0] .'" size="85">
-      <input type="text" name="txtPRECIO" value=" $'. number_format($arti[2],2) .'" size="24">
-      <input type="text" name="txtCANTIDAD" value=" '.$item['cantidad'] .'" size="17">
-      <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArt,2) .'" size="24">
-      <br/>
+      $dataHTML .= '
+
+      <tr>
+      <td width="52%">'.$arti[0] .'</td>
+      <td width="15%">$'. number_format($arti[2],2) .'</td>
+      <td width="15%">'.$item['cantidad'] .'</td>
+      <td width="18%">$'. number_format($TotalxArt,2) .'</td>
+      </tr>
       ';
     }
   }
-
   $dataHTML .= '
 
-  <input type="text" value="" size="85">
-  <input type="text" value="" size="24">
-  <input type="text" value="SUBTOTAL" size="17">
-  <input type="text" name="txtTotalArt" value=" $'. number_format($TotalxArtGlobal,2) .'" size="24">
-  <br/>
+  <tr>
+  <td width="52%"> </td>
+  <td width="15%"> </td>
+  <td width="15%"> </td>
+  <td width="18%"> </td>
+  </tr>
   ';
 
   $dataHTML .= '
 
-  <input type="text" value="" size="85">
-  <input type="text" value="" size="24">
-  <input type="text" value="ENVÍO" size="17">
-  <input type="text" name="txtTotalArt" value=" $'. number_format($_COOKIE['express'],2) .'" size="24">
-  <br/>
+  <tr>
+  <td width="52%"></td>
+  <td width="15%"></td>
+  <td width="15%"><b><i>SUBTOTAL</i></b></td>
+  <td width="18%"><b><i>$'. number_format($TotalxArtGlobal,2) .'</i></b></td>
+  </tr>
   ';
 
   $dataHTML .= '
-
-  <input type="text" value="" size="85">
-  <input type="text" value="" size="24">
-  <input type="text" value="TOTAL" size="17">
-  <input type="text" name="txtTotalArt" value=" $'. number_format($vtaTotal,2) .'" size="24">
+  <tr>
+  <td width="52%"></td>
+  <td width="15%"></td>
+  <td width="15%"><b><i>ENVÍO</i></b></td>
+  <td width="18%"><b><i>$'. number_format($_COOKIE['express'],2) .'</i></b></td>
+  </tr>
   ';
+
+  $dataHTML .= '
+  <tr>
+  <td width="52%"></td>
+  <td width="15%"></td>
+  <td width="15%"><b><i>TOTAL</i></b></td>
+  <td width="18%"><b><i>$'. number_format($vtaTotal,2) .'</i></b></td>
+  </tr>
+
+  ';
+$dataHTML .='</table>';
 
 
   $mpdf -> WriteHTML($dataHTML);
@@ -289,7 +288,7 @@ $dataHTML .= '
   echo "
 
   <script type='text/javascript'>
-  // window.location= 'index.php?vaciar=1';
+  window.location= 'index.php?vaciar=1';
   alert('Pago aprobado');
 
   </script>";
@@ -297,7 +296,7 @@ $dataHTML .= '
 
 else{
   echo "<script>
-  // window.location= 'index.php';
+  window.location= 'index.php';
   alert('Ocurrio un error con el pago');
   </script>";
 }
