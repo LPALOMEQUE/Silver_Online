@@ -19,8 +19,12 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 // Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
   unset($_SESSION['ID_ARTICLES']);
-  isset($_SESSION['tmp']);
-  // session_destroy();
+  echo "
+
+  <script type='text/javascript'>
+  window.location= 'cart.php';
+  </script>";
+  //session_destroy();
 }
 
 //Eliminamos articulos del carrito

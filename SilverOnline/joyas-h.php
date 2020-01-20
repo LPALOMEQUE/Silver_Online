@@ -8,7 +8,7 @@ $sHTML = '';
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $cantidad = 0;
-
+$key = 1;
 
 if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
@@ -31,9 +31,9 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     // $p =   $ID_ARTICLES[$key]['cantidad'];
   }
 }
-
+// if (isset($_SESSION['ID_ARTICLES'])) {
 $p =   $key+1;
-
+// }
 if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
 
   // $arrayCart = array($_POST['ID'],$_POST['CANTIDAD']);
@@ -172,7 +172,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
       <div class="row">
         <div class="col-md-3 error">
 
-          <a class="center"><?php echo $p ?><strong>Usuario:</strong>
+          <a class="center"><strong>Usuario:</strong>
             <?php
             if (isset($_SESSION["Email"])) {
               echo $_SESSION["Email"];
