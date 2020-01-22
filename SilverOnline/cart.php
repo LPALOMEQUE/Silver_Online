@@ -23,17 +23,18 @@ if (isset($_POST['VACIAR_LOGIN'])) {
 // Vaciamos el carrito
 if(isset($_GET['vaciar'])) {
   unset($_SESSION['ID_ARTICLES']);
+  unset($_SESSION['filtro_price']);
   echo "
 
   <script type='text/javascript'>
-  window.location= 'cart.php';
+  window.location= 'joyas-h.php';
   </script>";
   //session_destroy();
 }
 
 //Eliminamos articulos del carrito
 if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) {
-  echo ("posicion: ".$_POST['Posicion']);
+  // echo ("posicion: ".$_POST['Posicion']);
 
   unset($_SESSION['ID_ARTICLES'][$_POST['Posicion']]);
 
@@ -45,7 +46,7 @@ if(isset($_POST['ID']) && isset($_POST['DelArt']) && isset($_POST['Posicion'])) 
 if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])) {
 
   foreach ($ID_ARTICLES as $key => $item) {
-    if (  $ID_ARTICLES[$_POST['Posicion']]['id'] == $_POST['ID']) {
+    if ($ID_ARTICLES[$_POST['Posicion']]['id'] == $_POST['ID']) {
 
       $_SESSION['ID_ARTICLES'][$_POST['Posicion']]=
       array(

@@ -188,6 +188,39 @@ function AddCart(id, nombre, precio, url, cantidad){
   });
 }
 
+function filtros(minval, maxval, query){
+  debugger;
+  cadena = 'MinVal=' + minval + '&MaxVal=' + maxval + '&QUERY=' + query;
+
+  $.ajax({
+
+    type: "POST",
+    url: "joyas-h.php",
+    data: cadena,
+    success: function(result){
+      debugger;
+      location.reload();
+    }
+  });
+}
+
+function limpiarPriceFilter(vaciar){
+  debugger;
+  cadena = "VaciarFilterP=" + vaciar;
+
+  $.ajax({
+
+    type: "POST",
+    url: "joyas-h.php",
+    data: cadena,
+    success: function(result){
+
+      location.reload();
+
+    }
+  });
+}
+
 function logOut(vaciar){
 
   cadena = "VACIAR_LOGIN=" + vaciar;
