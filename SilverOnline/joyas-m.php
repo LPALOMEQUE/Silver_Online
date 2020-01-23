@@ -366,7 +366,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
                         ...
                         <option value="ADMIN">ADMINISTRADOR</option>
                         ...
-                        <option value="COMUN">COMÚN</option>form-control
+                        <option value="COMUN">COMÚN</option>
                       </select>
                     </div>
                   </div>

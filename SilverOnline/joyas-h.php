@@ -20,6 +20,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   array(
     "min" => $_POST['MinVal'],
     "max" => $_POST['MaxVal'],
+    "material" => $_POST['Material'],
     "query" => $_POST['QUERY']);
   }
 
@@ -406,7 +407,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     </div>
   </header>
   <!-- ****** Header Area End ****** -->
-  <!-- <P><?php   var_dump($_SESSION['ID_ARTICLES']); ?></P> -->
+  <P><?php   var_dump($_SESSION['filtro_price']); ?></P>
   <section class="top-discount-area d-md-flex align-items-center">
     <!-- Single Discount Area -->
     <div class="single-discount-area">
@@ -438,8 +439,43 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     "br.NAME_BRAND ".
     "FROM articles art " .
     "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-    "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 AND art.PRICE BETWEEN '$valMin' AND '$valMax' GROUP BY art.PRICE";
-  }else {
+    "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 AND ".
+    "art.PRICE BETWEEN '$valMin' AND '$valMax' GROUP BY art.PRICE";
+  }
+  if($queryVal == 2) {
+    // if (isset($_SESSION['filtro_price'])) {
+    $valMin = $_SESSION['filtro_price'][0]['min'];
+    $valMax = $_SESSION['filtro_price'][0]['max'];
+    $material = $_SESSION['filtro_price'][0]['material'];
+
+    if ($material == 1) {
+      $material = '___________';
+    }
+    if($material == 'ACERO'){
+      $material = '%AC';
+    }
+    // }
+    // else{
+    //   $valMin = 0;
+    //   $valMax = 100000;
+    // }
+    $sql = "SELECT " .
+    "art.ID_ARTICLES, ".
+    "art.NAME_ART, " .
+    "art.PRICE, " .
+    "art.URL_IMAGE, " .
+    "art.Description, ".
+    "br.NAME_BRAND ".
+    "FROM articles art " .
+    "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+    "where art.STATUS = 1 AND ".
+    "ID_CATEGORY = 1 AND ".
+    "ID_SUB_CATEGORY = 1 AND ".
+    "BARCODE like '$material' AND ".
+    "art.PRICE BETWEEN $valMin AND $valMax ".
+    "ORDER BY art.PRICE";
+  }
+  else {
     $sql = "SELECT " .
     "art.ID_ARTICLES, ".
     "art.NAME_ART, " .
@@ -452,33 +488,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 LIMIT 50";
   }
 
-  // if ($_SESSION['filtro_price'][0]['query'] == null) {
-  //
-  //   $sql = "SELECT " .
-  //   "art.ID_ARTICLES, ".
-  //   "art.NAME_ART, " .
-  //   "art.PRICE, " .
-  //   "art.URL_IMAGE, " .
-  //   "art.Description, ".
-  //   "br.NAME_BRAND ".
-  //   "FROM articles art " .
-  //   "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-  //   "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 LIMIT 50";
-  // }else if($_SESSION['filtro_price'][0]['query'] = 1) {
-  // $minVal = $_GET['MinVal'];
-  //   $valMin = $_SESSION['filtro_price'][0]['min'];
-  //   $valMax = $_SESSION['filtro_price'][0]['max'];
-  //   $sql = "SELECT " .
-  //   "art.ID_ARTICLES, ".
-  //   "art.NAME_ART, " .
-  //   "art.PRICE, " .
-  //   "art.URL_IMAGE, " .
-  //   "art.Description, ".
-  //   "br.NAME_BRAND ".
-  //   "FROM articles art " .
-  //   "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-  //   "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 AND art.PRICE BETWEEN '$valMin' AND '$valMax' GROUP BY art.PRICE";
-  // }
 
   $result = mysqli_query($con,$sql);
   while($category = mysqli_fetch_row($result)){
@@ -607,7 +616,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               <div class="widget catagory mb-50">
                 <!--  Side Nav  -->
                 <div class="nav-side-menu">
-                  <h6 class="mb-0">Catagorias</h6>
+                  <h6 class="mb-0">Categorías</h6>
                   <div class="menu-list">
                     <ul id="menu-content2" class="menu-content collapse out">
                       <!-- Single Item -->
@@ -651,7 +660,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
 
               <div class="widget price mb-50">
                 <h6 class="widget-title mb-30">Filtro por precio</h6>
-                  <button type="button" id="btnLimpiarPriceFilter" class="btn btn-danger btnDel">X</button>
+                <button type="button" id="btnLimpiarPriceFilter" class="btn btn-danger btnDel">X</button>
                 <div class="widget-desc">
                   <div class="slider-range">
                     <div class="slidecontainer">
@@ -669,38 +678,62 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         } ?>">
                         <input type="range" min="1" max="1000" step="0.01" value="0" class="ui-slider-range ui-widget-header ui-corner-all" id="myRangeMax">
                       </label>
-                      <button type="button" class="btn btnSearch" id="btnBuscar">BUSCAR</button>
+                      <button type="button" class="btn btnSearch" id="btnBusPrecio">Filtrar</button>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="widget color mb-70">
-                <h6 class="widget-title mb-30">Filter by Color</h6>
+                <h6 class="widget-title mb-30">Filtro por Material</h6>
+                <!-- <button type="button" id="btnLimpiarMatFilter" class="btn btn-danger btnDel">X</button> -->
                 <div class="widget-desc">
+                  <select id="cbmMaterial"  class="form-control" name="material">
+                    <option value="0">Selecciona...</option>
+                    <option value="%OL">ORO LAMINADO</option>
+                    <option value="%PL">PLATA</option>
+                    <option value="ACERO">ACERO</option>
+                    <option value="%RD">RODIO</option>
+                  </select>
+                  <br/>
                   <ul class="d-flex justify-content-between">
-                    <li class="gray"><a href="#"><span>(3)</span></a></li>
-                    <li class="red"><a href="#"><span>(25)</span></a></li>
-                    <li class="yellow"><a href="#"><span>(112)</span></a></li>
-                    <li class="green"><a href="#"><span>(72)</span></a></li>
-                    <li class="teal"><a href="#"><span>(9)</span></a></li>
-                    <li class="cyan"><a href="#"><span>(29)</span></a></li>
+                    <li class="yellow"><a href="#"></a></li>
+                    <li class="gray"><a href="#"></a></li>
+                    <li class="red"><a href="#"></a></li>
+                    <li class="green"><a href="#"></a></li>
+                    <li class="teal"><a href="#"></a></li>
+                    <li class="cyan"><a href="#"></a></li>
                   </ul>
                 </div>
+                <br/><br/>
+                <button type="button" class="btn btnSearch" id="btnBusMaterial">Filtrar</button>
+
               </div>
 
-              <div class="widget size mb-50">
-                <h6 class="widget-title mb-30">Filter by Size</h6>
+              <div class="widget color mb-70">
+                <h6 class="widget-title mb-30">Filtro por Accesorio</h6>
+                <!-- <button type="button" id="btnLimpiarMatFilter" class="btn btn-danger btnDel">X</button> -->
                 <div class="widget-desc">
+                  <select id="cbmMaterial"  class="form-control" name="material">
+                    <option value="0">Selecciona...</option>
+                    <option value="%OL">ORO LAMINADO</option>
+                    <option value="%PL">PLATA</option>
+                    <option value="ACERO">ACERO</option>
+                    <option value="%RD">RODIO</option>
+                  </select>
+                  <br/>
                   <ul class="d-flex justify-content-between">
-                    <li><a href="#">XS</a></li>
-                    <li><a href="#">S</a></li>
-                    <li><a href="#">M</a></li>
-                    <li><a href="#">L</a></li>
-                    <li><a href="#">XL</a></li>
-                    <li><a href="#">XXL</a></li>
+                    <li class="yellow"><a href="#"></a></li>
+                    <li class="gray"><a href="#"></a></li>
+                    <li class="red"><a href="#"></a></li>
+                    <li class="green"><a href="#"></a></li>
+                    <li class="teal"><a href="#"></a></li>
+                    <li class="cyan"><a href="#"></a></li>
                   </ul>
                 </div>
+                <br/><br/>
+                <button type="button" class="btn btnSearch" id="btnBusMaterial">Filtrar</button>
+
               </div>
 
               <div class="widget recommended">
@@ -756,8 +789,38 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                   "br.NAME_BRAND ".
                   "FROM articles art " .
                   "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-                  "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 AND art.PRICE BETWEEN '$valMin' AND '$valMax' GROUP BY art.PRICE";
-                }else {
+                  "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 AND ".
+                  "art.PRICE BETWEEN '$valMin' AND '$valMax' GROUP BY art.PRICE";
+                }
+                if($queryVal == 2) {
+                  // if (isset($_SESSION['filtro_price'])) {
+                  $valMin = $_SESSION['filtro_price'][0]['min'];
+                  $valMax = $_SESSION['filtro_price'][0]['max'];
+                  $material = $_SESSION['filtro_price'][0]['material'];
+
+                  if ($material == 1) {
+                    $material = '___________';
+                  }
+                  elseif($material == 'ACERO'){
+                    $material = '%AC';
+                  }
+                  $sql = "SELECT " .
+                  "art.ID_ARTICLES, ".
+                  "art.NAME_ART, " .
+                  "art.PRICE, " .
+                  "art.URL_IMAGE, " .
+                  "art.Description, ".
+                  "br.NAME_BRAND ".
+                  "FROM articles art " .
+                  "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+                  "where art.STATUS = 1 AND ".
+                  "ID_CATEGORY = 1 AND ".
+                  "ID_SUB_CATEGORY = 1 AND ".
+                  "BARCODE like '$material' AND ".
+                  "art.PRICE BETWEEN $valMin AND $valMax ".
+                  "ORDER BY art.PRICE";
+                }
+                else {
                   $sql = "SELECT " .
                   "art.ID_ARTICLES, ".
                   "art.NAME_ART, " .
@@ -1005,26 +1068,42 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       }
     });
 
-    $('#btnBuscar').click(function(){
+    $('#btnBusPrecio').click(function(){
       query=0;
-      var minval = parseInt($('#minVal').val());
-      var maxval = parseInt($('#maxVal').val());
+      minval = parseInt($('#minVal').val());
+      maxval = parseInt($('#maxVal').val());
+      material = 1;
       if (minval != 1 && maxval != 1) {
-        query = 1;
+        query = 2;
       }
       if (minval > maxval) {
         alert('El monto mínimo no puede ser mayor que el monto máximo.')
       }
       if (minval < maxval && maxval > minval ) {
-        filtros(minval,maxval,query);
+        filtros(minval,maxval,material,query);
       }
 
     });
 
     $('#btnLimpiarPriceFilter').click(function(){
-      debugger;
       vaciar=1;
       limpiarPriceFilter(vaciar);
+    });
+
+    $('#btnBusMaterial').click(function(){
+      debugger;
+      minval = 0;
+      maxval = 100000;
+      material = $("#cbmMaterial option:selected").val();
+      query = 0;
+
+      if(material == 0){
+        alert("Debe seleccionar un material...");
+      }else{
+        query = 2;
+        filtros(minval,maxval,material,query);
+      }
+
 
     });
     // Enter de inicio de sesion
@@ -1060,4 +1139,4 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   }
 
 
-</script>
+  </script>

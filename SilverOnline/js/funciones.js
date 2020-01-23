@@ -188,9 +188,9 @@ function AddCart(id, nombre, precio, url, cantidad){
   });
 }
 
-function filtros(minval, maxval, query){
+function filtros(minval, maxval, material, query){
   debugger;
-  cadena = 'MinVal=' + minval + '&MaxVal=' + maxval + '&QUERY=' + query;
+  cadena = 'MinVal=' + minval + '&MaxVal=' + maxval + '&Material=' + material + '&QUERY=' + query;
 
   $.ajax({
 
