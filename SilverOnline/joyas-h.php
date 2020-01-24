@@ -21,6 +21,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     "min" => $_POST['MinVal'],
     "max" => $_POST['MaxVal'],
     "material" => $_POST['Material'],
+    "accesorio" => $_POST['Accesorio'],
     "query" => $_POST['QUERY']);
   }
 
@@ -407,58 +408,44 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     </div>
   </header>
   <!-- ****** Header Area End ****** -->
-  <P><?php   var_dump($_SESSION['filtro_price']); ?></P>
+  <!-- <P><?php   var_dump($_SESSION['filtro_price']); ?></P> -->
   <section class="top-discount-area d-md-flex align-items-center">
     <!-- Single Discount Area -->
     <div class="single-discount-area">
-      <h5>Free Shipping &amp; Returns</h5>
-      <h6><a href="#">BUY NOW</a></h6>
+      <h5>Apresurate &amp; Atrevete a ganar mas</h5>
+      <h6><a href="#">Compra ya</a></h6>
     </div>
     <!-- Single Discount Area -->
     <div class="single-discount-area">
-      <h5>20% Discount for all dresses</h5>
-      <h6>USE CODE: Colorlib</h6>
+      <h5>Silver Evolution</h5>
+      <h6>Tu mejor opción</h6>
     </div>
     <!-- Single Discount Area -->
     <div class="single-discount-area">
-      <h5>20% Discount for students</h5>
-      <h6>USE CODE: Colorlib</h6>
+      <h5>Empresa 100% Mexicana</h5>
+      <h6>Crecé con nosotros</h6>
     </div>
   </section>
 
   <?php
-  if($queryVal == 1) {
-    $valMin = $_SESSION['filtro_price'][0]['min'];
-    $valMax = $_SESSION['filtro_price'][0]['max'];
-    $sql = "SELECT " .
-    "art.ID_ARTICLES, ".
-    "art.NAME_ART, " .
-    "art.PRICE, " .
-    "art.URL_IMAGE, " .
-    "art.Description, ".
-    "br.NAME_BRAND ".
-    "FROM articles art " .
-    "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-    "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 AND ".
-    "art.PRICE BETWEEN '$valMin' AND '$valMax' GROUP BY art.PRICE";
-  }
   if($queryVal == 2) {
     // if (isset($_SESSION['filtro_price'])) {
     $valMin = $_SESSION['filtro_price'][0]['min'];
     $valMax = $_SESSION['filtro_price'][0]['max'];
     $material = $_SESSION['filtro_price'][0]['material'];
+    $accesorio = $_SESSION['filtro_price'][0]['accesorio'];
 
     if ($material == 1) {
       $material = '___________';
     }
-    if($material == 'ACERO'){
+    elseif($material == 'ACERO'){
       $material = '%AC';
     }
-    // }
-    // else{
-    //   $valMin = 0;
-    //   $valMax = 100000;
-    // }
+
+    if ($accesorio == 1) {
+      $accesorio = '___________';
+    }
+
     $sql = "SELECT " .
     "art.ID_ARTICLES, ".
     "art.NAME_ART, " .
@@ -469,9 +456,10 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     "FROM articles art " .
     "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
     "where art.STATUS = 1 AND ".
-    "ID_CATEGORY = 1 AND ".
-    "ID_SUB_CATEGORY = 1 AND ".
-    "BARCODE like '$material' AND ".
+    "art.ID_CATEGORY = 1 AND ".
+    "art.ID_SUB_CATEGORY = 1 AND ".
+    "art.BARCODE like '$material' AND ".
+    "art.BARCODE like '$accesorio' AND ".
     "art.PRICE BETWEEN $valMin AND $valMax ".
     "ORDER BY art.PRICE";
   }
@@ -488,8 +476,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 LIMIT 50";
   }
 
-
+  // print_r($sql);
   $result = mysqli_query($con,$sql);
+  // $row=mysqli_fetch_array($result);
+  // if(is_null($row)){
+  //   echo "<script>
+  //               alert('No se encotro resultados para su busqueda...');
+  //   </script>";
+  //  }
+
   while($category = mysqli_fetch_row($result)){
 
     ?>
@@ -714,429 +709,500 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 <h6 class="widget-title mb-30">Filtro por Accesorio</h6>
                 <!-- <button type="button" id="btnLimpiarMatFilter" class="btn btn-danger btnDel">X</button> -->
                 <div class="widget-desc">
-                  <select id="cbmMaterial"  class="form-control" name="material">
-                    <option value="0">Selecciona...</option>
-                    <option value="%OL">ORO LAMINADO</option>
-                    <option value="%PL">PLATA</option>
-                    <option value="ACERO">ACERO</option>
-                    <option value="%RD">RODIO</option>
-                  </select>
-                  <br/>
-                  <ul class="d-flex justify-content-between">
-                    <li class="yellow"><a href="#"></a></li>
-                    <li class="gray"><a href="#"></a></li>
-                    <li class="red"><a href="#"></a></li>
-                    <li class="green"><a href="#"></a></li>
-                    <li class="teal"><a href="#"></a></li>
-                    <li class="cyan"><a href="#"></a></li>
-                  </ul>
+                  <!-- <p>
+                  Elije un motor de búsqueda:
+                -->
+                <!-- <input type="text" list="listAccesorios" placeholder="Selecciona..." class="form-control"> -->
+                <!--
+              </p> -->
+
+              <!-- <datalist id="listamotoresbusqueda" >
+              <option value="0">Selecciona...</option>
+              <option value="%ALI">ALINZA</option>
+              <option value="%ANI">ANILLOS</option>
+              <option value="%ARO">AROS</option>
+              <option value="%ARR">ARRACADA</option>
+              <option value="%ART">ARETE</option>
+              <option value="%BRO">BROQUEL</option>
+              <option value="%BRZ">BRAZALETE</option>
+
+              <option value="%CDN">CADENA</option>
+              <option value="%COL">COLLAR</option>
+              <option value="%DIJ">DIJE</option>
+
+              <option value="%ESC">ESCAPULARIO</option>
+              <option value="%FIN">FIN DE SEMANA</option>
+              <option value="%GRG">GARGANTILLA</option>
+              <option value="%GRP">GRAPAS</option>
+              <option value="%JGS">JUEGOS</option>
+              <option value="%LLV">LLAVERO</option>
+              <option value="%OMG">OMEGA</option>
+              <option value="%PIS">PISA CORBATA</option>
+              <option value="%PLS">PULSERA</option>
+              <option value="%PRE">PRENDEDOR</option>
+              <option value="%REJ">RELOJ</option>
+              <option value="%ROS">ROSARIO</option>
+              <option value="%SMR">SEMANARIO</option>
+              <option value="%TOB">TOBILLERA</option>
+              <option value="%VIO">VIOLADOR</option>
+
+            </datalist> -->
+
+
+            <select id="cbmAccesorio"  class="form-control" name="accesorio">
+              <option value="0">Selecciona...</option>
+              <option value="ALI%">ALINZA</option>
+              <option value="ANI%">ANILLOS</option>
+              <option value="ARO%">AROS</option>
+              <option value="ARR%">ARRACADA</option>
+              <option value="ART%">ARETE</option>
+              <option value="BRO%">BROQUEL</option>
+              <option value="BRZ%">BRAZALETE</option>
+
+              <option value="CDN%">CADENA</option>
+              <option value="COL%">COLLAR</option>
+              <option value="DIJ%">DIJE</option>
+
+              <option value="ESC%">ESCAPULARIO</option>
+              <option value="FIN%">FIN DE SEMANA</option>
+              <option value="GRG%">GARGANTILLA</option>
+              <option value="GRP%">GRAPAS</option>
+              <option value="JGS%">JUEGOS</option>
+              <option value="LLV%">LLAVERO</option>
+              <option value="OMG%">OMEGA</option>
+              <option value="PIS%">PISA CORBATA</option>
+              <option value="PLS%">PULSERA</option>
+              <option value="PRE%">PRENDEDOR</option>
+              <option value="REJ%">RELOJ</option>
+              <option value="ROS%">ROSARIO</option>
+              <option value="SMR%">SEMANARIO</option>
+              <option value="TOB%">TOBILLERA</option>
+              <option value="VIO%">VIOLADOR</option>
+
+            </select>
+            <br/><br/>
+            <ul class="d-flex justify-content-between">
+              <li class="yellow"><a href="#"></a></li>
+              <li class="gray"><a href="#"></a></li>
+              <li class="red"><a href="#"></a></li>
+              <li class="green"><a href="#"></a></li>
+              <li class="teal"><a href="#"></a></li>
+              <li class="cyan"><a href="#"></a></li>
+            </ul>
+          </div>
+          <br/><br/>
+          <button type="button" class="btn btnSearch" id="btnBusAcs">Filtrar</button>
+
+        </div>
+
+        <div class="widget recommended">
+          <h6 class="widget-title mb-30">Lo mas nuevo</h6>
+
+          <div class="widget-desc">
+            <!-- Single Recommended Product -->
+            <?php
+            $sql = "SELECT " .
+            "art.ID_ARTICLES, ".
+            "art.NAME_ART, " .
+            "art.PRICE, " .
+            "art.URL_IMAGE, " .
+            "art.Description, ".
+            "br.NAME_BRAND ".
+            "FROM articles art " .
+            "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+            "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 ORDER BY art.ID_ARTICLES DESC LIMIT 5 ";
+
+            $result = mysqli_query($con,$sql);
+            while($category = mysqli_fetch_row($result)){
+
+              ?>
+              <div class="single-recommended-product d-flex mb-30">
+                <div class="single-recommended-thumb mr-3">
+                  <img src="<?php echo $category[3] ?>" alt="">
                 </div>
-                <br/><br/>
-                <button type="button" class="btn btnSearch" id="btnBusMaterial">Filtrar</button>
-
-              </div>
-
-              <div class="widget recommended">
-                <h6 class="widget-title mb-30">Lo mas nuevo</h6>
-
-                <div class="widget-desc">
-                  <!-- Single Recommended Product -->
-                  <?php
-                  $sql = "SELECT " .
-                  "art.ID_ARTICLES, ".
-                  "art.NAME_ART, " .
-                  "art.PRICE, " .
-                  "art.URL_IMAGE, " .
-                  "art.Description, ".
-                  "br.NAME_BRAND ".
-                  "FROM articles art " .
-                  "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-                  "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 ORDER BY art.ID_ARTICLES DESC LIMIT 5 ";
-
-                  $result = mysqli_query($con,$sql);
-                  while($category = mysqli_fetch_row($result)){
-
-                    ?>
-                    <div class="single-recommended-product d-flex mb-30">
-                      <div class="single-recommended-thumb mr-3">
-                        <img src="<?php echo $category[3] ?>" alt="">
-                      </div>
-                      <div class="single-recommended-desc">
-                        <h6>Men’s T-shirt</h6>
-                        <p>$ 39.99</p>
-                      </div>
-                    </div>
-                  <?php } ?>
-                  <!-- Single Recommended Product -->
-
+                <div class="single-recommended-desc">
+                  <h6>Men’s T-shirt</h6>
+                  <p>$ 39.99</p>
                 </div>
               </div>
+            <?php } ?>
+            <!-- Single Recommended Product -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-8 col-lg-9">
+      <div class="shop_grid_product_area">
+        <div class="row">
+          <?php
+          if($queryVal == 2) {
+            // if (isset($_SESSION['filtro_price'])) {
+            $valMin = $_SESSION['filtro_price'][0]['min'];
+            $valMax = $_SESSION['filtro_price'][0]['max'];
+            $material = $_SESSION['filtro_price'][0]['material'];
+            $accesorio = $_SESSION['filtro_price'][0]['accesorio'];
+
+            if ($material == 1) {
+              $material = '___________';
+            }
+            elseif($material == 'ACERO'){
+              $material = '%AC';
+            }
+
+            if ($accesorio == 1) {
+              $accesorio = '___________';
+            }
+
+            $sql = "SELECT " .
+            "art.ID_ARTICLES, ".
+            "art.NAME_ART, " .
+            "art.PRICE, " .
+            "art.URL_IMAGE, " .
+            "art.Description, ".
+            "br.NAME_BRAND ".
+            "FROM articles art " .
+            "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+            "where art.STATUS = 1 AND ".
+            "art.ID_CATEGORY = 1 AND ".
+            "art.ID_SUB_CATEGORY = 1 AND ".
+            "art.BARCODE like '$material' AND ".
+            "art.BARCODE like '$accesorio' AND ".
+            "art.PRICE BETWEEN $valMin AND $valMax ".
+            "ORDER BY art.PRICE";
+          }
+          else {
+            $sql = "SELECT " .
+            "art.ID_ARTICLES, ".
+            "art.NAME_ART, " .
+            "art.PRICE, " .
+            "art.URL_IMAGE, " .
+            "art.Description, ".
+            "br.NAME_BRAND ".
+            "FROM articles art " .
+            "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+            "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 LIMIT 50";
+          }
+          $result = mysqli_query($con,$sql);
+
+          while($category = mysqli_fetch_row($result)){
+
+            ?>
+
+            <!-- Single gallery Item -->
+            <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
+              <!-- Product Image -->
+              <div class="product-img">
+                <img src="<?php echo $category[3] ?>" alt="">
+                <div class="product-quicview">
+                  <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category[0] ?>"><i class="ti-plus"></i></a>
+                </div>
+              </div>
+              <!-- Product Description -->
+              <div class="product-description">
+                <h4 class="product-price">$<?php echo number_format($category[2],2) ; ?></h4>
+                <p><?php echo $category[1] ?></p>
+                <!-- Add to Cart -->
+                <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
+              </div>
+            </div>
+          <?php }
+          ?>
+          <div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">
+      <nav aria-label="Page navigation">
+      <ul class="pagination pagination-sm">
+      <li class="page-item active"><a class="page-link" href="#">01</a></li>
+      <li class="page-item"><a class="page-link" href="#">02</a></li>
+      <li class="page-item"><a class="page-link" href="#">03</a></li>
+    </ul>
+  </nav>
+</div> -->
+</div>
+</div>
+</div>
+</section>
+
+<!-- ****** Footer Area Start ****** -->
+<footer class="footer_area">
+  <div class="container">
+    <div class="row">
+      <!-- Single Footer Area Start -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="single_footer_area">
+          <div class="footer-logo">
+            <img src="img/core-img/logo.png" alt="">
+          </div>
+          <div class="copywrite_text d-flex align-items-center">
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
             </div>
           </div>
-          <div class="col-12 col-md-8 col-lg-9">
-            <div class="shop_grid_product_area">
-              <div class="row">
-                <?php
-                if($queryVal == 1) {
-                  $valMin = $_SESSION['filtro_price'][0]['min'];
-                  $valMax = $_SESSION['filtro_price'][0]['max'];
-                  $sql = "SELECT " .
-                  "art.ID_ARTICLES, ".
-                  "art.NAME_ART, " .
-                  "art.PRICE, " .
-                  "art.URL_IMAGE, " .
-                  "art.Description, ".
-                  "br.NAME_BRAND ".
-                  "FROM articles art " .
-                  "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-                  "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 AND ".
-                  "art.PRICE BETWEEN '$valMin' AND '$valMax' GROUP BY art.PRICE";
-                }
-                if($queryVal == 2) {
-                  // if (isset($_SESSION['filtro_price'])) {
-                  $valMin = $_SESSION['filtro_price'][0]['min'];
-                  $valMax = $_SESSION['filtro_price'][0]['max'];
-                  $material = $_SESSION['filtro_price'][0]['material'];
-
-                  if ($material == 1) {
-                    $material = '___________';
-                  }
-                  elseif($material == 'ACERO'){
-                    $material = '%AC';
-                  }
-                  $sql = "SELECT " .
-                  "art.ID_ARTICLES, ".
-                  "art.NAME_ART, " .
-                  "art.PRICE, " .
-                  "art.URL_IMAGE, " .
-                  "art.Description, ".
-                  "br.NAME_BRAND ".
-                  "FROM articles art " .
-                  "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-                  "where art.STATUS = 1 AND ".
-                  "ID_CATEGORY = 1 AND ".
-                  "ID_SUB_CATEGORY = 1 AND ".
-                  "BARCODE like '$material' AND ".
-                  "art.PRICE BETWEEN $valMin AND $valMax ".
-                  "ORDER BY art.PRICE";
-                }
-                else {
-                  $sql = "SELECT " .
-                  "art.ID_ARTICLES, ".
-                  "art.NAME_ART, " .
-                  "art.PRICE, " .
-                  "art.URL_IMAGE, " .
-                  "art.Description, ".
-                  "br.NAME_BRAND ".
-                  "FROM articles art " .
-                  "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-                  "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 LIMIT 50";
-                }
-                $result = mysqli_query($con,$sql);
-
-                while($category = mysqli_fetch_row($result)){
-
-                  ?>
-
-                  <!-- Single gallery Item -->
-                  <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
-                    <!-- Product Image -->
-                    <div class="product-img">
-                      <img src="<?php echo $category[3] ?>" alt="">
-                      <div class="product-quicview">
-                        <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category[0] ?>"><i class="ti-plus"></i></a>
-                      </div>
-                    </div>
-                    <!-- Product Description -->
-                    <div class="product-description">
-                      <h4 class="product-price">$<?php echo number_format($category[2],2) ; ?></h4>
-                      <p><?php echo $category[1] ?></p>
-                      <!-- Add to Cart -->
-                      <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
-                    </div>
-                  </div>
-                <?php }
-                ?>
-                <div>
-                </div>
-              </div>
+        </div>
+        <!-- Single Footer Area Start -->
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="single_footer_area">
+            <ul class="footer_widget_menu">
+              <li><a href="#">About</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Faq</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- Single Footer Area Start -->
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <div class="single_footer_area">
+            <ul class="footer_widget_menu">
+              <li><a href="#">My Account</a></li>
+              <li><a href="#">Shipping</a></li>
+              <li><a href="#">Our Policies</a></li>
+              <li><a href="#">Afiliates</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- Single Footer Area Start -->
+        <div class="col-12 col-lg-5">
+          <div class="single_footer_area">
+            <div class="footer_heading mb-30">
+              <h6>Subscribe to our newsletter</h6>
             </div>
-            <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">
-              <nav aria-label="Page navigation">
-                <ul class="pagination pagination-sm">
-                  <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                  <li class="page-item"><a class="page-link" href="#">02</a></li>
-                  <li class="page-item"><a class="page-link" href="#">03</a></li>
-                </ul>
-              </nav>
+            <div class="subscribtion_form">
+              <form action="#" method="post">
+                <input type="email" name="mail" class="mail" placeholder="Your email here">
+                <button type="submit" class="submit">Subscribe</button>
+              </form>
             </div>
           </div>
         </div>
       </div>
-    </section>
+      <div class="line"></div>
 
-    <!-- ****** Footer Area Start ****** -->
-    <footer class="footer_area">
-      <div class="container">
+      <!-- Footer Bottom Area Start -->
+      <div class="footer_bottom_area">
         <div class="row">
-          <!-- Single Footer Area Start -->
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="single_footer_area">
-              <div class="footer-logo">
-                <img src="img/core-img/logo.png" alt="">
-              </div>
-              <div class="copywrite_text d-flex align-items-center">
-                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                </div>
-              </div>
-            </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-              <div class="single_footer_area">
-                <ul class="footer_widget_menu">
-                  <li><a href="#">About</a></li>
-                  <li><a href="#">Blog</a></li>
-                  <li><a href="#">Faq</a></li>
-                  <li><a href="#">Returns</a></li>
-                  <li><a href="#">Contact</a></li>
-                </ul>
-              </div>
-            </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-              <div class="single_footer_area">
-                <ul class="footer_widget_menu">
-                  <li><a href="#">My Account</a></li>
-                  <li><a href="#">Shipping</a></li>
-                  <li><a href="#">Our Policies</a></li>
-                  <li><a href="#">Afiliates</a></li>
-                </ul>
-              </div>
-            </div>
-            <!-- Single Footer Area Start -->
-            <div class="col-12 col-lg-5">
-              <div class="single_footer_area">
-                <div class="footer_heading mb-30">
-                  <h6>Subscribe to our newsletter</h6>
-                </div>
-                <div class="subscribtion_form">
-                  <form action="#" method="post">
-                    <input type="email" name="mail" class="mail" placeholder="Your email here">
-                    <button type="submit" class="submit">Subscribe</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="line"></div>
-
-          <!-- Footer Bottom Area Start -->
-          <div class="footer_bottom_area">
-            <div class="row">
-              <div class="col-12">
-                <div class="footer_social_area text-center">
-                  <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                </div>
-              </div>
+          <div class="col-12">
+            <div class="footer_social_area text-center">
+              <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+              <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
             </div>
           </div>
         </div>
-      </footer>
-      <!-- ****** Footer Area End ****** -->
+      </div>
     </div>
-    <!-- /.wrapper end -->
+  </footer>
+  <!-- ****** Footer Area End ****** -->
+</div>
+<!-- /.wrapper end -->
 
-    <!-- jQuery (Necessary for All JavaScript Plugins) -->
-    <script src="js/jquery/jquery-2.2.4.min.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Active js -->
-    <script src="js/active.js"></script>
+<!-- jQuery (Necessary for All JavaScript Plugins) -->
+<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Active js -->
+<script src="js/active.js"></script>
 
-  </body>
+</body>
 
-  </html>
+</html>
 
-  <script type="text/javascript">
+<script type="text/javascript">
 
-  $(document).ready(function(){
+$(document).ready(function(){
 
-    $('#btnEntrar').click(function(){
-      email= $('#txt_Email').val();
-      pass= $('#txt_Pass').val();
-      if(email == ""){
+  $('#btnEntrar').click(function(){
+    email= $('#txt_Email').val();
+    pass= $('#txt_Pass').val();
+    if(email == ""){
 
-        alert("Debe ingresar un E-mail...");
-      }
-      if(pass == ""){
+      alert("Debe ingresar un E-mail...");
+    }
+    if(pass == ""){
 
-        alert("Debe ingresar una contraseña...");
-      }
-      if(email != "" && pass != ""){
-        login(email, pass);
-      }
-    });
+      alert("Debe ingresar una contraseña...");
+    }
+    if(email != "" && pass != ""){
+      login(email, pass);
+    }
+  });
 
-    $('#btnLogOut').click(function(){
-      vaciar = 1;
+  $('#btnLogOut').click(function(){
+    vaciar = 1;
 
-      logOut(vaciar);
-    });
+    logOut(vaciar);
+  });
 
-    $('#btnGuardar').click(function(){
-
-
-      nombre = $('#txtNombre').val();
-      apellidoP = $('#txtApellidoP').val();
-      apellidoM = $('#txtApellidoM').val();
-      calle = $('#txtCalle').val();
-      numCalle = $('#txtNumCalle').val();
-      cp = $('#txtCp').val();
-      ciudad = $('#txtCiudad').val();
-      estado = $('#txtEstado').val();
-      cel = $('#txtCel').val();
-      email= $('#txtEmail').val();
-
-      if(validar_email( email ) )
-      {
-      }
-      else
-      {
-        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-        email = 1;
-      }
-
-      pass= $('#txtPass').val();
-      roll = $("#cbmRoll option:selected").val();
-
-      if(nombre == ""){
-
-        alert("Debe ingresar un nombrel...");
-      }
-      if(apellidoP == ""){
-
-        alert("Debe ingresar un apellido paterno...");
-      }if(apellidoM == ""){
-
-        alert("Debe ingresar un apellido Materno...");
-      }
-      if(calle == ""){
-
-        alert("Debe ingresar una calle...");
-      }if(numCalle == ""){
-
-        alert("Debe ingresar un número de la hubicación...");
-      }
-      if(cp == ""){
-
-        alert("Debe ingresar un código postal...");
-      }if(ciudad == ""){
-
-        alert("Debe ingresar una ciudad...");
-      }
-      if(estado == ""){
-
-        alert("Debe ingresar un estado...");
-      }
-      if(cel == ""){
-
-        alert("Debe ingresar un número de contacto...");
-      }
-      if(email == ""){
-
-        alert("Debe ingresar un E-mail...");
-      }
-      if(pass == ""){
-
-        alert("Debe ingresar una contraseña...");
-      }
-      if(roll == 0){
-
-        alert("Debe seleccionar un roll de usuario...");
-      }
-      if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
-        agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
-      }
-    });
-
-    $('#btnBusPrecio').click(function(){
-      query=0;
-      minval = parseInt($('#minVal').val());
-      maxval = parseInt($('#maxVal').val());
-      material = 1;
-      if (minval != 1 && maxval != 1) {
-        query = 2;
-      }
-      if (minval > maxval) {
-        alert('El monto mínimo no puede ser mayor que el monto máximo.')
-      }
-      if (minval < maxval && maxval > minval ) {
-        filtros(minval,maxval,material,query);
-      }
-
-    });
-
-    $('#btnLimpiarPriceFilter').click(function(){
-      vaciar=1;
-      limpiarPriceFilter(vaciar);
-    });
-
-    $('#btnBusMaterial').click(function(){
-      debugger;
-      minval = 0;
-      maxval = 100000;
-      material = $("#cbmMaterial option:selected").val();
-      query = 0;
-
-      if(material == 0){
-        alert("Debe seleccionar un material...");
-      }else{
-        query = 2;
-        filtros(minval,maxval,material,query);
-      }
+  $('#btnGuardar').click(function(){
 
 
-    });
-    // Enter de inicio de sesion
-    var input = document.getElementById("txt_Pass");
-    input.addEventListener("keyup", function(event) {
-      // Number 13 is the "Enter" key on the keyboard
-      if (event.keyCode === 13) {
-        // Cancel the default action, if needed
-        event.preventDefault();
-        // Trigger the button element with a click
-        document.getElementById("btnEntrar").click();
-      }
-    });
+    nombre = $('#txtNombre').val();
+    apellidoP = $('#txtApellidoP').val();
+    apellidoM = $('#txtApellidoM').val();
+    calle = $('#txtCalle').val();
+    numCalle = $('#txtNumCalle').val();
+    cp = $('#txtCp').val();
+    ciudad = $('#txtCiudad').val();
+    estado = $('#txtEstado').val();
+    cel = $('#txtCel').val();
+    email= $('#txtEmail').val();
+
+    if(validar_email( email ) )
+    {
+    }
+    else
+    {
+      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+      email = 1;
+    }
+
+    pass= $('#txtPass').val();
+    roll = $("#cbmRoll option:selected").val();
+
+    if(nombre == ""){
+
+      alert("Debe ingresar un nombrel...");
+    }
+    if(apellidoP == ""){
+
+      alert("Debe ingresar un apellido paterno...");
+    }if(apellidoM == ""){
+
+      alert("Debe ingresar un apellido Materno...");
+    }
+    if(calle == ""){
+
+      alert("Debe ingresar una calle...");
+    }if(numCalle == ""){
+
+      alert("Debe ingresar un número de la hubicación...");
+    }
+    if(cp == ""){
+
+      alert("Debe ingresar un código postal...");
+    }if(ciudad == ""){
+
+      alert("Debe ingresar una ciudad...");
+    }
+    if(estado == ""){
+
+      alert("Debe ingresar un estado...");
+    }
+    if(cel == ""){
+
+      alert("Debe ingresar un número de contacto...");
+    }
+    if(email == ""){
+
+      alert("Debe ingresar un E-mail...");
+    }
+    if(pass == ""){
+
+      alert("Debe ingresar una contraseña...");
+    }
+    if(roll == 0){
+
+      alert("Debe seleccionar un roll de usuario...");
+    }
+    if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
+      agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
+    }
+  });
+
+  $('#btnBusPrecio').click(function(){
+    query=0;
+    minval = parseInt($('#minVal').val());
+    maxval = parseInt($('#maxVal').val());
+    material = 1;
+    accesorio = 1;
+    if (minval != 1 && maxval != 1) {
+      query = 2;
+    }
+    if (minval > maxval) {
+      alert('El monto mínimo no puede ser mayor que el monto máximo.')
+    }
+    if (minval < maxval && maxval > minval ) {
+      filtros(minval,maxval,material,accesorio,query);
+    }
+  });
+
+  $('#btnLimpiarPriceFilter').click(function(){
+    vaciar=1;
+    limpiarPriceFilter(vaciar);
+  });
+
+  $('#btnBusMaterial').click(function(){
+    minval = 0;
+    maxval = 100000;
+    material = $("#cbmMaterial option:selected").val();
+    accesorio = 1;
+    query = 0;
+
+    if(material == 0){
+      alert("Debe seleccionar un material...");
+    }else{
+      query = 2;
+      filtros(minval,maxval,material,accesorio,query);
+    }
+  });
+
+  $('#btnBusAcs').click(function(){
+    query = 0;
+
+    minval = 0;
+    maxval = 100000;
+    material = 1;
+    accesorio = $('#cbmAccesorio option:selected').val();
+    if(accesorio == 0){
+      alert("Debe seleccionar un accesorio...");
+    }else{
+      query = 2;
+      filtros(minval,maxval,material,accesorio,query);
+    }
 
   });
 
-  function validar_email( email )
-  {
-    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email) ? true : false;
-  }
+  // Enter de inicio de sesion
+  var input = document.getElementById("txt_Pass");
+  input.addEventListener("keyup", function(event) {
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      document.getElementById("btnEntrar").click();
+    }
+  });
 
-  var slider = document.getElementById("myRangeMin");
-  var sliderMax = document.getElementById("myRangeMax");
-  // $('#minVal').val(slider.value);
-  // $('#maxVal').val(sliderMax.value);
+});
 
-  slider.oninput = function() {
-    $('#minVal').val(slider.value);
-  }
-  sliderMax.oninput = function() {
-    $('#maxVal').val(sliderMax.value);
-  }
+function validar_email( email )
+{
+  var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email) ? true : false;
+}
+
+var slider = document.getElementById("myRangeMin");
+var sliderMax = document.getElementById("myRangeMax");
+// $('#minVal').val(slider.value);
+// $('#maxVal').val(sliderMax.value);
+
+slider.oninput = function() {
+  $('#minVal').val(slider.value);
+}
+sliderMax.oninput = function() {
+  $('#maxVal').val(sliderMax.value);
+}
 
 
-  </script>
+</script>
