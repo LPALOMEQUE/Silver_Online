@@ -476,7 +476,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     "br.NAME_BRAND ".
     "FROM articles art " .
     "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-    "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2 LIMIT 50";
+    "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2";
   }
 
   // print_r($sql);
@@ -832,7 +832,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               "br.NAME_BRAND ".
               "FROM articles art " .
               "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-              "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2 LIMIT 50";
+              "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2";
             }
             $result = mysqli_query($con,$sql);
 

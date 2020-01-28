@@ -57,106 +57,106 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
 
   ?>
 
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="description" content="">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-  <!-- Title  -->
-  <title>Silver - Evolution | Home</title>
+    <!-- Title  -->
+    <title>Silver - Evolution | Home</title>
 
-  <!-- Favicon  -->
-  <link rel="icon" href="img/core-img/favicon.ico">
+    <!-- Favicon  -->
+    <link rel="icon" href="img/core-img/favicon.ico">
 
-  <!-- Core Style CSS -->
-  <link rel="stylesheet" href="css/core-style.css">
-  <link rel="stylesheet" href="style.css">
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="css/core-style.css">
+    <link rel="stylesheet" href="style.css">
 
-  <!-- Responsive CSS -->
-  <link href="css/responsive.css" rel="stylesheet">
+    <!-- Responsive CSS -->
+    <link href="css/responsive.css" rel="stylesheet">
 
-  <!-- css LFPO -->
-  <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
-  <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
-  <!-- end -->
+    <!-- css LFPO -->
+    <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
+    <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
+    <!-- end -->
 
-  <!-- scripts LFPO -->
-  <script src="js/jquery/jquery-2.2.4.min.js"></script>
-  <script src="js/funciones.js"></script>
-  <script src="librerias/alertify/alertify.js"></script>
-  <!-- end -->
+    <!-- scripts LFPO -->
+    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="js/funciones.js"></script>
+    <script src="librerias/alertify/alertify.js"></script>
+    <!-- end -->
 
-</head>
+  </head>
 
-<body>
-  <div class="catagories-side-menu">
-    <!-- Close Icon -->
-    <div id="sideMenuClose">
-      <i class="ti-close"></i>
-    </div>
-    <!--  Side Nav  -->
-    <div class="nav-side-menu">
-      <div class="menu-list">
-        <h6>Categorías</h6>
-        <ul id="menu-content" class="menu-content collapse out">
+  <body>
+    <div class="catagories-side-menu">
+      <!-- Close Icon -->
+      <div id="sideMenuClose">
+        <i class="ti-close"></i>
+      </div>
+      <!--  Side Nav  -->
+      <div class="nav-side-menu">
+        <div class="menu-list">
+          <h6>Categorías</h6>
+          <ul id="menu-content" class="menu-content collapse out">
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
-            <a href="#">Joyas<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="joyas">
-              <li><a href="joyas-h.php">Hombre</a></li>
-              <li><a href="joyas-m.php">Mujer</a></li>
-            </ul>
-          </li>
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
+              <a href="#">Joyas<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="joyas">
+                <li><a href="joyas-h.php">Hombre</a></li>
+                <li><a href="joyas-m.php">Mujer</a></li>
+              </ul>
+            </li>
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
-            <a href="#">Bolsas<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="bolsas">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-            </ul>
-          </li>
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#bolsas" class="collapsed active">
+              <a href="#">Bolsas<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="bolsas">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+              </ul>
+            </li>
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
-            <a href="#">Perfumes<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="perfumes">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-            </ul>
-          </li>
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#perfumes" class="collapsed active">
+              <a href="#">Perfumes<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="perfumes">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+              </ul>
+            </li>
 
-          <!-- Single Item -->
-          <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
-            <a href="#">Ropa<span class="arrow"></span></a>
-            <ul class="sub-menu collapse" id="ropa">
-              <li><a href="#">Hombre</a></li>
-              <li><a href="#">Mujer</a></li>
-              <li><a href="#">Niño</a></li>
-              <li><a href="#">Niña</a></li>
-            </ul>
-          </li>
-        </ul>
+            <!-- Single Item -->
+            <li data-toggle="collapse" data-target="#ropa" class="collapsed active">
+              <a href="#">Ropa<span class="arrow"></span></a>
+              <ul class="sub-menu collapse" id="ropa">
+                <li><a href="#">Hombre</a></li>
+                <li><a href="#">Mujer</a></li>
+                <li><a href="#">Niño</a></li>
+                <li><a href="#">Niña</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="wrapper">
+    <div id="wrapper">
 
-    <div class="row">
-      <div class="col-md-3 error">
-        <a class="center"> <strong>Usuario:</strong> <?php
-        if (isset($_SESSION["Email"])) {
-          echo $_SESSION["Email"];
-        }else {
-          echo $invitado = 'Invitado...';
-        } ?>
+      <div class="row">
+        <div class="col-md-3 error">
+          <a class="center"> <strong>Usuario:</strong> <?php
+          if (isset($_SESSION["Email"])) {
+            echo $_SESSION["Email"];
+          }else {
+            echo $invitado = 'Invitado...';
+          } ?>
         </a>
       </div>
       <div class="col-md-2 error">
@@ -168,33 +168,33 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
           echo $ocultar = 'none';
         } ?> ">
         <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
-        </div>
+      </div>
 
-        <div class="<?php
-        if (isset($_SESSION["Email"])) {
+      <div class="<?php
+      if (isset($_SESSION["Email"])) {
 
         echo $ocultar = 'none';
-        }else {
+      }else {
         echo $mostrar = 'inline';
       } ?>">
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
-        </div>
-      </div>
-      <div class="col-md-2">
-
-      </div>
-      <!-- <div class="col-md-1">
-
-      </div> -->
-      <div class="col-md-3 right">
-
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
     </div>
+  </div>
+  <div class="col-md-2">
 
-    <div class="col-md-2">
+  </div>
+  <!-- <div class="col-md-1">
 
-    </div>
-    </div>
+</div> -->
+<div class="col-md-3 right">
+
+</div>
+
+<div class="col-md-2">
+
+</div>
+</div>
 
 <!-- ****** Header Area Start ****** -->
 <header class="header_area">
@@ -1088,6 +1088,12 @@ $(document).ready(function(){
 
       alert("Debe ingresar un número de contacto...");
     }
+
+    if (txtCel.value.length != 10) {
+      alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
+      txtCel.focus();
+    }
+
     if(email == ""){
 
       alert("Debe ingresar un E-mail...");
@@ -1100,7 +1106,13 @@ $(document).ready(function(){
 
       alert("Debe seleccionar un roll de usuario...");
     }
-    if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
+    if(nombre != "" &&
+    apellidoP != "" &&
+    apellidoM != "" &&
+    calle != "" &&
+    numCalle != "" &&
+    cp != "" && ciudad != "" &&
+    estado != "" && cel != "" && txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
       agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
     }
   });
@@ -1131,6 +1143,12 @@ $(document).ready(function(){
 
       alert("Debe ingresar el codigo de barra del artículo...");
     }
+
+    if (txtBarCode.value.length != 11) {
+      alert('El codigo de barra es incorrecto ya que tiene una longitud de ' + txtBarCode.value.length + ' y debe contener 11 caracteres...');
+      txtBarCode.focus();
+    }
+
     if(modelArt == ""){
 
       alert("Debe ingresar el modelo del artículo...");
@@ -1161,7 +1179,7 @@ $(document).ready(function(){
       alert("Debe cargar la imagen del artículo...");
     }
 
-    if (nomArt != "" && descArt != "" && barCode != "" && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
+    if (nomArt != "" && descArt != "" && barCode != "" && txtBarCode.value.length == 11 && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
       guardarArt(nomArt,
         descArt,
         barCode,
@@ -1227,6 +1245,14 @@ $(document).ready(function(){
       login(email, pass);
     }
   });
+
+  //   function ValidarBarCode(barcode) {
+  //   if (barcode.value.length = 11) {
+  //     alert("Escriba su número completo");
+  //     barcode.focus();
+  //     barcode.select();
+  //   }
+  // }
 
   function validar_email( email )
   {
