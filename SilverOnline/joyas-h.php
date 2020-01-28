@@ -680,8 +680,21 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               </div>
 
               <div class="widget color mb-70">
-                <h6 class="widget-title mb-30">Filtro por Material</h6>
-                <!-- <button type="button" id="btnLimpiarMatFilter" class="btn btn-danger btnDel">X</button> -->
+                <h6 class="widget-title mb-30">Filtro por Material: <label style="color:#FF0000;">
+                  <?php
+                  if (isset($_SESSION['filtro_price'])) {
+
+                  if ($_SESSION['filtro_price'][0]['material'] == 1) {
+                    echo " ";
+                  }
+                  else {
+                     echo $_SESSION['filtro_price'][0]['material'];
+                  }
+                }
+                   ?>
+                 </label>
+
+                </h6>
                 <div class="widget-desc">
                   <select id="cbmMaterial"  class="form-control" name="material">
                     <option value="0">Selecciona...</option>
@@ -706,48 +719,22 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               </div>
 
               <div class="widget color mb-70">
-                <h6 class="widget-title mb-30">Filtro por Accesorio</h6>
-                <!-- <button type="button" id="btnLimpiarMatFilter" class="btn btn-danger btnDel">X</button> -->
+                <h6 class="widget-title mb-30">Filtro por Accesorio: <label style="color:#FF0000;">
+                  <?php
+                  if (isset($_SESSION['filtro_price'])) {
+
+                  if ($_SESSION['filtro_price'][0]['accesorio'] == 1) {
+                    echo " ";
+                  }
+                  else {
+                     echo $_SESSION['filtro_price'][0]['accesorio'];
+                  }
+                }
+                   ?>
+                 </label>
+
+                </h6>
                 <div class="widget-desc">
-                  <!-- <p>
-                  Elije un motor de búsqueda:
-                -->
-                <!-- <input type="text" list="listAccesorios" placeholder="Selecciona..." class="form-control"> -->
-                <!--
-              </p> -->
-
-              <!-- <datalist id="listamotoresbusqueda" >
-              <option value="0">Selecciona...</option>
-              <option value="%ALI">ALINZA</option>
-              <option value="%ANI">ANILLOS</option>
-              <option value="%ARO">AROS</option>
-              <option value="%ARR">ARRACADA</option>
-              <option value="%ART">ARETE</option>
-              <option value="%BRO">BROQUEL</option>
-              <option value="%BRZ">BRAZALETE</option>
-
-              <option value="%CDN">CADENA</option>
-              <option value="%COL">COLLAR</option>
-              <option value="%DIJ">DIJE</option>
-
-              <option value="%ESC">ESCAPULARIO</option>
-              <option value="%FIN">FIN DE SEMANA</option>
-              <option value="%GRG">GARGANTILLA</option>
-              <option value="%GRP">GRAPAS</option>
-              <option value="%JGS">JUEGOS</option>
-              <option value="%LLV">LLAVERO</option>
-              <option value="%OMG">OMEGA</option>
-              <option value="%PIS">PISA CORBATA</option>
-              <option value="%PLS">PULSERA</option>
-              <option value="%PRE">PRENDEDOR</option>
-              <option value="%REJ">RELOJ</option>
-              <option value="%ROS">ROSARIO</option>
-              <option value="%SMR">SEMANARIO</option>
-              <option value="%TOB">TOBILLERA</option>
-              <option value="%VIO">VIOLADOR</option>
-
-            </datalist> -->
-
 
             <select id="cbmAccesorio"  class="form-control" name="accesorio">
               <option value="0">Selecciona...</option>

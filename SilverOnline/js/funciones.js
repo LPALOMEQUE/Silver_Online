@@ -206,6 +206,24 @@ function filtros(minval, maxval, material,accesorio, query){
     }
   });
 }
+function filtrosMujer(minval, maxval, material,accesorio, query){
+  debugger;
+  cadena = 'MinVal=' + minval +
+   '&MaxVal=' + maxval +
+   '&Material=' + material +
+   '&Accesorio=' + accesorio +
+   '&QUERY=' + query;
+
+  $.ajax({
+    type: "POST",
+    url: "joyas-m.php",
+    data: cadena,
+    success: function(result){
+      debugger;
+      location.href ="joyas-m.php";
+    }
+  });
+}
 
 function limpiarPriceFilter(vaciar){
   cadena = "VaciarFilterP=" + vaciar;
@@ -219,7 +237,18 @@ function limpiarPriceFilter(vaciar){
     }
   });
 }
+function limpiarPriceFilterM(vaciar){
+  cadena = "VaciarFilterP=" + vaciar;
 
+  $.ajax({
+    type: "POST",
+    url: "joyas-m.php",
+    data: cadena,
+    success: function(result){
+      location.href ="joyas-m.php";
+    }
+  });
+}
 function logOut(vaciar){
 
   cadena = "VACIAR_LOGIN=" + vaciar;
@@ -235,22 +264,6 @@ function logOut(vaciar){
   });
 }
 
-// function cartModPrice(id, nombre, precio, url, cantidad, posicion){
-//
-//   cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad + "&Posicion=" + posicion;
-//
-//   $.ajax({
-//     type:"POST",
-//     url: "cart.php",
-//     data:cadena,
-//     success:function(result){
-//
-//       location.reload();
-//     }
-//
-//   });
-//
-// }
 function cartModPrice(id, cantidad, posicion){
   cadena = "ID=" + id + "&CANTIDAD=" + cantidad + "&Posicion=" + posicion;
 
@@ -265,6 +278,7 @@ function cartModPrice(id, cantidad, posicion){
   });
 
 }
+
 function eliminarArticulo(id, posicion, valida){
   cadena = "ID=" + id + "&Posicion=" + posicion + "&DelArt=" + valida;
 
