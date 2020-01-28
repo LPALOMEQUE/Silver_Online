@@ -191,10 +191,10 @@ function AddCart(id, nombre, precio, url, cantidad){
 function filtros(minval, maxval, material,accesorio, query){
   debugger;
   cadena = 'MinVal=' + minval +
-   '&MaxVal=' + maxval +
-   '&Material=' + material +
-   '&Accesorio=' + accesorio +
-   '&QUERY=' + query;
+  '&MaxVal=' + maxval +
+  '&Material=' + material +
+  '&Accesorio=' + accesorio +
+  '&QUERY=' + query;
 
   $.ajax({
     type: "POST",
@@ -209,10 +209,10 @@ function filtros(minval, maxval, material,accesorio, query){
 function filtrosMujer(minval, maxval, material,accesorio, query){
   debugger;
   cadena = 'MinVal=' + minval +
-   '&MaxVal=' + maxval +
-   '&Material=' + material +
-   '&Accesorio=' + accesorio +
-   '&QUERY=' + query;
+  '&MaxVal=' + maxval +
+  '&Material=' + material +
+  '&Accesorio=' + accesorio +
+  '&QUERY=' + query;
 
   $.ajax({
     type: "POST",

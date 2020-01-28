@@ -478,15 +478,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
 
   // print_r($sql);
   $result = mysqli_query($con,$sql);
-  // $row=mysqli_fetch_array($result);
-  // if(is_null($row)){
-  //   echo "<script>
-  //               alert('No se encotro resultados para su busqueda...');
-  //   </script>";
-  //  }
 
   while($category = mysqli_fetch_row($result)){
-
     ?>
     <!-- ****** Quick View Modal Area Start ****** -->
     <div class="modal fade" id="quickview<?php echo $category[0] ?>" tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
@@ -663,14 +656,14 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <input type="number" id="minVal" class="sinBordeRangePrice" name="" value="<?php
                         if(isset($_SESSION['filtro_price'])){
                           echo $_SESSION['filtro_price'][0]['min'];
-                        } ?>">
+                        } ?>" min="0">
                         <input type="range" min="1" max="1000" step="0.01" value="0" class="ui-slider-range ui-widget-header ui-corner-all" id="myRangeMin">
                       </label>
                       <label class="range-price">Max: $
                         <input type="number" id="maxVal" class="sinBordeRangePrice" name="" value="<?php
                         if(isset($_SESSION['filtro_price'])){
                           echo $_SESSION['filtro_price'][0]['max'];
-                        } ?>">
+                        } ?>" min="0">
                         <input type="range" min="1" max="1000" step="0.01" value="0" class="ui-slider-range ui-widget-header ui-corner-all" id="myRangeMax">
                       </label>
                       <button type="button" class="btn btnSearch" id="btnBusPrecio">Filtrar</button>
@@ -684,233 +677,187 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                   <?php
                   if (isset($_SESSION['filtro_price'])) {
 
-                  if ($_SESSION['filtro_price'][0]['material'] == 1) {
-                    echo " ";
+                    if ($_SESSION['filtro_price'][0]['material'] == 1) {
+                      echo " ";
+                    }
+                    else {
+                      echo $_SESSION['filtro_price'][0]['material'];
+                    }
                   }
-                  else {
-                     echo $_SESSION['filtro_price'][0]['material'];
-                  }
-                }
-                   ?>
-                 </label>
+                  ?>
+                </label>
 
-                </h6>
-                <div class="widget-desc">
-                  <select id="cbmMaterial"  class="form-control" name="material">
-                    <option value="0">Selecciona...</option>
-                    <option value="%OL">ORO LAMINADO</option>
-                    <option value="%PL">PLATA</option>
-                    <option value="ACERO">ACERO</option>
-                    <option value="%RD">RODIO</option>
-                  </select>
-                  <br/>
-                  <ul class="d-flex justify-content-between">
-                    <li class="yellow"><a href="#"></a></li>
-                    <li class="gray"><a href="#"></a></li>
-                    <li class="red"><a href="#"></a></li>
-                    <li class="green"><a href="#"></a></li>
-                    <li class="teal"><a href="#"></a></li>
-                    <li class="cyan"><a href="#"></a></li>
-                  </ul>
-                </div>
-                <br/><br/>
-                <button type="button" class="btn btnSearch" id="btnBusMaterial">Filtrar</button>
-
+              </h6>
+              <div class="widget-desc">
+                <select id="cbmMaterial"  class="form-control" name="material">
+                  <option value="0">Selecciona...</option>
+                  <option value="%OL">ORO LAMINADO</option>
+                  <option value="%PL">PLATA</option>
+                  <option value="ACERO">ACERO</option>
+                  <option value="%RD">RODIO</option>
+                </select>
+                <br/>
+                <ul class="d-flex justify-content-between">
+                  <li class="yellow"><a href="#"></a></li>
+                  <li class="gray"><a href="#"></a></li>
+                  <li class="red"><a href="#"></a></li>
+                  <li class="green"><a href="#"></a></li>
+                  <li class="teal"><a href="#"></a></li>
+                  <li class="cyan"><a href="#"></a></li>
+                </ul>
               </div>
+              <br/><br/>
+              <button type="button" class="btn btnSearch" id="btnBusMaterial">Filtrar</button>
 
-              <div class="widget color mb-70">
-                <h6 class="widget-title mb-30">Filtro por Accesorio: <label style="color:#FF0000;">
-                  <?php
-                  if (isset($_SESSION['filtro_price'])) {
+            </div>
+
+            <div class="widget color mb-70">
+              <h6 class="widget-title mb-30">Filtro por Accesorio: <label style="color:#FF0000;">
+                <?php
+                if (isset($_SESSION['filtro_price'])) {
 
                   if ($_SESSION['filtro_price'][0]['accesorio'] == 1) {
                     echo " ";
                   }
                   else {
-                     echo $_SESSION['filtro_price'][0]['accesorio'];
+                    echo $_SESSION['filtro_price'][0]['accesorio'];
                   }
                 }
-                   ?>
-                 </label>
+                ?>
+              </label>
 
-                </h6>
-                <div class="widget-desc">
+            </h6>
+            <div class="widget-desc">
 
-            <select id="cbmAccesorio"  class="form-control" name="accesorio">
-              <option value="0">Selecciona...</option>
-              <option value="ALI%">ALINZA</option>
-              <option value="ANI%">ANILLOS</option>
-              <option value="ARO%">AROS</option>
-              <option value="ARR%">ARRACADA</option>
-              <option value="ART%">ARETE</option>
-              <option value="BRO%">BROQUEL</option>
-              <option value="BRZ%">BRAZALETE</option>
+              <select id="cbmAccesorio"  class="form-control" name="accesorio">
+                <option value="0">Selecciona...</option>
+                <option value="ALI%">ALINZA</option>
+                <option value="ANI%">ANILLOS</option>
+                <option value="ARO%">AROS</option>
+                <option value="ARR%">ARRACADA</option>
+                <option value="ART%">ARETE</option>
+                <option value="BRO%">BROQUEL</option>
+                <option value="BRZ%">BRAZALETE</option>
 
-              <option value="CDN%">CADENA</option>
-              <option value="COL%">COLLAR</option>
-              <option value="DIJ%">DIJE</option>
+                <option value="CDN%">CADENA</option>
+                <option value="COL%">COLLAR</option>
+                <option value="DIJ%">DIJE</option>
 
-              <option value="ESC%">ESCAPULARIO</option>
-              <option value="FIN%">FIN DE SEMANA</option>
-              <option value="GRG%">GARGANTILLA</option>
-              <option value="GRP%">GRAPAS</option>
-              <option value="JGS%">JUEGOS</option>
-              <option value="LLV%">LLAVERO</option>
-              <option value="OMG%">OMEGA</option>
-              <option value="PIS%">PISA CORBATA</option>
-              <option value="PLS%">PULSERA</option>
-              <option value="PRE%">PRENDEDOR</option>
-              <option value="REJ%">RELOJ</option>
-              <option value="ROS%">ROSARIO</option>
-              <option value="SMR%">SEMANARIO</option>
-              <option value="TOB%">TOBILLERA</option>
-              <option value="VIO%">VIOLADOR</option>
+                <option value="ESC%">ESCAPULARIO</option>
+                <option value="FIN%">FIN DE SEMANA</option>
+                <option value="GRG%">GARGANTILLA</option>
+                <option value="GRP%">GRAPAS</option>
+                <option value="JGS%">JUEGOS</option>
+                <option value="LLV%">LLAVERO</option>
+                <option value="OMG%">OMEGA</option>
+                <option value="PIS%">PISA CORBATA</option>
+                <option value="PLS%">PULSERA</option>
+                <option value="PRE%">PRENDEDOR</option>
+                <option value="REJ%">RELOJ</option>
+                <option value="ROS%">ROSARIO</option>
+                <option value="SMR%">SEMANARIO</option>
+                <option value="TOB%">TOBILLERA</option>
+                <option value="VIO%">VIOLADOR</option>
 
-            </select>
+              </select>
+              <br/><br/>
+              <ul class="d-flex justify-content-between">
+                <li class="yellow"><a href="#"></a></li>
+                <li class="gray"><a href="#"></a></li>
+                <li class="red"><a href="#"></a></li>
+                <li class="green"><a href="#"></a></li>
+                <li class="teal"><a href="#"></a></li>
+                <li class="cyan"><a href="#"></a></li>
+              </ul>
+            </div>
             <br/><br/>
-            <ul class="d-flex justify-content-between">
-              <li class="yellow"><a href="#"></a></li>
-              <li class="gray"><a href="#"></a></li>
-              <li class="red"><a href="#"></a></li>
-              <li class="green"><a href="#"></a></li>
-              <li class="teal"><a href="#"></a></li>
-              <li class="cyan"><a href="#"></a></li>
-            </ul>
+            <button type="button" class="btn btnSearch" id="btnBusAcs">Filtrar</button>
+
           </div>
-          <br/><br/>
-          <button type="button" class="btn btnSearch" id="btnBusAcs">Filtrar</button>
-
         </div>
-
-        <div class="widget recommended">
-          <h6 class="widget-title mb-30">Lo mas nuevo</h6>
-
-          <div class="widget-desc">
-            <!-- Single Recommended Product -->
+      </div>
+      <div class="col-12 col-md-8 col-lg-9">
+        <div class="shop_grid_product_area">
+          <div class="row">
             <?php
-            $sql = "SELECT " .
-            "art.ID_ARTICLES, ".
-            "art.NAME_ART, " .
-            "art.PRICE, " .
-            "art.URL_IMAGE, " .
-            "art.Description, ".
-            "br.NAME_BRAND ".
-            "FROM articles art " .
-            "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-            "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 ORDER BY art.ID_ARTICLES DESC LIMIT 5 ";
+            if($queryVal == 2) {
+              $valMin = $_SESSION['filtro_price'][0]['min'];
+              $valMax = $_SESSION['filtro_price'][0]['max'];
+              $material = $_SESSION['filtro_price'][0]['material'];
+              $accesorio = $_SESSION['filtro_price'][0]['accesorio'];
 
+              if ($material == 1) {
+                $material = '___________';
+              }
+              elseif($material == 'ACERO'){
+                $material = '%AC';
+              }
+
+              if ($accesorio == 1) {
+                $accesorio = '___________';
+              }
+
+              $sql = "SELECT " .
+              "art.ID_ARTICLES, ".
+              "art.NAME_ART, " .
+              "art.PRICE, " .
+              "art.URL_IMAGE, " .
+              "art.Description, ".
+              "br.NAME_BRAND ".
+              "FROM articles art " .
+              "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+              "where art.STATUS = 1 AND ".
+              "art.ID_CATEGORY = 1 AND ".
+              "art.ID_SUB_CATEGORY = 1 AND ".
+              "art.BARCODE like '$material' AND ".
+              "art.BARCODE like '$accesorio' AND ".
+              "art.PRICE BETWEEN $valMin AND $valMax ".
+              "ORDER BY art.PRICE";
+            }
+            else {
+              $sql = "SELECT " .
+              "art.ID_ARTICLES, ".
+              "art.NAME_ART, " .
+              "art.PRICE, " .
+              "art.URL_IMAGE, " .
+              "art.Description, ".
+              "br.NAME_BRAND ".
+              "FROM articles art " .
+              "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+              "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 LIMIT 50";
+            }
             $result = mysqli_query($con,$sql);
+
             while($category = mysqli_fetch_row($result)){
 
               ?>
-              <div class="single-recommended-product d-flex mb-30">
-                <div class="single-recommended-thumb mr-3">
+
+              <!-- Single gallery Item -->
+              <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
+                <!-- Product Image -->
+                <div class="product-img">
                   <img src="<?php echo $category[3] ?>" alt="">
+                  <div class="product-quicview">
+                    <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category[0] ?>"><i class="ti-plus"></i></a>
+                  </div>
                 </div>
-                <div class="single-recommended-desc">
-                  <h6>Men’s T-shirt</h6>
-                  <p>$ 39.99</p>
+                <!-- Product Description -->
+                <div class="product-description">
+                  <h4 class="product-price">$<?php echo number_format($category[2],2) ; ?></h4>
+                  <p><?php echo $category[1] ?></p>
+                  <!-- Add to Cart -->
+                  <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
                 </div>
               </div>
-            <?php } ?>
-            <!-- Single Recommended Product -->
-
+            <?php }
+            ?>
+            <div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-8 col-lg-9">
-      <div class="shop_grid_product_area">
-        <div class="row">
-          <?php
-          if($queryVal == 2) {
-            // if (isset($_SESSION['filtro_price'])) {
-            $valMin = $_SESSION['filtro_price'][0]['min'];
-            $valMax = $_SESSION['filtro_price'][0]['max'];
-            $material = $_SESSION['filtro_price'][0]['material'];
-            $accesorio = $_SESSION['filtro_price'][0]['accesorio'];
-
-            if ($material == 1) {
-              $material = '___________';
-            }
-            elseif($material == 'ACERO'){
-              $material = '%AC';
-            }
-
-            if ($accesorio == 1) {
-              $accesorio = '___________';
-            }
-
-            $sql = "SELECT " .
-            "art.ID_ARTICLES, ".
-            "art.NAME_ART, " .
-            "art.PRICE, " .
-            "art.URL_IMAGE, " .
-            "art.Description, ".
-            "br.NAME_BRAND ".
-            "FROM articles art " .
-            "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-            "where art.STATUS = 1 AND ".
-            "art.ID_CATEGORY = 1 AND ".
-            "art.ID_SUB_CATEGORY = 1 AND ".
-            "art.BARCODE like '$material' AND ".
-            "art.BARCODE like '$accesorio' AND ".
-            "art.PRICE BETWEEN $valMin AND $valMax ".
-            "ORDER BY art.PRICE";
-          }
-          else {
-            $sql = "SELECT " .
-            "art.ID_ARTICLES, ".
-            "art.NAME_ART, " .
-            "art.PRICE, " .
-            "art.URL_IMAGE, " .
-            "art.Description, ".
-            "br.NAME_BRAND ".
-            "FROM articles art " .
-            "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-            "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1 LIMIT 50";
-          }
-          $result = mysqli_query($con,$sql);
-
-          while($category = mysqli_fetch_row($result)){
-
-            ?>
-
-            <!-- Single gallery Item -->
-            <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
-              <!-- Product Image -->
-              <div class="product-img">
-                <img src="<?php echo $category[3] ?>" alt="">
-                <div class="product-quicview">
-                  <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category[0] ?>"><i class="ti-plus"></i></a>
-                </div>
-              </div>
-              <!-- Product Description -->
-              <div class="product-description">
-                <h4 class="product-price">$<?php echo number_format($category[2],2) ; ?></h4>
-                <p><?php echo $category[1] ?></p>
-                <!-- Add to Cart -->
-                <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
-              </div>
-            </div>
-          <?php }
-          ?>
-          <div>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">
-      <nav aria-label="Page navigation">
-      <ul class="pagination pagination-sm">
-      <li class="page-item active"><a class="page-link" href="#">01</a></li>
-      <li class="page-item"><a class="page-link" href="#">02</a></li>
-      <li class="page-item"><a class="page-link" href="#">03</a></li>
-    </ul>
-  </nav>
-</div> -->
-</div>
-</div>
-</div>
+  </div>
 </section>
 
 <!-- ****** Footer Area Start ****** -->
@@ -1112,7 +1059,7 @@ $(document).ready(function(){
     maxval = parseInt($('#maxVal').val());
     material = 1;
     accesorio = 1;
-    if (minval != 1 && maxval != 1) {
+    if (minval != 0 && maxval != 0) {
       query = 2;
     }
     if (minval > maxval) {
