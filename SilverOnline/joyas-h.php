@@ -1,7 +1,5 @@
 <?php
 session_start();
-require_once "php/Conexion.php";
-$con = conexion();
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $cantidad = 0;
@@ -40,6 +38,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   }
 
   //Imprimiendo datos globales del carrito
+  require_once "php/Conexion.php";
+  $con = conexion();
   if (isset($_SESSION['ID_ARTICLES'])) {
 
     foreach($ID_ARTICLES as $key => $item){
@@ -52,6 +52,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
         $TotalxArtGlobal += $arti[0] * $item['cantidad'];
       }
     }
+    mysqli_close($con);
   }
   $p =   $key+1;
 
@@ -428,6 +429,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   </section>
 
   <?php
+  require_once "php/Conexion.php";
+  $con = conexion();
   if($queryVal == 2) {
     // if (isset($_SESSION['filtro_price'])) {
     $valMin = $_SESSION['filtro_price'][0]['min'];
@@ -592,6 +595,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       </div>
       <?php
     }
+    mysqli_close($con);
     ?>
     <!-- ****** Quick View Modal Area End ****** -->
 
@@ -780,6 +784,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
         <div class="shop_grid_product_area">
           <div class="row">
             <?php
+            require_once "php/Conexion.php";
+            $con = conexion();
             if($queryVal == 2) {
               $valMin = $_SESSION['filtro_price'][0]['min'];
               $valMax = $_SESSION['filtro_price'][0]['max'];
@@ -849,7 +855,9 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                   <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
                 </div>
               </div>
-            <?php }
+            <?php
+           }
+           mysqli_close($con);
             ?>
             <div>
             </div>
